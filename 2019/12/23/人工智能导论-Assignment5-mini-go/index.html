@@ -87,7 +87,7 @@
 <meta property="og:description" content="#Mini_AlphaGo">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-12-23T12:39:49.717Z">
-<meta property="article:modified_time" content="2019-12-24T03:51:40.228Z">
+<meta property="article:modified_time" content="2019-12-25T09:24:40.651Z">
 <meta property="article:author" content="Mianzhi Pan">
 <meta property="article:tag" content="recording">
 <meta name="twitter:card" content="summary">
@@ -303,7 +303,7 @@
         <p>#Mini_AlphaGo</p>
 <hr>
 <a id="more"></a>
-<p>##2019/12/24<br><strong><em>刚刚开始阅读assignment5的代码，做一些阅读笔记。</em></strong><br><br>###关于一些python库、函数的记录<br><strong>1.</strong>go.py中有这样的代码<code>N=int(os.environ.get(&#39;BOARD_SIZE&#39;,19))</code>，STFW发现是获取环境变量的函数（不太懂），只要知道N=19就是了。这是关于os.environ.get的链接<a href="https://www.cnblogs.com/chaojiyingxiong/p/11076257.html" target="_blank" rel="noopener">os.environ.get用法</a>。<br><br><strong>2.</strong>coords.py中出现了divmod函数，其作用是把除数和余数运算结果结合起来，返回一个包含商和余数的元组(a // b, a % b)。<br>e.g.<code>&gt;&gt;&gt;divmod(7,2)</code><br>&emsp;&emsp;&emsp;<code>(3,1)</code><br><br><strong>3.</strong>filter()过滤序列，过滤掉不符合条件的元素，返回由符合条件元素组成的新列表。<code>filter(function,iterable)</code><br><br><strong>4.</strong>set()创建一个无序不重复元素集，可进行关系测试，删除重复数据，还可以计算交集、差集、并集等。<code>class set([iterable])</code>,<a href="https://www.runoob.com/python/python-func-set.html" target="_blank" rel="noopener">set()</a><br><br><strong>5.</strong>numpy居然还可以用<a href="https://blog.csdn.net/xidianbaby/article/details/87212459" target="_blank" rel="noopener">元组作为索引</a>。<br><br><strong>6.</strong>List的pop方法移除列表最后一个元素并返回其值<br>。<br>###围棋环境environment阅读<br>####coords.py<br><strong>1.</strong>这个比较简单，就是介绍了棋盘坐标的四种表示方式minigo coord、flat、SGF、GTP，以及坐标之间的转化。我们框架代码中用的是minigo coord，即一个二元数组(a,b),0&lt;=a,b&lt;=18<br><br>####go.py<br>1.棋盘board用19<em>19的numpy数组表示，每个位置存的是颜色，黑、白、空分别用1，-1，0表示，这样交换颜色的话可以直接对数组取负。玩家动作是(Color,Move)的元组。而Move是(Coordinate c|None)。<br><br>2._check_bound(c)是检查二元组c有没有越过棋盘边界的。<br><br>3.place_stones(),应该是在棋盘s处下上颜色为color的棋。<br><br>4.replay_position(),对一个位置的历史动作均重新玩一次，每次返回新的位置。<br><br>5.里面许多函数的参数c其实是位置坐标(line,column)。<br><br>6.find_reached()函数返回的chain是包含状态c的列表，reached是包含当前位置c上下左右四个位置与其颜色不同的位置的列表。<br><br>*</em>玛德太多了，先不看了，等在算法中用到再回来看了**<br></p>
+<p><strong><em>阅读assignment5的代码做的一些阅读笔记。</em></strong><br><br>###关于一些python库、函数的记录<br><strong>1.</strong>go.py中有这样的代码<code>N=int(os.environ.get(&#39;BOARD_SIZE&#39;,19))</code>，STFW发现是获取环境变量的函数（不太懂），只要知道N=19就是了。这是关于os.environ.get的链接<a href="https://www.cnblogs.com/chaojiyingxiong/p/11076257.html" target="_blank" rel="noopener">os.environ.get用法</a>。<br><br><strong>2.</strong>coords.py中出现了divmod函数，其作用是把除数和余数运算结果结合起来，返回一个包含商和余数的元组(a // b, a % b)。<br>e.g.<code>&gt;&gt;&gt;divmod(7,2)</code><br> &emsp;&emsp;&emsp;<code>(3,1)</code><br><br><strong>3.</strong>filter()过滤序列，过滤掉不符合条件的元素，返回由符合条件元素组成的新列表。<code>filter(function,iterable)</code><br><br><strong>4.</strong>set()创建一个无序不重复元素集，可进行关系测试，删除重复数据，还可以计算交集、差集、并集等。<code>class set([iterable])</code>,<a href="https://www.runoob.com/python/python-func-set.html" target="_blank" rel="noopener">set()</a><br><br><strong>5.</strong>numpy居然还可以用<a href="https://blog.csdn.net/xidianbaby/article/details/87212459" target="_blank" rel="noopener">元组作为索引</a>。<br><br><strong>6.</strong>List的pop方法移除列表最后一个元素并返回其值。<br><br><strong>7.</strong><a href="https://blog.csdn.net/helei001/article/details/52692128" target="_blank" rel="noopener">collections.namedtuple()方法</a>类似于C里面的struct。<br><br><strong>8.</strong>time.time()返回当前的时间戳。<br><br>###围棋环境environment阅读<br>####coords.py<br><strong>1.</strong>这个比较简单，就是介绍了棋盘坐标的四种表示方式minigo coord、flat、SGF、GTP，以及坐标之间的转化。我们框架代码中用的是minigo coord，即一个二元数组(a,b),0&lt;=a,b&lt;=18<br><br>####go.py<br><strong>1.</strong>棋盘board用19×19的numpy数组表示，每个位置存的是颜色，黑、白、空分别用1，-1，0表示，这样交换颜色的话可以直接对数组取负。玩家动作是(Color,Move)的元组。而Move是(Coordinate c|None)。<br><br><strong>2.</strong>_check_bound(c)是检查二元组c有没有越过棋盘边界的。<br><br><strong>3.</strong>place_stones(),应该是在棋盘s处下上颜色为color的棋。<br><br><strong>4.</strong>replay_position(),对一个位置的历史动作均重新玩一次，每次返回新的位置。<br><br><strong>5.</strong>里面许多函数的参数c其实是位置坐标(line,column)。<br><br><strong>6.</strong>find_reached()函数返回的chain是包含状态c的列表，reached是包含当前位置c上下左右四个位置与其颜色不同的位置的列表。<br><br><strong>玛德太多了，先不看了，等在算法中用到再回来看了</strong><br><br>####GoEnv.py</p>
 
       
     </div>
@@ -355,6 +355,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/24/Jacobi%E7%9F%A9%E9%98%B5%E5%92%8CHessian%E7%9F%A9%E9%98%B5%E5%AD%A6%E4%B9%A0/" rel="prev" title="Jacobi矩阵和Hessian矩阵学习">
+                Jacobi矩阵和Hessian矩阵学习 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -426,7 +430,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

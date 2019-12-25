@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="#Lab2:Inline Assenbly">
+<meta name="description" content="#Jacobi&amp;Hessian Matrix">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NJU-ics-lab2-x86-64内联汇编">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;23&#x2F;NJU-ics-lab2-x86-64%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96&#x2F;index.html">
+<meta property="og:title" content="Jacobi矩阵和Hessian矩阵学习">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;24&#x2F;Jacobi%E7%9F%A9%E9%98%B5%E5%92%8CHessian%E7%9F%A9%E9%98%B5%E5%AD%A6%E4%B9%A0&#x2F;index.html">
 <meta property="og:site_name" content="Serendipity">
-<meta property="og:description" content="#Lab2:Inline Assenbly">
+<meta property="og:description" content="#Jacobi&amp;Hessian Matrix">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2019-12-23T11:49:18.218Z">
-<meta property="article:modified_time" content="2019-12-23T12:52:52.521Z">
+<meta property="article:published_time" content="2019-12-24T15:58:31.703Z">
+<meta property="article:modified_time" content="2019-12-24T16:05:08.974Z">
 <meta property="article:author" content="Mianzhi Pan">
 <meta property="article:tag" content="recording">
 <meta name="twitter:card" content="summary">
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/12/23/NJU-ics-lab2-x86-64内联汇编/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/12/24/Jacobi矩阵和Hessian矩阵学习/"/>
 
 
 
 
 
-  <title>NJU-ics-lab2-x86-64内联汇编 | Serendipity</title>
+  <title>Jacobi矩阵和Hessian矩阵学习 | Serendipity</title>
   
 
 
@@ -233,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/23/NJU-ics-lab2-x86-64%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/24/Jacobi%E7%9F%A9%E9%98%B5%E5%92%8CHessian%E7%9F%A9%E9%98%B5%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mianzhi Pan">
@@ -250,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">NJU-ics-lab2-x86-64内联汇编</h1>
+          <h1 class="post-title" itemprop="name headline">Jacobi矩阵和Hessian矩阵学习</h1>
         
 
         <div class="post-meta">
@@ -262,8 +262,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-23T19:49:18+08:00">
-                2019-12-23
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-24T23:58:31+08:00">
+                2019-12-24
               </time>
             
 
@@ -300,10 +300,12 @@
       
 
       
-        <p>#Lab2:Inline Assenbly</p>
-<hr>
+        <p>#Jacobi&amp;Hessian Matrix</p>
 <a id="more"></a>
-<p>##2019/12/23：<br>今天把lab2交掉了，我只实现了add和memcpy，后者还是抄的linux内核代码，setjmp和longjmp就不说了，写的跟shit一样，但也没办法，自己把lab拖到现在做是得遭报应的。However，我最气的是debug了两天的asm_popcnt到最终还是失败了。简单记录了一下我写inline assembly的一些坑。<br><br><strong>1.</strong>inline assembly的基本语法，这里有个不错的介绍:<a href="https://www.cnblogs.com/scu-cjx/p/6878222.html" target="_blank" rel="noopener">C语言内联汇编语法</a>。<br><br><strong>2.</strong>Instruction List后面的三个冒号后面分别对应着output,input和可能被更改的内容。以最后可能被更改的内容为例，<code>:&quot;%eax&quot;</code>和<code>:memory</code>分别表示eax寄存器和内存在汇编指令执行的过程中被更改了，这是一定要指出来的。<strong>另外，作为input和output的寄存器不要写到最后的Clobber/Modify里面！</strong>否则会出现”error:’asm’ operand has impossible constraints”的报错。<br><br><strong>3.</strong>x86-64的寄存器除了有IA32扩展的通用寄存器rax等等外，还有r8、r9……r15这几个寄存器，具体可见这里<a href="https://blog.csdn.net/dayancn/article/details/51328959" target="_blank" rel="noopener">x86-64寄存器和栈帧</a>。<br><br><strong>4.</strong>汇编语言里面有pushf和popf指令，前者表示将标志寄存器压栈，后者表示从栈中取出数据，输入标志寄存器(说的不是很清楚)，参考的是这个链接<a href="https://blog.csdn.net/zhangjiuding/article/details/79156039" target="_blank" rel="noopener">寄存器在Debug中的表示</a>。<br><br><strong>5.Inline Assembly中许多指令、寄存器的缩写以及仍需学习（寒假回去干！）</strong>，我很懵逼的%0和%1表示的是第0个和第1个操作表达式使用相同的寄存器/内存，其实就是通用修饰符，关于这个在第一点的链接里面有具体的介绍。<strong>寒假回去要学下！！！</strong><br><br><strong>6.恶心的setjmp和longjmp函数，</strong>关于他们的具体操作，其实就相当于快照，实现过程类似于pa中的保存上下文和回复上下文，但我写（抄）的代码里面有这样的汇编指令：<code>mov asm_setjmp, 144(%1)</code>，这个有错，因为mov的两个操作数都是main memory，我改为了<code>&quot;mov asm_setjmp, %%eax\n\t&quot;&quot;mov %%eax, 144(%1)\n\t&quot;</code>，另外还有<code>jmp asm_setjmp</code>，前者其实就是保存setjmp函数的地址，后者就是在longjmp中跳回到setjmp，然而链接时报错：”relocation R_X86_64_32 against ‘asm-jmp’……”，这个bug仍未解决，我是直接删掉了这两条指令，直接交了个错误代码上去（至少这样还能生成.out文件，否则更没有分）。<br><br>&emsp;&emsp;以上。</p>
+<p>##2019/12/25<br>起因是今天做的一道数学题，丁同仁老师《常微分方程教程》习题2.5的第四题，参考答案中有这样一句话：</p>
+<blockquote>
+<p>Jacobi行列式</p>
+</blockquote>
 
       
     </div>
@@ -324,7 +326,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="http://yoursite.com/2019/12/23/NJU-ics-lab2-x86-64%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" title="NJU-ics-lab2-x86-64内联汇编">http://yoursite.com/2019/12/23/NJU-ics-lab2-x86-64%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/</a>
+    <a href="http://yoursite.com/2019/12/24/Jacobi%E7%9F%A9%E9%98%B5%E5%92%8CHessian%E7%9F%A9%E9%98%B5%E5%AD%A6%E4%B9%A0/" title="Jacobi矩阵和Hessian矩阵学习">http://yoursite.com/2019/12/24/Jacobi%E7%9F%A9%E9%98%B5%E5%92%8CHessian%E7%9F%A9%E9%98%B5%E5%AD%A6%E4%B9%A0/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -346,8 +348,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/12/21/NJU-ICS2019-PA4%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95/" rel="next" title="NJU-ICS2019-PA4实验记录">
-                <i class="fa fa-chevron-left"></i> NJU-ICS2019-PA4实验记录
+              <a href="/2019/12/23/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%AF%BC%E8%AE%BA-Assignment5-mini-go/" rel="next" title="人工智能导论-Assignment5-mini-go">
+                <i class="fa fa-chevron-left"></i> 人工智能导论-Assignment5-mini-go
               </a>
             
           </div>
@@ -355,10 +357,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/12/23/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%AF%BC%E8%AE%BA-Assignment5-mini-go/" rel="prev" title="人工智能导论-Assignment5-mini-go">
-                人工智能导论-Assignment5-mini-go <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
