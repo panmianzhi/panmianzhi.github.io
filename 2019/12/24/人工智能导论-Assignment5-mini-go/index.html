@@ -79,16 +79,20 @@
 
 
 
-<meta name="description" content="Mianzhi Pan&#39;s personal website">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Serendipity">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;index.html">
+<meta name="description" content="阅读assignment5的代码做的一些阅读笔记。##2019&#x2F;12&#x2F;24###关于一些python库、函数的记录1.go.py中有这样的代码N&#x3D;int(os.environ.get(&#39;BOARD_SIZE&#39;,19))，STFW发现是获取环境变量的函数（不太懂），只要知道N&#x3D;19就是了。这是关于os.environ.get的链接os.environ.get用法。2.coords.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mini_AlphaGo">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;24&#x2F;%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%AF%BC%E8%AE%BA-Assignment5-mini-go&#x2F;index.html">
 <meta property="og:site_name" content="Serendipity">
-<meta property="og:description" content="Mianzhi Pan&#39;s personal website">
+<meta property="og:description" content="阅读assignment5的代码做的一些阅读笔记。##2019&#x2F;12&#x2F;24###关于一些python库、函数的记录1.go.py中有这样的代码N&#x3D;int(os.environ.get(&#39;BOARD_SIZE&#39;,19))，STFW发现是获取环境变量的函数（不太懂），只要知道N&#x3D;19就是了。这是关于os.environ.get的链接os.environ.get用法。2.coords.">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;timestep(2).PNG">
+<meta property="article:published_time" content="2019-12-24T14:10:36.000Z">
+<meta property="article:modified_time" content="2019-12-30T12:33:10.873Z">
 <meta property="article:author" content="Mianzhi Pan">
 <meta property="article:tag" content="recording">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;timestep(2).PNG">
 
 
 
@@ -118,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/12/24/人工智能导论-Assignment5-mini-go/"/>
 
 
 
 
 
-  <title>Serendipity</title>
+  <title>mini_AlphaGo | Serendipity</title>
   
 
 
@@ -143,8 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -227,296 +230,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/30/NJU-ICS2019-PA4%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mianzhi Pan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/header.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Serendipity">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/30/NJU-ICS2019-PA4%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95/" itemprop="url">PA4实验记录</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-30T20:31:35+08:00">
-                2019-12-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ICS/" itemprop="url" rel="index">
-                    <span itemprop="name">ICS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <a id="more"></a>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/24/Jacobi%E7%9F%A9%E9%98%B5%E5%92%8CHessian%E7%9F%A9%E9%98%B5%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mianzhi Pan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/header.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Serendipity">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/24/Jacobi%E7%9F%A9%E9%98%B5%E5%92%8CHessian%E7%9F%A9%E9%98%B5%E5%AD%A6%E4%B9%A0/" itemprop="url">Jacobi&Hessian matrix</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-24T23:58:31+08:00">
-                2019-12-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mathematics/" itemprop="url" rel="index">
-                    <span itemprop="name">mathematics</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <a id="more"></a>
-<p>起因是今天做的一道数学题，丁同仁老师《常微分方程教程》习题2.5的第四题，参考答案中有这样一句话：</p>
-<blockquote>
-<p>Jacobi行列式</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
 
   
 
@@ -546,9 +262,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/24/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%AF%BC%E8%AE%BA-Assignment5-mini-go/" itemprop="url">mini_AlphaGo</a></h1>
+          <h1 class="post-title" itemprop="name headline">mini_AlphaGo</h1>
         
 
         <div class="post-meta">
@@ -620,14 +334,10 @@
       
 
       
-        
-          
-            <a id="more"></a>
+        <a id="more"></a>
 <p><strong><em>阅读assignment5的代码做的一些阅读笔记。</em></strong><br><br>##2019/12/24<br>###关于一些python库、函数的记录<br><strong>1.</strong>go.py中有这样的代码<code>N=int(os.environ.get(&#39;BOARD_SIZE&#39;,19))</code>，STFW发现是获取环境变量的函数（不太懂），只要知道N=19就是了。这是关于os.environ.get的链接<a href="https://www.cnblogs.com/chaojiyingxiong/p/11076257.html" target="_blank" rel="noopener">os.environ.get用法</a>。<br><br><strong>2.</strong>coords.py中出现了divmod函数，其作用是把除数和余数运算结果结合起来，返回一个包含商和余数的元组(a // b, a % b)。<br>e.g.<code>&gt;&gt;&gt;divmod(7,2)</code><br> &emsp;&emsp;&emsp;<code>(3,1)</code><br><br><strong>3.</strong>filter()过滤序列，过滤掉不符合条件的元素，返回由符合条件元素组成的新列表。<code>filter(function,iterable)</code><br><br><strong>4.</strong>set()创建一个无序不重复元素集，可进行关系测试，删除重复数据，还可以计算交集、差集、并集等。<code>class set([iterable])</code>,<a href="https://www.runoob.com/python/python-func-set.html" target="_blank" rel="noopener">set()</a><br><br><strong>5.</strong>numpy居然还可以用<a href="https://blog.csdn.net/xidianbaby/article/details/87212459" target="_blank" rel="noopener">元组作为索引</a>。<br><br><strong>6.</strong>List的pop方法移除列表最后一个元素并返回其值。<br><br><strong>7.</strong><a href="https://blog.csdn.net/helei001/article/details/52692128" target="_blank" rel="noopener">collections.namedtuple()方法</a>类似于C里面的struct。<br><br><strong>8.</strong>time.time()返回当前的时间戳。<br><br>###围棋环境environment阅读<br>####coords.py<br><strong>1.</strong>这个比较简单，就是介绍了棋盘坐标的四种表示方式minigo coord、flat、SGF、GTP，以及坐标之间的转化。我们框架代码中用的是minigo coord，即一个二元数组(a,b),0&lt;=a,b&lt;=18<br><br>####go.py<br><strong>1.</strong>棋盘board用19×19的numpy数组表示，每个位置存的是颜色，黑、白、空分别用1，-1，0表示，这样交换颜色的话可以直接对数组取负。玩家动作是(Color,Move)的元组。而Move是(Coordinate c|None)。<br><br><strong>2.</strong>_check_bound(c)是检查二元组c有没有越过棋盘边界的。<br><br><strong>3.</strong>place_stones(),应该是在棋盘s处下上颜色为color的棋。<br><br><strong>4.</strong>replay_position(),对一个位置的历史动作均重新玩一次，每次返回新的位置。<br><br><strong>5.</strong>里面许多函数的参数c其实是位置坐标(line,column)。<br><br><strong>6.</strong>find_reached()函数返回的chain是包含状态c的列表，reached是包含当前位置c上下左右四个位置与其颜色不同的位置的列表。<br><br><strong>玛德太多了，先不看了，等在算法中用到再回来看了</strong><br></p>
 <p>##2019/12/25<br>前几天光顾着死磕代码，没有发现目录下还有一个readme.md(晕了),便根据它的指引阅读代码，从rl_loop.py入手了解围棋环境数据的具体交互过程。<br>计时函数就不用说了，首先创建一个围棋环境<code>env=Go()</code>，Go这个类在GoEnv.py中，其类变量包括<code>__state</code>，这是一个Position()类，在go.py中定义，其中包含了棋盘状态、当前已走步数、历史动作等等，需要注意的是那个komi参数，代码给的解释有点迷，我发现它是类Position()中评分函数score的一个参数,score()是类Position的一个方法，返回值为结束时棋盘上<strong>黑子数-白子数-komi</strong>，<code>__state</code>将komi初始化为0.5。<br><br>Position类下的result方法就是根据score评分返回结果，分数大于0则result取1，score小于0result取-1，否则取0。<br><br>Go的类变量还有<code>__flatten_state</code>，用来表示坐标系是否是flat，我把其初始值改为了False。其他类变量就很简单，一看就懂。<br><br>Go的两个方法step()和reset()相对重要，在看他们之前需要了解GoEnv.py上面的TimeStep类，其中最重要的是用collections.nametuple定义了一个类似于C中“struct”的东西，姑且也叫他TimeStep结构体吧，其中的变量<code>observations,reward,discounts,step_type</code>分别表示棋盘状态、reward,discount和<code>step_type</code>（等于没说），这个光看注释不太好懂，这里贴出做step()过程中（即运行<code>rl_loop.py</code>时TimeStep的具体内容）<img src="https://github.com/panmianzhi/IMG/raw/master/timestep(2).PNG" alt="TimeStep结构体">)，这就很好理解了。<br>回到Go中的step()方法，将<code>self.__state</code>用<code>play_move</code>（这个具体我没看）执行动作，同时更新TimeStep中的各项变量，每一步返回更新后的TimeStep。<br>reset()这是就很好理解了，就是初始化<code>__state</code>，包括初始化<code>__state</code>（komi=0.5），以及初始化TimeStep。<br>好了，回到<code>rl_loop.py</code>中，创建完围棋环境之后，再创建包含两个智能体Agent的列表用于对弈，这里用的是Agent.py中的RandomAgent智能体，也可以换成其他的。再进行十局对局，每次的对局过程上面也讲过了，就是先用<code>reset()</code>初始化timestep，然后两个player轮流用step更新TimeStep，一直训练到最后（这里应该是训练），最后调用agent中的step根据模拟最后的状态随机填子，代码的注释时”episode is over, step all agents with final info state”，这边我有点疑惑了。<br>看<code>random_test.py</code>，其操作同上面也是几乎一样，不同的是在每次agent执行动作后都用Go()的<code>get_cuttent_board</code>输出了棋盘的样式。</p>
 
-          
-        
       
     </div>
     
@@ -639,160 +349,55 @@
     
 
     
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Mianzhi Pan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://yoursite.com/2019/12/24/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%AF%BC%E8%AE%BA-Assignment5-mini-go/" title="mini_AlphaGo">http://yoursite.com/2019/12/24/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%AF%BC%E8%AE%BA-Assignment5-mini-go/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
 
     <footer class="post-footer">
       
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/23/NJU-ics-lab2-x86-64%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mianzhi Pan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/header.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Serendipity">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/23/NJU-ics-lab2-x86-64%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" itemprop="url">inline assembly</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-23T20:12:43+08:00">
-                2019-12-23
-              </time>
+              <a href="/2019/12/23/NJU-ics-lab2-x86-64%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" rel="next" title="inline assembly">
+                <i class="fa fa-chevron-left"></i> inline assembly
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
+              <a href="/2019/12/24/Jacobi%E7%9F%A9%E9%98%B5%E5%92%8CHessian%E7%9F%A9%E9%98%B5%E5%AD%A6%E4%B9%A0/" rel="prev" title="Jacobi&Hessian matrix">
+                Jacobi&Hessian matrix <i class="fa fa-chevron-right"></i>
+              </a>
             
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ICS/" itemprop="url" rel="index">
-                    <span itemprop="name">ICS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <a id="more"></a>
-<p>#2019/12/23：<br>今天把lab2交掉了，我只实现了add和memcpy，后者还是抄的linux内核代码，setjmp和longjmp就不说了，写的跟shit一样，但也没办法，自己把lab拖到现在做是得遭报应的。However，我最气的是debug了两天的asm_popcnt到最终还是失败了。简单记录了一下我写inline assembly的一些坑。<br><br><strong>1.</strong>inline assembly的基本语法，这里有个不错的介绍:<a href="https://www.cnblogs.com/scu-cjx/p/6878222.html" target="_blank" rel="noopener">C语言内联汇编语法</a>。<br><br><strong>2.</strong>Instruction List后面的三个冒号后面分别对应着output,input和可能被更改的内容。以最后可能被更改的内容为例，<code>:&quot;%eax&quot;</code>和<code>:memory</code>分别表示eax寄存器和内存在汇编指令执行的过程中被更改了，这是一定要指出来的。<strong>另外，作为input和output的寄存器不要写到最后的Clobber/Modify里面！</strong>否则会出现”error:’asm’ operand has impossible constraints”的报错。<br><br><strong>3.</strong>x86-64的寄存器除了有IA32扩展的通用寄存器rax等等外，还有r8、r9……r15这几个寄存器，具体可见这里<a href="https://blog.csdn.net/dayancn/article/details/51328959" target="_blank" rel="noopener">x86-64寄存器和栈帧</a>。<br><br><strong>4.</strong>汇编语言里面有pushf和popf指令，前者表示将标志寄存器压栈，后者表示从栈中取出数据，输入标志寄存器(说的不是很清楚)，参考的是这个链接<a href="https://blog.csdn.net/zhangjiuding/article/details/79156039" target="_blank" rel="noopener">寄存器在Debug中的表示</a>。<br><br><strong>5.Inline Assembly中许多指令、寄存器的缩写以及仍需学习（寒假回去干！）</strong>，我很懵逼的%0和%1表示的是第0个和第1个操作表达式使用相同的寄存器/内存，其实就是通用修饰符，关于这个在第一点的链接里面有具体的介绍。<strong>寒假回去要学下！！！</strong><br><br><strong>6.恶心的setjmp和longjmp函数，</strong>关于他们的具体操作，其实就相当于快照，实现过程类似于pa中的保存上下文和回复上下文，但我写（抄）的代码里面有这样的汇编指令：<code>mov asm_setjmp, 144(%1)</code>，这个有错，因为mov的两个操作数都是main memory，我改为了<code>&quot;mov asm_setjmp, %%eax\n\t&quot;&quot;mov %%eax, 144(%1)\n\t&quot;</code>，另外还有<code>jmp asm_setjmp</code>，前者其实就是保存setjmp函数的地址，后者就是在longjmp中跳回到setjmp，然而链接时报错：”relocation R_X86_64_32 against ‘asm-jmp’……”，这个bug仍未解决，我是直接删掉了这两条指令，直接交了个错误代码上去（至少这样还能生成.out文件，否则更没有分）。<br><br>&emsp;&emsp;以上。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -802,10 +407,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -813,6 +419,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -1053,6 +663,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
