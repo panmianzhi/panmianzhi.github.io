@@ -86,15 +86,15 @@
 
 
 
-<meta name="description" content="#2019&#x2F;12&#x2F;23：">
+<meta name="description" content="2019&#x2F;12&#x2F;23：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="inline assembly">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;23&#x2F;NJU-ics-lab2-x86-64%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96&#x2F;index.html">
 <meta property="og:site_name" content="Paul&#39;s Blog">
-<meta property="og:description" content="#2019&#x2F;12&#x2F;23：">
+<meta property="og:description" content="2019&#x2F;12&#x2F;23：">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-12-23T12:12:43.000Z">
-<meta property="article:modified_time" content="2020-01-02T02:41:42.714Z">
+<meta property="article:modified_time" content="2020-01-27T10:18:35.066Z">
 <meta property="article:author" content="Mianzhi Pan">
 <meta property="article:tag" content="recording">
 <meta name="twitter:card" content="summary">
@@ -339,10 +339,9 @@
       
 
       
-        <p>#2019/12/23：</p>
-<a id="more"></a>
+        <h1 id="2019-12-23："><a href="#2019-12-23：" class="headerlink" title="2019/12/23："></a>2019/12/23：</h1><a id="more"></a>
 <p>今天把lab2交掉了，我只实现了add和memcpy，后者还是抄的linux内核代码，setjmp和longjmp就不说了，写的跟shit一样，但也没办法，自己把lab拖到现在做是得遭报应的。However，我最气的是debug了两天的asm_popcnt到最终还是失败了。简单记录了一下我写inline assembly的一些坑。<br><br><strong>1.</strong>inline assembly的基本语法，这里有个不错的介绍:<a href="https://www.cnblogs.com/scu-cjx/p/6878222.html" target="_blank" rel="noopener">C语言内联汇编语法</a>。<br><br><strong>2.</strong>Instruction List后面的三个冒号后面分别对应着output,input和可能被更改的内容。以最后可能被更改的内容为例，<code>:&quot;%eax&quot;</code>和<code>:memory</code>分别表示eax寄存器和内存在汇编指令执行的过程中被更改了，这是一定要指出来的。<strong>另外，作为input和output的寄存器不要写到最后的Clobber/Modify里面！</strong>否则会出现”error:’asm’ operand has impossible constraints”的报错。<br><br><strong>3.</strong>x86-64的寄存器除了有IA32扩展的通用寄存器rax等等外，还有r8、r9……r15这几个寄存器，具体可见这里<a href="https://blog.csdn.net/dayancn/article/details/51328959" target="_blank" rel="noopener">x86-64寄存器和栈帧</a>。<br><br><strong>4.</strong>汇编语言里面有pushf和popf指令，前者表示将标志寄存器压栈，后者表示从栈中取出数据，输入标志寄存器(说的不是很清楚)，参考的是这个链接<a href="https://blog.csdn.net/zhangjiuding/article/details/79156039" target="_blank" rel="noopener">寄存器在Debug中的表示</a>。<br><br><strong>5.Inline Assembly中许多指令、寄存器的缩写以及仍需学习（寒假回去干！）</strong>，我很懵逼的%0和%1表示的是第0个和第1个操作表达式使用相同的寄存器/内存，其实就是通用修饰符，关于这个在第一点的链接里面有具体的介绍。<strong>寒假回去要学下！！！</strong><br><br><strong>6.恶心的setjmp和longjmp函数，</strong>关于他们的具体操作，其实就相当于快照，实现过程类似于pa中的保存上下文和回复上下文，但我写（抄）的代码里面有这样的汇编指令：<code>mov asm_setjmp, 144(%1)</code>，这个有错，因为mov的两个操作数都是main memory，我改为了<code>&quot;mov asm_setjmp, %%eax\n\t&quot;&quot;mov %%eax, 144(%1)\n\t&quot;</code>，另外还有<code>jmp asm_setjmp</code>，前者其实就是保存setjmp函数的地址，后者就是在longjmp中跳回到setjmp，然而链接时报错：”relocation R_X86_64_32 against ‘asm-jmp’……”，这个bug仍未解决，我是直接删掉了这两条指令，直接交了个错误代码上去（至少这样还能生成.out文件，否则更没有分）。<br></p>
-<p>#2019/1/2<br>照着lcx大佬的实验报告改了一下asm_setjmp和asm_longjmp，运行仍然会有segmentation fault……我看他实验报告中统计二进制数中1的个数的算法很巧妙，寒假看一下。<br>在重新提交lab2时,总是报一个奇怪的错误：<code>curl: Could not resolve host:ics.nju.edu.cn</code>，当时着实吓了一跳，STFW后找到的一堆解决方案着实令我头大，后来才发现是虚拟机网络没有连接，这个问题在多次保存虚拟机状态再启动时会发生，即使主机联网了，虚拟机仍然显示没有网络（<strong>猜测可能是开机前后换了网络，导致的host或是IP的问题</strong>，这点需要研究一下），目前的解决方案是重新启动。</p>
+<h1 id="2019-1-2"><a href="#2019-1-2" class="headerlink" title="2019/1/2"></a>2019/1/2</h1><p>照着lcx大佬的实验报告改了一下asm_setjmp和asm_longjmp，运行仍然会有segmentation fault……我看他实验报告中统计二进制数中1的个数的算法很巧妙，寒假看一下。<br>在重新提交lab2时,总是报一个奇怪的错误：<code>curl: Could not resolve host:ics.nju.edu.cn</code>，当时着实吓了一跳，STFW后找到的一堆解决方案着实令我头大，后来才发现是虚拟机网络没有连接，这个问题在多次保存虚拟机状态再启动时会发生，即使主机联网了，虚拟机仍然显示没有网络（<strong>猜测可能是开机前后换了网络，导致的host或是IP的问题</strong>，这点需要研究一下），目前的解决方案是重新启动。</p>
 
       
     </div>
@@ -445,8 +444,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -525,6 +533,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2019-12-23："><span class="nav-number">1.</span> <span class="nav-text">2019&#x2F;12&#x2F;23：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2019-1-2"><span class="nav-number">2.</span> <span class="nav-text">2019&#x2F;1&#x2F;2</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
