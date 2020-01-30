@@ -344,7 +344,6 @@
 <a id="more"></a><br>作为我第一次编写Makefile的Project，里面包含了`add.c`、`fun1.c`、`loop.c`、`main.c`这四个源文件，目标是编译生成可执行文件test。直接用gcc在命令行编译很麻烦而且不利于维护（当然这个Project很简单），下面直接贴出Makefile代码:<br>
 
 <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#obj = main.o fun1.o loop.o add.o                                  </span></span><br><span class="line">src = <span class="variable">$(<span class="built_in">wildcard</span> ./*.c)</span>                                           </span><br><span class="line"><span class="comment">#obj = $(src:%.c = %.o)                                         </span></span><br><span class="line">obj = <span class="variable">$(<span class="built_in">patsubst</span> %.c,%.o,<span class="variable">$(src)</span>)</span>                                 </span><br><span class="line">targets = test                                               </span><br><span class="line">CC = gcc                                                                                       </span><br><span class="line"><span class="variable">$(targets)</span>: <span class="variable">$(obj)</span>                                              	</span><br><span class="line">	<span class="variable">$(CC)</span> -o <span class="variable">$(targets)</span> <span class="variable">$(obj)</span>                                                                 </span><br><span class="line"><span class="section">%.o: %.c                                                       		</span></span><br><span class="line">	<span class="variable">$(CC)</span> -c <span class="variable">$&lt;</span> -o <span class="variable">$@</span>                                                                          </span><br><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: clean run                                                  </span></span><br><span class="line"><span class="section">clean:                                                           </span></span><br><span class="line">	-rm <span class="variable">$(targets)</span> *.o                                                                         </span><br><span class="line"><span class="section">run:                                                  </span></span><br><span class="line">	./<span class="variable">$(targets)</span>                                                                               </span><br><span class="line">COUNT := <span class="variable">$(<span class="built_in">shell</span> find . -name "*.c" -<span class="built_in">or</span> -name "*.h" | xargs grep -Ev "^$$" | wc -l)</span>            </span><br><span class="line"><span class="section">count:                                                       </span></span><br><span class="line">	@echo Totally <span class="variable">$(COUNT)</span> lines of code in this directory except empty lines</span><br></pre></td></tr></table></figure>
-
 <p>关于变量obj的生成，我上面采用了三种方法，第一行是最浅显易懂的，直接把相应<code>.c</code>文件对应的可重定位文件枚举一下即可，但一旦添加了<code>.c</code>文件，又得修改Makefile，很是麻烦，于是有了后面两种。<br></p>
 <p>src是目录下的所有<code>.c</code>文件，通过<code>wildcard</code>函数实现。obj都是根据src下面的文件生成对应的<code>.o</code>文件，第三种<code>patsubst</code>是字符串替换函数。通过实际运行我发现，一、三两种写法会在目录下面生成中间过程产生的可重定位文件，而使用<code>obj = $(src:%.c = %.o)</code>语句并不会在目录下面生成<code>.o</code>文件，刚开始我并没有注意到这一点，clean方法写的是<code>-rm $(targets) $(obj)</code>，结果导致目录下的<code>.c</code>文件都被删除了。所以，假如采用第二种写法，clean方法只要写成<code>-rm $(targets)</code>，否则要额外删除<code>.o</code>文件，吸取教训后我采用了如上代码中的语句。<br></p>
 <p>最后我还实现了PA中实现过的统计不包括空行的代码行数的方法<code>make count</code>。<br></p>
@@ -782,7 +781,24 @@
         }
       });
     </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
   
 
 

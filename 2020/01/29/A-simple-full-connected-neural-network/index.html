@@ -93,13 +93,13 @@
 <meta property="og:site_name" content="Paul&#39;s Blog">
 <meta property="og:description" content="本篇主要参考资料及源代码出处：neural networks and deep learning参考博客：neural networks and deep learning阅读笔记">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;network1%E8%AE%AD%E7%BB%83.PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;network1训练.PNG">
 <meta property="article:published_time" content="2020-01-29T08:40:25.000Z">
-<meta property="article:modified_time" content="2020-01-30T02:47:18.338Z">
+<meta property="article:modified_time" content="2020-01-30T03:11:26.588Z">
 <meta property="article:author" content="Mianzhi Pan">
 <meta property="article:tag" content="recording">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;network1%E8%AE%AD%E7%BB%83.PNG">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;network1训练.PNG">
 
 
 
@@ -343,52 +343,58 @@
       
         <p>本篇主要参考资料及源代码出处：<a href="http://neuralnetworksanddeeplearning.com/" target="_blank" rel="noopener">neural networks and deep learning</a><br>参考博客：<a href="https://blog.csdn.net/niyidan0527/article/details/85010412" target="_blank" rel="noopener">neural networks and deep learning阅读笔记</a></p>
 <a id="more"></a>
-
 <hr>
 <p>在用代码实现最简单的full connected神经网络之前，需要了解神经网络中最核心的back propagation算法。</p>
-<h2 id="符号定义"><a href="#符号定义" class="headerlink" title="符号定义"></a>符号定义</h2><p>w<sup>l</sup><sub>jk</sub>：第l层的第j个神经元与第(l-1)层的第k个神经元之间的权重。<br>b<sup>l</sup><sub>j</sub>：第l层的第j个神经元的bias。<br>z<sup>l</sup><sub>j</sub>：第l层第j个神经元的输入，即<br>$$<br>z^l_j=\sum_kw^l_{jk}a^{l-1}_k+b^l_j<br>$$<br>a<sup>l</sup><sub>j</sub>：第l层第j个神经元的输出，即<br>$$<br>a^l_j=\sigma(z^l_j)<br>$$<br>其中σ表示激活函数。<br>目前我们采用的损失函数是二次代价函数，即<br>$$<br>C=\frac{1}{2n}\sum_x||y(x)-a^L(x)||^2<br>$$<br>对于一个输入样本x，我们有损失函数<br>$$<br>C=\frac{(y(x)-a)^2}{2}<br>$$<br>另外，我们定义第l层的第j个神经元中产生的error定义为<br>$$<br>\delta^l_j≡\frac{\partial{C}}{\partial{z^l_j}}<br>$$</p>
-<h2 id="BP算法"><a href="#BP算法" class="headerlink" title="BP算法"></a>BP算法</h2><p>BP算法主要用到了如下四个公式：<br>$$<br>\delta^L=\nabla_aC\bigodot\sigma’(z^L)<br>$$</p>
-<p>$$<br>\delta^l=((w^{l+1})^T\delta^{l+1})\bigodot\sigma’(z^l)<br>$$</p>
-<p>$$<br>\frac{\partial{C}}{\partial{w^l_{jk}}}=a^{l-1}_k\delta^l_j<br>$$</p>
-<p>$$<br>\frac{\partial{C}}{\partial{b^l_j}}=\delta^l_j<br>$$</p>
-<p>公式一是用于计算网络最后一层的error，<br>$$<br>\because \delta^L_j=\frac{\partial{C}}{\partial{z^L_j}}=\frac{\partial{C}}{\partial{}a^L_j}·\frac{\partial{a^L_j}}{\partial{z^L_j}}<br>$$</p>
-<p>$$<br>\therefore \delta^L=\frac{\partial{C}}{\partial{a^L}}\bigodot \frac{\partial a^L}{\partial z^L}=\nabla_aC\bigodot\sigma’(z^L)<br>$$</p>
-<p>注意到这里其实就是把原本的标量形式写成了张量形式，因为在实际操作中往往用张量表示神经网络每一层的参数。<br>公式二是相邻两层网络error的递推关系，证明如下：<br>$$<br>\because \delta^l_j=\frac{\partial C}{\partial z^l_j}=\sum_k\frac{\partial C}{\partial z^{l+1}<em>k}\cdot\frac{\partial z^{l+1}_k}{\partial a^l_j}\cdot\frac{\partial a^l_j}{\partial z^l_j}=\sum_k\delta^{l+1}_k\cdot\frac{\partial(w^{l+1}</em>{kj}a^l_j+b^{l+1}<em>k)}{\partial a^l_j}\cdot\sigma’(z^l)=\sum_k\delta^{l+1}_k\cdot w^{l+1}</em>{kj}\cdot \sigma’(z^l)<br>$$</p>
-<p>$$<br>\therefore \delta^l=((w^{l+1})^T\delta^{l+1})\bigodot\sigma’(z^l)<br>$$</p>
-<p>这里同样写成了张量的形式，有了这个公式，就可以从最后一层递推求得任意一层的error了。<br></p>
-<p>最后两个公式分别是计算weights和bias的梯度，这样根据梯度下降法就可以调整weights和bias从而最小化cost，证明如下：<br><br>$$<br>\frac{\partial C}{\partial w^l_{jk}}=\frac{\partial C}{\partial z^l_j}\cdot \frac{\partial z^l_j}{\partial w^l_{jk}}=\delta^l_j\cdot\frac{\partial (w^l_{jk}a^{l-1}<em>k+b^l_j)}{\partial w^l</em>{jk}}=\delta^l_j\cdot a^{l-1}_k<br>$$</p>
-<p>$$<br>\frac{\partial C}{\partial b^l_j}=\frac{\partial C}{\partial z^l_j}\cdot \frac{\partial z^l_j}{\partial b^l_j}=\delta^l_j<br>$$</p>
-<p>不难看出，上面四个公式本质上是复合函数求导的chain-rule。</p>
+<h2 id="符号定义"><a href="#符号定义" class="headerlink" title="符号定义"></a>符号定义</h2><p>w<sup>l</sup><sub>jk</sub>：第l层的第j个神经元与第(l-1)层的第k个神经元之间的权重。<br>b<sup>l</sup><sub>j</sub>：第l层的第j个神经元的bias。<br>z<sup>l</sup><sub>j</sub>：第l层第j个神经元的输入，即</p>
+<script type="math/tex; mode=display">
+z^l_j=\sum_kw^l_{jk}a^{l-1}_k+b^l_j</script><p>a<sup>l</sup><sub>j</sub>：第l层第j个神经元的输出，即</p>
+<script type="math/tex; mode=display">
+a^l_j=\sigma(z^l_j)</script><p>其中σ表示激活函数。<br>目前我们采用的损失函数是二次代价函数，即</p>
+<script type="math/tex; mode=display">
+C=\frac{1}{2n}\sum_x||y(x)-a^L(x)||^2</script><p>对于一个输入样本x，我们有损失函数</p>
+<script type="math/tex; mode=display">
+C=\frac{(y(x)-a)^2}{2}</script><p>另外，我们定义第l层的第j个神经元中产生的error定义为</p>
+<script type="math/tex; mode=display">
+\delta^l_j≡\frac{\partial{C}}{\partial{z^l_j}}</script><h2 id="BP算法"><a href="#BP算法" class="headerlink" title="BP算法"></a>BP算法</h2><p>BP算法主要用到了如下四个公式：</p>
+<script type="math/tex; mode=display">
+\delta^L=\nabla_aC\bigodot\sigma'(z^L)</script><script type="math/tex; mode=display">
+\delta^l=((w^{l+1})^T\delta^{l+1})\bigodot\sigma'(z^l)</script><script type="math/tex; mode=display">
+\frac{\partial{C}}{\partial{w^l_{jk}}}=a^{l-1}_k\delta^l_j</script><script type="math/tex; mode=display">
+\frac{\partial{C}}{\partial{b^l_j}}=\delta^l_j</script><p>公式一是用于计算网络最后一层的error，</p>
+<script type="math/tex; mode=display">
+\because\delta^L_j=\frac{\partial{C}}{\partial{z^L_j}}=\frac{\partial{C}}{\partial{}a^L_j}·\frac{\partial{a^L_j}}{\partial{z^L_j}}</script><script type="math/tex; mode=display">
+\therefore\delta^L=\frac{\partial{C}}{\partial{a^L}}\bigodot \frac{\partial a^L}{\partial z^L}=\nabla_aC\bigodot\sigma'(z^L)</script><p>注意到这里其实就是把原本的标量形式写成了张量形式，因为在实际操作中往往用张量表示神经网络每一层的参数。<br>公式二是相邻两层网络error的递推关系，证明如下：</p>
+<script type="math/tex; mode=display">
+\because\delta^l_j=\frac{\partial C}{\partial z^l_j}=\sum_k\frac{\partial C}{\partial z^{l+1}_k}\cdot\frac{\partial z^{l+1}_k}{\partial a^l_j}\cdot\frac{\partial a^l_j}{\partial z^l_j}=\sum_k\delta^{l+1}_k\cdot\frac{\partial(w^{l+1}_{kj}a^l_j+b^{l+1}_k)}{\partial a^l_j}\cdot\sigma'(z^l)=\sum_k\delta^{l+1}_k\cdot w^{l+1}_{kj}\cdot \sigma'(z^l)</script><script type="math/tex; mode=display">
+\therefore \delta^l=((w^{l+1})^T\delta^{l+1})\bigodot\sigma'(z^l)</script><p>这里同样写成了张量的形式，有了这个公式，就可以从最后一层递推求得任意一层的error了。<br></p>
+<p>最后两个公式分别是计算weights和bias的梯度，这样根据梯度下降法就可以调整weights和bias从而最小化cost，证明如下：<br></p>
+<script type="math/tex; mode=display">
+\frac{\partial C}{\partial w^l_{jk}}=\frac{\partial C}{\partial z^l_j}\cdot \frac{\partial z^l_j}{\partial w^l_{jk}}=\delta^l_j\cdot\frac{\partial(w^l_{jk}a^{l-1}_k+b^l_j)}{\partial w^l_{jk}}=\delta^l_j\cdot a^{l-1}_k</script><script type="math/tex; mode=display">
+\frac{\partial C}{\partial b^l_j}=\frac{\partial C}{\partial z^l_j}\cdot \frac{\partial z^l_j}{\partial b^l_j}=\delta^l_j</script><p>不难看出，上面四个公式本质上是复合函数求导的chain-rule。</p>
 <hr>
 <p>有了上面的公式，就可以搭建神经网络了，任务是进行手写数字的识别，用的是mnist数据集，基本思路如下：<br></p>
 <p>1.输入训练集进行前向传播，得到最后的output。<br></p>
 <p>2.利用公式一计算输出层的error。<br></p>
 <p>3.利用公式二反向传播error。<br></p>
-<p>4.利用梯度下降法训练参数：<br>$$<br>w^l→w^l-\frac{\eta}{m}\sum_x\delta^{x,l}(a^{x,l-1})^T<br>$$</p>
-<p>$$<br>b^l→b^l-\frac{\eta}{m}\sum_x\delta^{x,l}<br>$$</p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>代码中使用的是随机梯度下降算法，即每一次从training_set里面随机选出一部分数据进行权重的更新，training_data是经过处理的图片灰度数据和分类结果组成的元组。</p>
+<p>4.利用梯度下降法训练参数：</p>
+<script type="math/tex; mode=display">
+w^l→w^l-\frac{\eta}{m}\sum_x\delta^{x,l}(a^{x,l-1})^T</script><script type="math/tex; mode=display">
+b^l→b^l-\frac{\eta}{m}\sum_x\delta^{x,l}</script><h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>代码中使用的是随机梯度下降算法，即每一次从training_set里面随机选出一部分数据进行权重的更新，training_data是经过处理的图片灰度数据和分类结果组成的元组。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SGD</span><span class="params">(self, training_data, epochs, mini_batch_size, eta,test_data=None)</span>:</span></span><br><span class="line">    training_data = list(training_data)</span><br><span class="line">    n = len(training_data)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> test_data:</span><br><span class="line">        test_data = list(test_data)</span><br><span class="line">        n_test = len(test_data)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(epochs):</span><br><span class="line">        random.shuffle(training_data)</span><br><span class="line">        mini_batches = [</span><br><span class="line">            training_data[k:k+mini_batch_size]</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, n, mini_batch_size)]</span><br><span class="line">        <span class="keyword">for</span> mini_batch <span class="keyword">in</span> mini_batches:</span><br><span class="line">            self.update_mini_batch(mini_batch, eta)</span><br><span class="line">        <span class="keyword">if</span> test_data:</span><br><span class="line">            print(<span class="string">"Epoch &#123;&#125; : &#123;&#125; / &#123;&#125;"</span>.format(j,self.evaluate(test_data),n_test)                 <span class="keyword">else</span>:</span><br><span class="line">            print(<span class="string">"Epoch &#123;&#125; complete"</span>.format(j))</span><br></pre></td></tr></table></figure>
-
 <p>可以看出其中的关键代码就是<code>self.update_mini_batch(mini_batch, eta)</code>，即每次由mini_batch更新权重和bias。<br></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update_mini_batch</span><span class="params">(self, mini_batch, eta)</span>:</span></span><br><span class="line">    nabla_b = [np.zeros(b.shape) <span class="keyword">for</span> b <span class="keyword">in</span> self.biases]</span><br><span class="line">    nabla_w = [np.zeros(w.shape) <span class="keyword">for</span> w <span class="keyword">in</span> self.weights]</span><br><span class="line">    <span class="keyword">for</span> x, y <span class="keyword">in</span> mini_batch:</span><br><span class="line">        delta_nabla_b, delta_nabla_w = self.backprop(x, y)</span><br><span class="line">        nabla_b = [nb+dnb <span class="keyword">for</span> nb, dnb <span class="keyword">in</span> zip(nabla_b, delta_nabla_b)]</span><br><span class="line">        nabla_w = [nw+dnw <span class="keyword">for</span> nw, dnw <span class="keyword">in</span> zip(nabla_w, delta_nabla_w)]</span><br><span class="line">    self.weights = [w-(eta/len(mini_batch))*nw</span><br><span class="line">                    <span class="keyword">for</span> w, nw <span class="keyword">in</span> zip(self.weights, nabla_w)]</span><br><span class="line">    self.biases = [b-(eta/len(mini_batch))*nb</span><br><span class="line">                   <span class="keyword">for</span> b, nb <span class="keyword">in</span> zip(self.biases, nabla_b)]</span><br></pre></td></tr></table></figure>
-
 <p>关键代码是<code>delta_nabla_b, delta_nabla_w = self.backprop(x, y)</code>，最后更新权重和bias的步骤就是BP算法最后提到的更新公式。<br></p>
 <p>对于BP算法，首先是正向传播，将每一层的输出和输入分别保存在列表activations和zs中，前者的元素个数比后者多一，因为我们默认input layer没有输入，它起到将原始数据输入第一个hidden layer中的作用。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">backprop</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line">    <span class="comment"># feedforward</span></span><br><span class="line">    activation = x</span><br><span class="line">    activations = [x] <span class="comment"># list to store all the activations, layer by layer</span></span><br><span class="line">    zs = [] <span class="comment"># list to store all the z vectors, layer by layer</span></span><br><span class="line">    <span class="keyword">for</span> b, w <span class="keyword">in</span> zip(self.biases, self.weights):</span><br><span class="line">        z = np.dot(w, activation)+b<span class="comment">#input of each layer</span></span><br><span class="line">        zs.append(z)</span><br><span class="line">        activation = sigmoid(z)<span class="comment">#output of each layer</span></span><br><span class="line">        activations.append(activation)</span><br></pre></td></tr></table></figure>
-
 <p>接下来是反向传播，首先计算最后一层的error，同时得到最后一层权重和bias的“更新值”（可能有更准确的说法）</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># backward pass</span></span><br><span class="line">delta = self.cost_derivative(activations[<span class="number">-1</span>], y) * \</span><br><span class="line">    sigmoid_prime(zs[<span class="number">-1</span>])</span><br><span class="line">nabla_b[<span class="number">-1</span>] = delta</span><br><span class="line">nabla_w[<span class="number">-1</span>] = np.dot(delta, activations[<span class="number">-2</span>].transpose())</span><br></pre></td></tr></table></figure>
-
 <p>这里cost_derivative定义如下</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cost_derivative</span><span class="params">(self, output_activations, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> (output_activations-y)</span><br></pre></td></tr></table></figure>
-
 <p>由于损失函数采用的是二次代价函数，求导之后就是(a-y)，sigmoid_prime函数就是sigmoid函数的导数。<br>接下来就是更新每一层的weight和bias。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> l <span class="keyword">in</span> range(<span class="number">2</span>, self.num_layers):</span><br><span class="line">     z = zs[-l]</span><br><span class="line">     sp = sigmoid_prime(z)</span><br><span class="line">     delta = np.dot(self.weights[-l+<span class="number">1</span>].transpose(), delta) * sp</span><br><span class="line">     nabla_b[-l] = delta</span><br><span class="line">     nabla_w[-l] = np.dot(delta, activations[-l<span class="number">-1</span>].transpose())</span><br><span class="line"> <span class="keyword">return</span> (nabla_b, nabla_w)</span><br></pre></td></tr></table></figure>
-
 <p>采用如下代码，神经网络层次为784×30×10，mini_batch大小设为30，学习率（步长）为3.0</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> network</span><br><span class="line"><span class="keyword">import</span> mnist_loader</span><br><span class="line"></span><br><span class="line">training_data, validation_data, test_data = mnist_loader.load_data_wrapper()</span><br><span class="line">net = network.Network([<span class="number">784</span>,<span class="number">30</span>,<span class="number">10</span>])</span><br><span class="line">net.SGD(training_data, <span class="number">30</span>, <span class="number">10</span>, <span class="number">3.0</span>, test_data=test_data)</span><br></pre></td></tr></table></figure>
-
-<p>最后的测试结果如下<br><img src="https://github.com/panmianzhi/IMG/raw/master/network1%E8%AE%AD%E7%BB%83.PNG" alt="测试结果"></p>
+<p>最后的测试结果如下<br><img src="https://github.com/panmianzhi/IMG/raw/master/network1训练.PNG" alt="测试结果"></p>
 <p>可以看到accuracy还是不高的，之后我会进行改进。</p>
 
       
@@ -819,7 +825,24 @@
         }
       });
     </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
   
 
 
