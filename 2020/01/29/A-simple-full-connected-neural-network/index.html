@@ -93,15 +93,15 @@
 <meta property="og:site_name" content="Paul&#39;s Blog">
 <meta property="og:description" content="本篇主要参考资料及源代码出处：neural networks and deep learning参考博客：neural networks and deep learning阅读笔记">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;29&#x2F;A-simple-full-connected-neural-network&#x2F;%5Bhttps:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;blob&#x2F;master&#x2F;%E5%85%AC%E5%BC%8F%E4%BA%8C.PNG%5D(https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;%E5%85%AC%E5%BC%8F%E4%BA%8C.PNG)">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;29&#x2F;A-simple-full-connected-neural-network&#x2F;%5Bhttps:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;blob&#x2F;master&#x2F;last%E5%85%AC%E5%BC%8F.PNG%5D(https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;last%E5%85%AC%E5%BC%8F.PNG)">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;%E5%85%AC%E5%BC%8F%E4%BA%8C.PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;last%E5%85%AC%E5%BC%8F.PNG">
 <meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;network1%E8%AE%AD%E7%BB%83.PNG">
 <meta property="article:published_time" content="2020-01-29T08:40:25.000Z">
-<meta property="article:modified_time" content="2020-01-30T09:17:44.913Z">
+<meta property="article:modified_time" content="2020-01-30T09:43:24.079Z">
 <meta property="article:author" content="Mianzhi Pan">
 <meta property="article:tag" content="recording">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;29&#x2F;A-simple-full-connected-neural-network&#x2F;%5Bhttps:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;blob&#x2F;master&#x2F;%E5%85%AC%E5%BC%8F%E4%BA%8C.PNG%5D(https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;%E5%85%AC%E5%BC%8F%E4%BA%8C.PNG)">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;%E5%85%AC%E5%BC%8F%E4%BA%8C.PNG">
 
 
 
@@ -356,11 +356,11 @@
 <p>公式一是用于计算网络最后一层的error，<br>$$<br>\because\delta^L_j=\frac{\partial{C}}{\partial{z^L_j}}=\frac{\partial{C}}{\partial{}a^L_j}·\frac{\partial{a^L_j}}{\partial{z^L_j}}<br>$$</p>
 <p>$$<br>\therefore\delta^L=\frac{\partial{C}}{\partial{a^L}}\bigodot \frac{\partial a^L}{\partial z^L}=\nabla_aC\bigodot\sigma’(z^L)<br>$$</p>
 <p>注意到这里其实就是把原本的标量形式写成了张量形式，因为在实际操作中往往用张量表示神经网络每一层的参数。<br>公式二是相邻两层网络error的递推关系，证明如下：</p>
-<p><img src="%5Bhttps://github.com/panmianzhi/IMG/blob/master/%E5%85%AC%E5%BC%8F%E4%BA%8C.PNG%5D(https://github.com/panmianzhi/IMG/raw/master/%E5%85%AC%E5%BC%8F%E4%BA%8C.PNG)" alt="公式二证明"></p>
+<p><img src="https://github.com/panmianzhi/IMG/raw/master/%E5%85%AC%E5%BC%8F%E4%BA%8C.PNG" alt="公式二证明"></p>
 <p>$$<br>\therefore \delta^l=((w^{l+1})^T\delta^{l+1})\bigodot\sigma’(z^l)<br>$$</p>
 <p>这里同样写成了张量的形式，有了这个公式，就可以从最后一层递推求得任意一层的error了。<br></p>
 <p>最后两个公式分别是计算weights和bias的梯度，这样根据梯度下降法就可以调整weights和bias从而最小化cost，证明如下：<br></p>
-<p><img src="%5Bhttps://github.com/panmianzhi/IMG/blob/master/last%E5%85%AC%E5%BC%8F.PNG%5D(https://github.com/panmianzhi/IMG/raw/master/last%E5%85%AC%E5%BC%8F.PNG)" alt="证明"></p>
+<p><img src="https://github.com/panmianzhi/IMG/raw/master/last%E5%85%AC%E5%BC%8F.PNG" alt="证明"></p>
 <p>$$<br>\frac{\partial C}{\partial b^l_j}=\frac{\partial C}{\partial z^l_j}\cdot \frac{\partial z^l_j}{\partial b^l_j}=\delta^l_j<br>$$</p>
 <p>不难看出，上面四个公式本质上是复合函数求导的chain-rule。</p>
 <hr>
