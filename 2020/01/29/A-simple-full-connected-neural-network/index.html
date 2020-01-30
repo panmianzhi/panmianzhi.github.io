@@ -95,7 +95,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;network1%E8%AE%AD%E7%BB%83.PNG">
 <meta property="article:published_time" content="2020-01-29T08:40:25.000Z">
-<meta property="article:modified_time" content="2020-01-30T04:25:10.780Z">
+<meta property="article:modified_time" content="2020-01-30T07:28:26.121Z">
 <meta property="article:author" content="Mianzhi Pan">
 <meta property="article:tag" content="recording">
 <meta name="twitter:card" content="summary">
@@ -353,10 +353,16 @@
 <p>$$<br>\frac{\partial{C}}{\partial{b^l_j}}=\delta^l_j<br>$$</p>
 <p>公式一是用于计算网络最后一层的error，<br>$$<br>\because\delta^L_j=\frac{\partial{C}}{\partial{z^L_j}}=\frac{\partial{C}}{\partial{}a^L_j}·\frac{\partial{a^L_j}}{\partial{z^L_j}}<br>$$</p>
 <p>$$<br>\therefore\delta^L=\frac{\partial{C}}{\partial{a^L}}\bigodot \frac{\partial a^L}{\partial z^L}=\nabla_aC\bigodot\sigma’(z^L)<br>$$</p>
-<p>注意到这里其实就是把原本的标量形式写成了张量形式，因为在实际操作中往往用张量表示神经网络每一层的参数。<br>公式二是相邻两层网络error的递推关系，证明如下：<br>$$<br>\because\delta^l_j=\frac{\partial C}{\partial z^l_j}=\sum_k\frac{\partial C}{\partial z^{l+1}<em>k}\cdot\frac{\partial z^{l+1}_k}{\partial a^l_j}\cdot\frac{\partial a^l_j}{\partial z^l_j}=\sum_k\delta^{l+1}_k\cdot\frac{\partial(w^{l+1}</em>{kj}a^l_j+b^{l+1}<em>k)}{\partial a^l_j}\cdot\sigma’(z^l)=\sum_k\delta^{l+1}_k\cdot w^{l+1}</em>{kj}\cdot \sigma’(z^l)<br>$$</p>
+<p>注意到这里其实就是把原本的标量形式写成了张量形式，因为在实际操作中往往用张量表示神经网络每一层的参数。<br>公式二是相邻两层网络error的递推关系，证明如下：<br>$$<br>\because\delta^l_j=\frac{\partial C}{\partial z^l_j}<br>$$</p>
+<p>$$<br>=\sum_k\frac{\partial C}{\partial z^{l+1}_k}\cdot\frac{\partial{z^{l+1}_k}}{\partial a^l_j}\cdot\frac{\partial a^l_j}{\partial z^l_j}<br>$$</p>
+<p>$$<br>=\sum_k\delta^{l+1}<em>k\cdot\frac{\partial (w^{l+1}</em>{kj}a^l_j+b^{l+1}_k)}{\partial a^l_j}\cdot\sigma’(z^l)<br>$$</p>
+<p>$$<br>=\sum_k\delta^{l+1}<em>k\cdot{w^{l+1}</em>{kj}}\cdot \sigma’(z^l)<br>$$</p>
 <p>$$<br>\therefore \delta^l=((w^{l+1})^T\delta^{l+1})\bigodot\sigma’(z^l)<br>$$</p>
 <p>这里同样写成了张量的形式，有了这个公式，就可以从最后一层递推求得任意一层的error了。<br></p>
-<p>最后两个公式分别是计算weights和bias的梯度，这样根据梯度下降法就可以调整weights和bias从而最小化cost，证明如下：<br><br>$$<br>\frac{\partial C}{\partial w^l_{jk}}=\frac{\partial C}{\partial z^l_j}\cdot \frac{\partial z^l_j}{\partial w^l_{jk}}=\delta^l_j\cdot\frac{\partial(w^l_{jk}a^{l-1}<em>k+b^l_j)}{\partial w^l</em>{jk}}=\delta^l_j\cdot a^{l-1}_k<br>$$</p>
+<p>最后两个公式分别是计算weights和bias的梯度，这样根据梯度下降法就可以调整weights和bias从而最小化cost，证明如下：<br><br>$$<br>\frac{\partial C}{\partial w^l_{jk}}<br>$$</p>
+<p>$$<br>=\frac{\partial C}{\partial z^l_j}\cdot \frac{\partial z^l_j}{\partial w^l_{jk}}<br>$$</p>
+<p>$$<br>=\delta^l_j\cdot\frac{\partial(w^l_{jk}a^{l-1}<em>k+b^l_j)}{\partial w^l</em>{jk}}<br>$$</p>
+<p>$$<br>=\delta^l_j\cdot a^{l-1}_k<br>$$</p>
 <p>$$<br>\frac{\partial C}{\partial b^l_j}=\frac{\partial C}{\partial z^l_j}\cdot \frac{\partial z^l_j}{\partial b^l_j}=\delta^l_j<br>$$</p>
 <p>不难看出，上面四个公式本质上是复合函数求导的chain-rule。</p>
 <hr>
