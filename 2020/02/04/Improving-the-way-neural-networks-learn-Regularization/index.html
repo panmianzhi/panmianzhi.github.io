@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="说在前面的话：继续翻译neural networks and deep learning，看原文真的比看别人写的博客更有趣也更有收获。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Improving the way neural networks learn--Regularization">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;04&#x2F;Improving-the-way-neural-networks-learn-Regularization&#x2F;index.html">
+<meta property="og:site_name" content="Paul&#39;s Blog">
+<meta property="og:description" content="说在前面的话：继续翻译neural networks and deep learning，看原文真的比看别人写的博客更有趣也更有收获。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;voerfitting.PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;regularization.PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;simple%20data.PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;cn.bing.com&#x2F;th?id&#x3D;OIP.w6zaNTB4cVCAnGBzwsI5TQHaEG&amp;pid&#x3D;Api&amp;rs&#x3D;1">
+<meta property="article:published_time" content="2020-02-04T12:23:55.000Z">
+<meta property="article:modified_time" content="2020-02-05T10:22:04.010Z">
+<meta property="article:author" content="Mianzhi Pan">
+<meta property="article:tag" content="recording">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;voerfitting.PNG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/02/04/Improving-the-way-neural-networks-learn-Regularization/"/>
+
+
+
+
+
+  <title>Improving the way neural networks learn--Regularization | Paul's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paul's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Justice delayed is justice denied.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/04/Improving-the-way-neural-networks-learn-Regularization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mianzhi Pan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paul's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Improving the way neural networks learn--Regularization</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-04T20:23:55+08:00">
+                2020-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index">
+                    <span itemprop="name">AI</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>说在前面的话：</strong>继续翻译<a href="http://neuralnetworksanddeeplearning.com/chap3.html" target="_blank" rel="noopener">neural networks and deep learning</a>，看原文真的比看别人写的博客更有趣也更有收获。</p>
+<a id="more"></a>
+
+<h2 id="Overfitting"><a href="#Overfitting" class="headerlink" title="Overfitting"></a>Overfitting</h2><p>之前解决了learning rate缓慢的问题，但它对神经网络正确率的提高并不算显著。神经网络——包括其他许多机器学习任务都面临着另外一个问题——过拟合。什么是过拟合？通俗来讲，就是神经网络的能力过于“强大”，以至于training data的所有特征——甚至包括其中的noise都被神经网络记忆得一清二楚，但到了与training data不同的test data上，神经网络的能力却大大降低。换句话说，就是我们的神经网络只会死记硬背，不会类比、变通，显然它并没有真正“学习”到。<br></p>
+<p>但上述情况发生的前提是neural network有“记住”整个training set的能力，显然，当training set较小时更有可能过拟合，所以作者将训练集的大小由之前的50000改成了1000，另外，代码中添加了这样四个观测学习过程的指标：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> monitor_training_cost:</span><br><span class="line">	cost = self.total_cost(training_data, lmbda)</span><br><span class="line">    training_cost.append(cost)</span><br><span class="line">    print(<span class="string">"Cost on training data: &#123;&#125;"</span>.format(cost))</span><br><span class="line"><span class="keyword">if</span> monitor_training_accuracy:</span><br><span class="line">    accuracy = self.accuracy(training_data, convert=<span class="literal">True</span>)</span><br><span class="line">    training_accuracy.append(accuracy)</span><br><span class="line">    print(<span class="string">"Accuracy on training data: &#123;&#125; / &#123;&#125;"</span>.format(accuracy, n))</span><br><span class="line"><span class="keyword">if</span> monitor_evaluation_cost:</span><br><span class="line">    cost = self.total_cost(evaluation_data, lmbda, convert=<span class="literal">True</span>)</span><br><span class="line">    evaluation_cost.append(cost)</span><br><span class="line">    print(<span class="string">"Cost on evaluation data: &#123;&#125;"</span>.format(cost))</span><br><span class="line"><span class="keyword">if</span> monitor_evaluation_accuracy:</span><br><span class="line">    accuracy = self.accuracy(evaluation_data)</span><br><span class="line">    evaluation_accuracy.append(accuracy)</span><br><span class="line">    print(<span class="string">"Accuracy on evaluation data: &#123;&#125; / &#123;&#125;"</span>.format(self.accuracy(evaluation_data),</span><br></pre></td></tr></table></figure>
+
+<p>分别是训练cost、训练accuracy、测试cost、测试accuracy。需要说明的是，之前我一直认为只要设置accuracy和cost两种指标其一就可以，甚至愚蠢地以为cost+accuracy=1，思考后发现cost本质上是针对一个input，只不过我们说的cost是把training set所有的这些cost求了平均罢了；而accuracy是针对整个set，因为对于单一的input，只存在yes or no这种概念，并没有accuracy这种说法。所以，cost和accuracy其实是两种不同的指标。<br>训练400个epoch发现，在训练集上的cost一直在减少，accuracy更是在150个epoch后达到了100％，而测试集上的accuracy在280个epoch达到82％后就不再提高，测试集上的cost甚至在第15个epoch达到最小值后又开始回升，显然是出现了overfitting。</p>
+<h2 id="Early-stopping-amp-Validation-data"><a href="#Early-stopping-amp-Validation-data" class="headerlink" title="Early stopping &amp; Validation data"></a>Early stopping &amp; Validation data</h2><p>出现了上面的问题，一个最容易想到的策略就是<strong><em>early stopping</em></strong>，即在训练过程中观测test data的accuracy，当它达到饱和时就提前终止训练，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Early stopping:</span></span><br><span class="line"><span class="keyword">if</span> early_stopping_n &gt; <span class="number">0</span>:</span><br><span class="line">	<span class="keyword">if</span> accuracy &gt; best_accuracy:</span><br><span class="line">    	best_accuracy = accuracy</span><br><span class="line">        no_accuracy_change = <span class="number">0</span></span><br><span class="line">        <span class="comment">#print("Early-stopping: Best so far &#123;&#125;".format(best_accuracy))</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        no_accuracy_change += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (no_accuracy_change == early_stopping_n):</span><br><span class="line">        <span class="comment">#print("Early-stopping: No accuracy change in last epochs:&#123;&#125;".format(early_stopping_n))</span></span><br><span class="line">        <span class="keyword">return</span> evaluation_cost, evaluation_accuracy, training_cost, training_accuracy</span><br></pre></td></tr></table></figure>
+
+<p>就是提前设置一个参数early_stopping_n参数，当test data上的accuracy不提高的epoch数达到early_stopping_n时，就提前停止训练。<br>这里我们是以test data作为”评估集”的，但实际上这并不是一种很好的做法。“评估集”除了<strong><em>early stopping</em></strong>外，还是我们调整超参数的重要依据，我们目的是让训练好的神经网络能适应所有的数据，即不同的test data，由于我们这里只设置了一个test data，倒也无可厚非，但如果面对不同的test data，上面的做法就有失妥当——以一个test data为“评估集”的训练并不是一定能满足所有test data的，所以我们就要设置“双重保险”——validation data。<br>validation data包含了10000张图片，以后无论是<strong><em>early stopping</em></strong>还是超参数调整都以它为“评估集”，以超参数调整为例，当我们用validation data调整好超参数后，再在test data上测试一下，这就使得test data是真正意义上用于test的data，而不是另一种形式的training data。简言之，validation data起到的作用就类似于“彩排”，它就是用于调整超参数的另一种training data。<br></p>
+<h2 id="Expanding-the-training-data"><a href="#Expanding-the-training-data" class="headerlink" title="Expanding the training data"></a>Expanding the training data</h2><p>在代码中提供了设置“评估集”的接口<code>evaluation_data=None</code>，作者使用50000张training data，以test data为“评估集”训练（为方便与之前对照），得到了如下结果</p>
+<p><img src="https://github.com/panmianzhi/IMG/raw/master/voerfitting.PNG" alt="accuracy"></p>
+<p>可以发现overfitting仍然存在，但却比之前用1000张图片训练结果好得多，简单理解就是神经网络难以像之前一样“死记硬背”，它将会学习那些robust features，即所谓”见多识广“，关于这个策略，后面会简单介绍，但由于获得数据的代价是昂贵的，因此需要找到更好的策略。<br>除此之外，还可以考虑减小神经网络的size，但这种想法显然是与我们要获得更强性能网络的初衷相违背，一般不会采用。</p>
+<h2 id="Regularization"><a href="#Regularization" class="headerlink" title="Regularization"></a>Regularization</h2><h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p>正则化策略既不需要扩大training set，也不需要更改neural network的size，仅仅是稍稍调整一下cost function，目前最常用的是<strong><em>L<sub>2</sub> regularization</em></strong>，就是在原本的cost function后加一个<strong><em>regularization term</em></strong>(这里以互熵损失为例，其他的也是一样的做法)：</p>
+<p><img src="https://github.com/panmianzhi/IMG/raw/master/regularization.PNG" alt="regularization"></p>
+<p>λ为正则化系数，可以明显地看出，当λ较大时，网络倾向于学习更小的weights；反之网络倾向于使原本的cost更小。何谓学习更小的weights？我们从公式是可以明显看出的，但我们还是求导看一下:<br>$$<br>\frac{\partial C}{\partial w}=\frac{\partial C_0}{\partial w}+\frac{\lambda}{n}w<br>$$</p>
+<p>$$<br>\frac{\partial C}{\partial b}=\frac{\partial C_0}{\partial b}<br>$$</p>
+<p>再到weights和bias的更新公式:<br>$$<br>b→b-\eta\frac{\partial C_0}{\partial b}<br>$$</p>
+<p>$$<br>w→(1-\frac{\eta\lambda}{n})w-\eta\frac{\partial C_0}{\partial w}<br>$$</p>
+<p>对与SGD，更新则如下：<br>$$<br>b→b-\frac{\eta}{m}\sum_x\frac{\partial C_x}{\partial b}<br>$$</p>
+<p>$$<br>w→(1-\frac{\lambda}{n})w-\frac{\eta}{m}\sum_x\frac{\partial C_x}{\partial w}<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">self.weights = [(<span class="number">1</span>-eta*(lmbda/n))*w-(eta/len(mini_batch))*nw</span><br><span class="line">                <span class="keyword">for</span> w, nw <span class="keyword">in</span> zip(self.weights, nabla_w)]</span><br><span class="line">self.biases = [b-(eta/len(mini_batch))*nb</span><br><span class="line">                <span class="keyword">for</span> b, nb <span class="keyword">in</span> zip(self.biases, nabla_b)]</span><br></pre></td></tr></table></figure>
+
+<p>bias显然是没有受到影响，但weights每次都会通过系数 (1-λ/n) rescale一下，既让weights小一些，因此L2 regularization也叫做<strong><em>weight decay</em></strong>。但这并不意味着weights趋于0，因为后一项可能为负。作者通过测试发现无论是1000张training data还是50000张，用L2正则化之后overfitting现象明显减少了(这里我就没有自己run了)。除此以外，作者通过实验还发现，regularization还可以防止cost停留在局部最小点，因为未正则化的训练方法容易使weights很大，从而导致偏导项相对于weights很小，间接导致“相对步长”减小。</p>
+<h3 id="Why-regularization-works"><a href="#Why-regularization-works" class="headerlink" title="Why regularization works"></a>Why regularization works</h3><p>事实上，对于标题的问题并没有严格的证明，目前的解释也都是基于经验的，即：小的weights可以以一个更精简有力的model解释数据。<br>这里作者首先给了我们一组数据：</p>
+<p><img src="https://github.com/panmianzhi/IMG/raw/master/simple%20data.PNG" alt="data"></p>
+<p>欲对以上数据做拟合，现考虑两种函数，一是能准确描述上述数据的九次多项式：y=a<sub>0</sub>x<sup>9</sup>+a<sub>1</sub>x<sup>8</sup>+……a<sub>9</sub>（我没有画图，就是严格解出的方程），另一种就是常见的线性拟合：y=2x。两种拟合孰优孰劣并不好说，而且在training set上两种结果差异并不大（至少在树枝上如此），但当x→∞时，差异显然很大，对于这种差异（虽然从数学上说就是废话），不严格的解释就是前者学习到了training data上的许多noise（我之前提过，这里就不多说了）。<br>到神经网络上，对于小的权重，不同的训练数据只会对network造成很小的变化，这样可以减少训练数据中noise对网络的影响；而大权重对于输入数据的很小变化都会有很大的反应，也正因如此未正则化网络会学习出weights很大的复杂模型来”准确“描述training set，但同时很多noise也被学进去，可以说是有得必有失吧。目前基于我们神经网络的规模以及我们面对的问题，还是倾向于使用前者。<br>对于这种选择简单模型的想法，人们通常称之为”奥卡姆剃刀“原则，但这并不是一条科学的原则，许多例子都表明并不是越简单的模型越好，作者这里举的几个例子就不赘述了。这里由于小权重的优越性已经体现出来了，所以选择它。<br>回到L2 regularization，为什么只在cost function后面添加了关于weights的regularization term，而不添加关于bias的项呢？换言之，较大的bias对overfitting有影响吗？答案是否定的，bias项并不会影响不同输入最后输出的差距，即较大的bias并不会像大weights一样使神经元更加sensitive。</p>
+<h3 id="Other-techniques-for-regularization"><a href="#Other-techniques-for-regularization" class="headerlink" title="Other techniques for regularization"></a>Other techniques for regularization</h3><h4 id="L1-regularization"><a href="#L1-regularization" class="headerlink" title="L1 regularization"></a>L1 regularization</h4><p>不同于L2正则化的仅仅是它的regularization term:<br>$$<br>C=C_0+\frac{\lambda}{n}\sum_w|w|<br>$$<br>它同样是让network倾向于学习小weights：<br>$$<br>\frac{\partial C}{\partial w}=\frac{\partial C_0}{\partial w}+\frac{\lambda}{n}sgn(w)<br>$$</p>
+<p>$$<br>w→w-\frac{\eta\lambda}{n}sgn(w)-\eta\frac{\partial C_0}{\partial w}<br>$$</p>
+<p>与L2正则化不同，它每次减小weight的方法是减去一个constant，当|w|较小时，L1正则化减小weight显然更”快“；反之L2正则化使weight减小得更”快“。书中这一句话很好地指出了L1 regularization的特性：</p>
+<blockquote>
+<p>L1 regularization tends to concentrate the weight of the network in a relatively small number of high-importance connections, while the other weights are driven toward zero.</p>
+</blockquote>
+<h4 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h4><p>与L1、L2 regularization不同，Dropout是对神经网络结构的改动，我斗胆称网络中某层为Dropout层，对每个mini_batch，<strong>随机</strong>使Dropout层的神经元减半，更新完weight和bias后，对下一个mini_batch，再次使Dropout层的神经元<strong>随机</strong>减半，如此重复。</p>
+<p><img src="https://cn.bing.com/th?id=OIP.w6zaNTB4cVCAnGBzwsI5TQHaEG&pid=Api&rs=1" alt="dropout"></p>
+<p>显然，对于同样的training set，同一个神经网络每次训练的结果也是不一样的，假设我们用同一个training set训练了三个neural network，用一张手写数字图片测试时，发现只有一个识别正确，另外两个都错误（由于某种形式的过拟合），我们当然会选择识别正确的网络作为最终结果，但也不能肯定它即最好的——可能存在着第四个、第五个更优的网络。Dropout就相当于每次使用一个不同的网络，最后把过拟合的影响”平均“，从而达到减小过拟合的目的。<br>另一种解释是，通过Dropout减少neurons之间复杂共适性的影响（我也不懂这个名词的具体含义），单一的神经元不能过于依赖其他神经元，即使得neuron有一定”自主思考“的能力，这样就迫使network学习更robust的特征，即这些特征对于Dropout层的不同子集都有效，某些input的”不适性“将会被忽略——与L1、L2正则化殊途同归，可以猜测，采用了Dropout的神经网络也会趋向于学习小的weights。</p>
+<h4 id="Artificially-expanding-the-training-data"><a href="#Artificially-expanding-the-training-data" class="headerlink" title="Artificially expanding the training data"></a>Artificially expanding the training data</h4><p>之前已经提到过增大训练集可以有效降低overfitting的效果，在无法获得更多数据的情况下，可以手动扩大训练集。对于识别手写数字这个任务，可以使用小角度旋转图片、扭曲图片等方式，即人为添加噪音，要注意的是，这些变化要与实际生活的情况对应，即”伪造“出来的数据要尽量逼真（我说了什么）。<br>另外，作者还做了一项对比，随着training data的不断增加，SVM的性能竟逐渐向神经网络逼近，可见在某些时候，巨大的数据可以弥补算法的不足。<br></p>
+<h2 id="Others"><a href="#Others" class="headerlink" title="Others"></a>Others</h2><p>随着计算机性能的提高，过拟合似乎成了一个普遍的问题，解决它的任务仍未完成。<br>书中举了个例子，人类看过几次大象，以后几乎都能正确分别出大象，即人脑只需要很少的training data就能训练出accuracy非常高的model，从这方面来说神经网络的发展仍是道阻且长。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Mianzhi Pan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://yoursite.com/2020/02/04/Improving-the-way-neural-networks-learn-Regularization/" title="Improving the way neural networks learn--Regularization">http://yoursite.com/2020/02/04/Improving-the-way-neural-networks-learn-Regularization/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/03/Improving-the-way-neural-networks-learn-Softmax/" rel="next" title="Improving the way neural networks learn--Softmax">
+                <i class="fa fa-chevron-left"></i> Improving the way neural networks learn--Softmax
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpg"
+                alt="Mianzhi Pan" />
+            
+              <p class="site-author-name" itemprop="name">Mianzhi Pan</p>
+              <p class="site-description motion-element" itemprop="description">Mianzhi Pan's personal website</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/panmianzhi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/wan-wan-ya-44-93/activities" target="_blank" title="Zhihu">
+                      
+                        <i class="fa fa-fw fa-snapchat"></i>Zhihu</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:panmianzhi@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28427771&auto=1&height=66"></iframe>
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overfitting"><span class="nav-number">1.</span> <span class="nav-text">Overfitting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Early-stopping-amp-Validation-data"><span class="nav-number">2.</span> <span class="nav-text">Early stopping &amp; Validation data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Expanding-the-training-data"><span class="nav-number">3.</span> <span class="nav-text">Expanding the training data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Regularization"><span class="nav-number">4.</span> <span class="nav-text">Regularization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Definition"><span class="nav-number">4.1.</span> <span class="nav-text">Definition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-regularization-works"><span class="nav-number">4.2.</span> <span class="nav-text">Why regularization works</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Other-techniques-for-regularization"><span class="nav-number">4.3.</span> <span class="nav-text">Other techniques for regularization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#L1-regularization"><span class="nav-number">4.3.1.</span> <span class="nav-text">L1 regularization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dropout"><span class="nav-number">4.3.2.</span> <span class="nav-text">Dropout</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Artificially-expanding-the-training-data"><span class="nav-number">4.3.3.</span> <span class="nav-text">Artificially expanding the training data</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Others"><span class="nav-number">5.</span> <span class="nav-text">Others</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mianzhi Pan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
