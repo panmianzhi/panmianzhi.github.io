@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="说在前面的话：这是Improving the way neural networks learn系列的完结篇，标题虽有’weight initialization’的注释，但内容远远不止这一方面，甚至有点杂。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Improving the way neural networks learn(weight initialization)">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;08&#x2F;Improving-the-way-neural-networks-learn-weight-initialization&#x2F;index.html">
+<meta property="og:site_name" content="Paul&#39;s Blog">
+<meta property="og:description" content="说在前面的话：这是Improving the way neural networks learn系列的完结篇，标题虽有’weight initialization’的注释，但内容远远不止这一方面，甚至有点杂。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190108204447913.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190108210207866.png?x-oss-process&#x3D;image&#x2F;watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L25peWlkYW4wNTI3,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190108211347134.png?x-oss-process&#x3D;image&#x2F;watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L25peWlkYW4wNTI3,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;hessian.PNG">
+<meta property="article:published_time" content="2020-02-08T09:54:36.000Z">
+<meta property="article:modified_time" content="2020-02-09T14:30:21.872Z">
+<meta property="article:author" content="Mianzhi Pan">
+<meta property="article:tag" content="recording">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190108204447913.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/02/08/Improving-the-way-neural-networks-learn-weight-initialization/"/>
+
+
+
+
+
+  <title>Improving the way neural networks learn(weight initialization) | Paul's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paul's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Strive for a postgraduate recommendation.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/08/Improving-the-way-neural-networks-learn-weight-initialization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mianzhi Pan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paul's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Improving the way neural networks learn(weight initialization)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-08T17:54:36+08:00">
+                2020-02-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index">
+                    <span itemprop="name">AI</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>说在前面的话：</strong>这是<strong><em>Improving the way neural networks learn</em></strong>系列的完结篇，标题虽有’weight initialization’的注释，但内容远远不止这一方面，甚至有点杂。</p>
+<a id="more"></a>
+
+<h2 id="Weight-initialization"><a href="#Weight-initialization" class="headerlink" title="Weight initialization"></a>Weight initialization</h2><p>之前的所有代码中，weight和bias初始化为两个均值为0、标准差为1的独立高斯随机变量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">self.biases = [np.random.randn(y, <span class="number">1</span>) <span class="keyword">for</span> y <span class="keyword">in</span> self.sizes[<span class="number">1</span>:]]</span><br><span class="line">self.weights = [np.random.randn(y, x)</span><br><span class="line">                <span class="keyword">for</span> x, y <span class="keyword">in</span> zip(self.sizes[:<span class="number">-1</span>], self.sizes[<span class="number">1</span>:])]</span><br></pre></td></tr></table></figure>
+
+<p>不妨假设input层有1000个神经元，假设一半的input是1，另一半是0，由公式<br>$$<br>z=\sum_jw_jx_j+b<br>$$<br>由于高斯随机变量线性组合之后仍是高斯随机变量，显然z为501个高斯随机变量之和，均值仍为0，方差则是(501)<sup>1/2</sup>≈22.4（这边关于高斯分布的相关概率论知识没有学到，正自学中，所以不甚了解），画出z的概率密度函数曲线：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190108204447913.png" alt="z"></p>
+<p>发现z的取值绝对值很有可能非常大，这样代入到sigmoid函数后，就会出现neuron饱和，即学习率较低的问题，之前提到用cross-entropy cost function解决这一问题，作者也提到:</p>
+<blockquote>
+<p>We addressed that earlier problem with a clever choice of cost function. Unfortunately, while that helped with saturated output neurons, it does nothing at all for the problem with saturated hidden neurons.</p>
+</blockquote>
+<p>这段话我开始不太明白，什么叫只能帮助解决输出层neurons饱和问题，明明cost function对每一层的weights都求导了啊，但这似乎可以这样理解：单独考虑网络中间的hidden layers（不考虑output layer），即暂时“舍弃”cost function，以中间某层的activation对之前的weight求导，显然会出现饱和的情况。而加入互熵损失，这些饱和就被“约掉”，即表面上看不出中间层饱和问题（这仅仅是我的理解）。<br>直观来说，需要减小方差使得概率密度曲线的幅度不那么大，作者因此将weight初始化为均值为0、标准差为1/(n<sub>in</sub>)<sup>1/2</sup>的高斯变量，bias的初始化不变（bias的影响相对较小）:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.weights = [np.random.randn(y, x)/np.sqrt(x)</span><br><span class="line">                <span class="keyword">for</span> x, y <span class="keyword">in</span> zip(self.sizes[:<span class="number">-1</span>], self.sizes[<span class="number">1</span>:])]</span><br></pre></td></tr></table></figure>
+
+<p>经计算可发现输出z的均值为0，标准差为(500/1000+1)<sup>1/2</sup>=(3/2)<sup>1/2</sup>=1.22……概率密度曲线如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190108210207866.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L25peWlkYW4wNTI3,size_16,color_FFFFFF,t_70" alt="z"></p>
+<p>这就解决了上面的问题，训练得到如下结果：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190108211347134.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L25peWlkYW4wNTI3,size_16,color_FFFFFF,t_70" alt="train"></p>
+<h2 id="How-to-choose-hyper-parameters"><a href="#How-to-choose-hyper-parameters" class="headerlink" title="How to choose hyper-parameters"></a>How to choose hyper-parameters</h2><p>在神经网络中不可避免地会遇到超参数的选择问题，这势必需要许多次的实验，所以前期的目标并不是提升网络的性能，而是快速得到实验反馈，为此，可以减少数据的类别（如仅取‘0’、‘1’两类图片）、简化网络（去掉hidden layer）、减少数据集的规模等等——这是我们选取参数的<strong><em>board strategy</em></strong>。<br>除了人工调参，目前还有自动化优化参数工具，如<strong><em>grid search</em></strong>等。</p>
+<h3 id="Learning-rate"><a href="#Learning-rate" class="headerlink" title="Learning rate"></a>Learning rate</h3><p>显然，过大的learning rate会导致训练时越过cost function的“valley”，反而导致cost上升；过小的learning rate会导致学习过慢。对于前者，有更准确的解释：梯度下降使用了cost function的一阶近似，但随着η的增大，Talyor展开的高阶项将变得难以忽略。选取η策略便是找到其“阈值”，通俗来说就是仍能使cost下降且使得“步长”尽量大的η。如果前几个周期cost在decrease，就试着增大η直至cost开始上升；反之同理。一般来说η的取值都不应超过“阈值”（废话），在识别手写数字任务中η取值为0.5。<br>另外，η还可以采用“先大后小”的取值策略，以便更精确地到达”valley”。具体说，先采用固定的η，但当validation accuracy开始下降时，将η减半，如此反复，知道η变成初始值的1/1024停止。<br></p>
+<h3 id="Training-epochs"><a href="#Training-epochs" class="headerlink" title="Training epochs"></a>Training epochs</h3><p>这里的方法就是之前说过的<strong><em>early stopping</em></strong>，代码也展示过了。即如果accuracy在n训练周期没有increase的话，就停止训练，这种策略也称<strong><em>no-improvement-in-n epochs strategy</em></strong>。但这有一个问题，某些情况下accuracy会有一个“高原期”，过了这段时间之后仍会上升，这就又带来了参数n的选取问题。<br></p>
+<h3 id="Regularization-parameter"><a href="#Regularization-parameter" class="headerlink" title="Regularization parameter"></a>Regularization parameter</h3><p>这个没有多少trick，就是普通的取值、训练、比较。<br></p>
+<h3 id="Mini-batch-size"><a href="#Mini-batch-size" class="headerlink" title="Mini-batch size"></a>Mini-batch size</h3><p><strong>这部分内容有点烦人，我并未完全理解，可直接跳过去看调参方法。我疑惑点在于：<br>①作者最后对于参数过大和过小的缺陷的解释似乎是建立在使用online learning+matrix update的基础上的，但代码中用的是循环策略。<br>②作者反复强调online learning的好，即可以快速更新权重，但这和较大的mini-batch size可提升学习速度关系何在？<br>③最后举η扩大100倍，但时间只扩大了了约50倍的例子作用是什么。</strong><br>首先抛出下面一大堆分析的结论：使用较大的mini-batch会提高学习速度。需要注意的是，这里的速度提高并不是epoch减少，而仅仅是程序优化后学习时间的减少（更充分发挥了硬件的性能）。<br>首先，对于我们的任务online learning是可行的，即mini-batch的大小为1，每训练完一个input后就直接更新权重。online learning的可能问题在于，单一的训练数据可能会导致weight向错误的方向更新，但分析后发现这并无影响。因为我们并不需要每个input都使权重准确地更新，即某个input导致的错误更新并不会导致最后结果的变化——cost function总是会到达“valley“的。<br>好了，接下来扩大mini-batch，不妨设其size为100，仍使用online learning，即此时把整个mini-batch当作一个input直接更新weight和bias，使用<strong>矩阵方法</strong>（作者在之前的chapter指出过，就是把每个input写成列向量，再全部组合成一个matrix，以矩阵形式更行权重），可以对mini-batch里的所有数据一次性更新梯度:<br>$$<br>w→w-\eta\nabla C_x<br>$$<br>而不是之前（代码中已经添加了正则项）遍历每一个input最后再update：<br>$$<br>w→w-\eta\frac{1}{100}\sum_x\nabla C_x<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> x, y <span class="keyword">in</span> mini_batch:</span><br><span class="line">    delta_nabla_b, delta_nabla_w = self.backprop(x, y)</span><br><span class="line">    nabla_b = [nb+dnb <span class="keyword">for</span> nb, dnb <span class="keyword">in</span> zip(nabla_b, delta_nabla_b)]</span><br><span class="line">    nabla_w = [nw+dnw <span class="keyword">for</span> nw, dnw <span class="keyword">in</span> zip(nabla_w, delta_nabla_w)]</span><br><span class="line">self.weights = [(<span class="number">1</span>-eta*(lmbda/n))*w-(eta/len(mini_batch))*nw</span><br><span class="line">                <span class="keyword">for</span> w, nw <span class="keyword">in</span> zip(self.weights, nabla_w)]</span><br><span class="line">self.biases = [b-(eta/len(mini_batch))*nb</span><br><span class="line">                <span class="keyword">for</span> b, nb <span class="keyword">in</span> zip(self.biases, nabla_b)]</span><br></pre></td></tr></table></figure>
+
+<p>由于矩阵的运用使得前者花费的时间只有后者的一半左右。不妨把学习率η扩大100倍，则使用循环策略的权重更新公式为<br>$$<br>w→w-\eta\sum_x\nabla C_x<br>$$<br>看上去这像是进行了100次online learning，但实际上画的时间大概只有单一的online learning的50倍（虽然理论上的时间也并不是单一online learning的100倍，因为weight变化了，但肯定大于50倍），然后得出结论:</p>
+<blockquote>
+<p>It seems distinctly possible that using the larger mini-batch would speed things up.</p>
+</blockquote>
+<p><strong>但mini-batch size也不能过大，否则weight得不到足够多的更新；过小则不能充分发挥矩阵运算库的优势（这似乎表明作者的分析都是建立在使用online learning的基础上）。</strong>（这一句才是重点，前面的分析感觉作者自己都没说清楚，非常乱），所以要折中考虑。幸好其他参数与mini-batch size关联不大，即我们并不需要先优化好其他参数才能找到最好的mini-batch size，所以只要画出不同mini-batch size下的accuracy-time图像，选择最快的那个参数就行了。</p>
+<p>以上就是调参的全部内容，但仍有一个问题，用作者话来说就是：<br><strong><font size=5>In practice,there are relationships between the hyper-parameters.</font></strong></p>
+<h2 id="Other-techniques"><a href="#Other-techniques" class="headerlink" title="Other techniques"></a>Other techniques</h2><p>这里介绍了SGD以外的两种训练方法。</p>
+<h3 id="Hessian-technique"><a href="#Hessian-technique" class="headerlink" title="Hessian technique"></a>Hessian technique</h3><p>目标仍是最小化cost function，它可以看作w的函数，即C=C(w)，其中w=w<sub>1</sub>,w<sub>2</sub>……在w点处Talyor展开：</p>
+<p><img src="https://github.com/panmianzhi/IMG/raw/master/hessian.PNG" alt="展开"></p>
+<p>写成矩阵形式：<br>$$<br>C(w+\Delta w)=C(w)+\nabla C\cdot\Delta w+\frac{1}{2}\Delta w^TH\Delta w+……<br>$$<br>H就i是Hessian matrix。忽略掉高阶项，有<br>$$<br>C(w+\Delta w)≈C(w)+\nabla C\cdot\Delta w+\frac{1}{2}\Delta w^TH\Delta w<br>$$<br>想得到变换后C的最小值，于是右边对Δw求导，极小值在<br>$$<br>\Delta w=-H^{-1}\nabla C<br>$$<br>取到（前提是H为正定矩阵，否则就是极大值）。<br>于是Hessian方法的一般步骤为：<br></p>
+<p>1.初始化w<br>2.根据公式<br>$$<br>w’=w-H^{-1}\nabla C<br>$$<br>更新weights。<br>3.更新w’:<br>$$<br>w’’=w’-H^{‘-1}\nabla’C<br>$$<br>在实际操作中，Δw之前也需要乘learning rate，即<br>$$<br>\Delta w=-\eta H^{-1}\nabla C<br>$$<br>然而，一旦input weights过多，Hessian矩阵的计算量也就变得十分庞大，因此这种方法局限性较大。<br></p>
+<h3 id="Momentum-based-gradient-descent"><a href="#Momentum-based-gradient-descent" class="headerlink" title="Momentum-based gradient descent"></a>Momentum-based gradient descent</h3><p>前面Hessian technique因为保留了二阶项，所以它不仅保留了梯度，还结合了梯度的变化趋势（H term），基于momentum的梯度下降技术也有这样的优点。<br>该方法引入了速度(v)，摩擦力(μ)参数，原本的梯度下降规则<br>$$<br>w→w’=w-\eta\nabla C<br>$$<br>改为<br>$$<br>v→v’=\mu v-\eta\nabla C<br>$$</p>
+<p>$$<br>w→w’=w+v’<br>$$</p>
+<p>速度v可以理解为梯度的变化速度（虽然很不恰当），μ则是用来控制速度的。当μ=1是，w中的v项会累积得越来越大（这个可以轻松证明），所以cost也会下降得越来越快，但显然这样会出现overshoot的情况；另一个极限是μ=0，即friction很大，此时v无法累计，w的更新与普通的梯度下降无异。所以，选择一个恰当的μ值，既可以使velocity累积，保证学习速度，又可以防止overshoot。</p>
+<h2 id="Other-models-of-artificial-neurons"><a href="#Other-models-of-artificial-neurons" class="headerlink" title="Other models of artificial neurons"></a>Other models of artificial neurons</h2><p>这里介绍了<strong><em>tanh</em></strong>和<strong><em>rectified linear unit</em></strong>，前者其实就是sigmoid的变形<br>$$<br>tanh(z)=\frac{e^z-e^{-z}}{e^z+e^{-z}}<br>$$</p>
+<p>$$<br>\sigma(x)=\frac{1}{1+e^{-z}}=\frac{1+tanh(z/2)}{2}<br>$$</p>
+<p>函数图象和sigmoid类似，只不过值域变成了(-1,1)，由公式<br>$$<br>\frac{\partial{C}}{\partial{w^l_{jk}}}=a^{l-1}_k\delta^l_j<br>$$<br>若用sigmoid函数，a恒正，若δ<sup>l</sup><sub>j</sub>为正，则l层第j个neuron与(l-1)层相联的所有weights都会减小；反之都会增大。即此时两层之间的权重的变化只与后层的error有关，而与前层无关。于是此时值域为(-1,1)的tanh neuron的好就显现出来了，但它同样面领着输入过大时neuron饱和的问题。<br></p>
+<p>后者即为ReLU，它会过滤掉那些负输入（容易看出负输入不会导致更新），另外也不会有输入过大导致的饱和问题，所以其应用比sigmoid和tanh都广泛，性能当然更好。</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>神经网络涉及到许多参数、超参数，所以要想完全清楚其运行过程细节仍然十分困难。另外，之前许多解释、证明都是经验性的，怎么说呢，有好也有坏吧。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Mianzhi Pan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://yoursite.com/2020/02/08/Improving-the-way-neural-networks-learn-weight-initialization/" title="Improving the way neural networks learn(weight initialization)">http://yoursite.com/2020/02/08/Improving-the-way-neural-networks-learn-weight-initialization/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/04/Improving-the-way-neural-networks-learn-Regularization/" rel="next" title="Improving the way neural networks learn--Regularization">
+                <i class="fa fa-chevron-left"></i> Improving the way neural networks learn--Regularization
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpg"
+                alt="Mianzhi Pan" />
+            
+              <p class="site-author-name" itemprop="name">Mianzhi Pan</p>
+              <p class="site-description motion-element" itemprop="description">Mianzhi Pan's personal website</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/panmianzhi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/wan-wan-ya-44-93/activities" target="_blank" title="Zhihu">
+                      
+                        <i class="fa fa-fw fa-snapchat"></i>Zhihu</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:panmianzhi@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28427771&auto=1&height=66"></iframe>
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Weight-initialization"><span class="nav-number">1.</span> <span class="nav-text">Weight initialization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-choose-hyper-parameters"><span class="nav-number">2.</span> <span class="nav-text">How to choose hyper-parameters</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Learning-rate"><span class="nav-number">2.1.</span> <span class="nav-text">Learning rate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training-epochs"><span class="nav-number">2.2.</span> <span class="nav-text">Training epochs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Regularization-parameter"><span class="nav-number">2.3.</span> <span class="nav-text">Regularization parameter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mini-batch-size"><span class="nav-number">2.4.</span> <span class="nav-text">Mini-batch size</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Other-techniques"><span class="nav-number">3.</span> <span class="nav-text">Other techniques</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hessian-technique"><span class="nav-number">3.1.</span> <span class="nav-text">Hessian technique</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Momentum-based-gradient-descent"><span class="nav-number">3.2.</span> <span class="nav-text">Momentum-based gradient descent</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Other-models-of-artificial-neurons"><span class="nav-number">4.</span> <span class="nav-text">Other models of artificial neurons</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">5.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mianzhi Pan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
