@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="说在前面的话：前方多图预警🤪。原文在这里">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A visual proof that neural nets can compute any function">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;11&#x2F;A-visual-proof-that-neural-nets-can-compute-any-function&#x2F;index.html">
+<meta property="og:site_name" content="Paul&#39;s Blog">
+<meta property="og:description" content="说在前面的话：前方多图预警🤪。原文在这里">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;function.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;weight变化.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;bias变化.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;5 pairs.PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;five pairs.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;bump appropriation.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;first三维图.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;三维图s1%3D0.3%2Cs2%3D0.7.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;tower1.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;tower2.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;failed figure.PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;tower4.PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;tower5.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;tower3.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;another function.PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;22.PNG">
+<meta property="article:published_time" content="2020-02-11T14:14:04.000Z">
+<meta property="article:modified_time" content="2020-02-12T07:38:25.267Z">
+<meta property="article:author" content="Mianzhi Pan">
+<meta property="article:tag" content="recording">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;function.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/02/11/A-visual-proof-that-neural-nets-can-compute-any-function/"/>
+
+
+
+
+
+  <title>A visual proof that neural nets can compute any function | Paul's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paul's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Strive for a postgraduate recommendation.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/11/A-visual-proof-that-neural-nets-can-compute-any-function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mianzhi Pan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paul's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">A visual proof that neural nets can compute any function</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-11T22:14:04+08:00">
+                2020-02-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index">
+                    <span itemprop="name">AI</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>说在前面的话：</strong>前方多图预警🤪。<a href="http://neuralnetworksanddeeplearning.com/chap4.html" target="_blank" rel="noopener">原文在这里</a></p>
+<a id="more"></a>
+
+<p>神经网络的训练其实是可以看成一个学习函数的过程，以手写数字的识别为例，网络学习的函数可能有数字轮廓信息、颜色信息、布局等等，之前说了那么多神经网络训练的方法、改进措施，但这些都是建立在网络可以学习那些函数的前提下，本章将证明neural network可以算出任何函数，用的方法主要是函数图像分析，并没有严格的算数证明（那玩意太TM难了）。<br>在一大波图袭来之际，简单提一下，证明的大策略其实类似于“微元法”，将所给函数切分成许多竖直矩形，需要证明neural network可以学习出那些矩形。<br></p>
+<h2 id="One-input-Two-dimensional-function"><a href="#One-input-Two-dimensional-function" class="headerlink" title="One input(Two-dimensional function)"></a>One input(Two-dimensional function)</h2><p>以这样的一个函数为例：</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/function.png" alt="function" style="zoom:80%;" />
+
+<p>神经网络采用最简单的单隐藏层网络，activation function采用sigmoid函数。首先考虑只有单个输入x的情况，且hidden layer只有两个neuron，目前我们只考虑第一个neuron，假设input neuron和它之间的权重为w，偏移为b，画出不同的weight和bias对hidden layer输出（并不是output层的输出）的影响：</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/weight变化.png" alt="weights" style="zoom:80%;" />
+
+<img src="https://github.com/panmianzhi/IMG/raw/master/bias变化.png" alt="bias" style="zoom:80%;" />
+
+<p>可以想象，随着weights越来越大，output函数将趋于“阶跃函数”，这也很好理解——随着自变量“步幅”的增大，sigmoid函数图像中间的“上升段”会变得越来越陡峭，将weight改为999后证明的确如此。<br>另外可以发现，阶跃点的横坐标与bias的绝对值正相关，与weight负相关（这个我看了好一会儿，需要注意bias我们取负，weight取正），实际上，<strong>阶跃点s=-b/w</strong>。这是我们造“箱子”的第一步，之后我们weight都取1000，只要给出某个hidden layer神经元的s，bias就可以由b=-s·w计算得出。<br>至于“阶跃”的幅度，由sigmoid函数可以显然看出是1，假设这个neuron与output neuron之间的权重为w1，则阶跃高度为w1（可正可负）。<br>说明一下，之后的讨论中，<strong>我们默认一对neurons中的第一个“阶跃值”s小于第二个</strong>，下面加上hidden layer中未被考虑的另一个神经元，这个图就不上了，呈现的效果其实是在之前的阶跃点s1后的s2处又“阶跃”了一次，且阶跃幅度为该neuron与output neuron之间的权重w2。那么，当w2=-w1时，呈现的图像就是一个“箱子”了，这也就是我们构造“箱子”的方法。<br>对此，作者还把上面的阶跃现象用伪代码呈现出来：</p>
+<blockquote>
+<p>if input &gt; step point:</p>
+<p>​    add 1 to the weighted output</p>
+<p>else:</p>
+<p>​    add 0 to the weighted output</p>
+</blockquote>
+<p>直接上五对神经元的效果图和对应的“阶跃函数”图（标注的h对应的都是第一个neuron）：</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/5 pairs.PNG" alt="5" style="zoom:80%;" />
+
+<img src="https://github.com/panmianzhi/IMG/raw/master/five pairs.png" alt="5" style="zoom:80%;" />
+
+<p>现在已经可以构造许多“箱子”了，对于刚开始的函数，期望output层输出f(x)，所以output的输入，即weighted output from hidden layer，就是σ<sup>-1</sup>(f(x))，仿照上面的过程，可以用五对neuron画出其粗略图像（可以通过不断增加“箱子”的个数不断逼近函数图像）:</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/bump appropriation.png" alt="bump" style="zoom:80%;" />
+
+<p>说明一下，output层的bias取的是0。</p>
+<h2 id="Many-input-variables-Three-dimensional-function"><a href="#Many-input-variables-Three-dimensional-function" class="headerlink" title="Many input variables(Three-dimensional function)"></a>Many input variables(Three-dimensional function)</h2><p>上面的二维情况弄清楚后，之后就很好理解了，多了一个输入y，就相当于增加了一个维度，我们研究的函数也到了三维。<br>首先为简化我们的分析，仍然只考虑hidden layer中的一个neuron，并且y与该neuron连接的权重w2设为0，画出w1对该neuron的output的影响：</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/first三维图.png" alt="影响" style="zoom:80%;" />
+
+<p>同之前一样，x方向的阶跃点s<sub>x</sub>=-b/w<sub>1</sub>。模仿上一节的行为开始造“箱子”，考虑隐藏层的另外一个neuron，将两个neuron的阶跃点分别设置为0.3和0.7，阶跃幅度互为相反数，得到如下的图：</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/三维图s1%3D0.3%2Cs2%3D0.7.png" alt="bump2" style="zoom:80%;" />
+
+<p>刚刚我们把另一个输入y对应的所有权重都设置为0，假如把输入x对应的所有权重设为0，将之前的参数给y，所得的图像其实就是把上面的“箱子”绕中轴旋转了90°。然而，这怎么看也不像我们期望的“箱子”——在三维下准确来说是“塔”（tower）。<br>这也好办，现在同时考虑输入x和输入y，都做上面的“箱子”处理（注意x，y的阶跃幅度都取相同的值，阶跃点任意，我取的是s<sup>1</sup><sub>x</sub>=0.4，s<sup>2</sup><sub>x</sub>=0.6，s<sup>1</sup><sub>y</sub>=0.3，s<sup>2</sup><sub>2</sub>=0.7），得到下图（很容易想象出来，就是简单的叠加）：</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/tower1.png" alt="11" style="zoom:80%;" />
+
+<p>中间高出的那一块就是需要的tower了，然而它周围还多了四块“箱子”，我期望得到更标准的tower（在z&gt;0的范围内）,这是output层的bias作用就体现出来了，事实上，选择bias b≈-3h/2（更一般情况是b=(-m+1/2)h，m为输入个数），即将整个图像向下移动3h/2的长度，得到如下图像：</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/tower2.png" alt="22" style="zoom:80%;" />
+
+<p>只看z&gt;0的部分，确实得到了期望的tower，并且tower的高度很容易算出是h/2，所以可以通过改变h的值改变tower的高度，通过缩小s<sub>2</sub>-s<sub>1</sub>使tower更“细”。至此，成功造出了三维函数的微元。<br>之后就可以开始构造多个tower了，以如下network为例：</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/failed figure.PNG" alt="33" style="zoom:80%;" />
+
+<p>书上说通过组合上面两个network可以得到两个tower，如下:</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/tower4.PNG" alt="book" style="zoom:80%;" />
+
+<p>单独画两个tower确实没什么问题（自动忽略z&lt;0的部分）:</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/tower5.png" style="zoom:80%;" />
+
+<p>但是根据网络结构，将两个network合并到一个输出，我写出如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigma</span><span class="params">(z)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1.0</span>/(<span class="number">1.0</span>+np.exp(-z))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid</span><span class="params">(w,b,x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1.0</span>/(<span class="number">1.0</span>+np.exp(-(w*x+b)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reversed_sigmoid</span><span class="params">(z)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> np.log(z/(<span class="number">1</span>-z))</span><br><span class="line"></span><br><span class="line">x=np.linspace(<span class="number">0</span>,<span class="number">1</span>,<span class="number">1000</span>)</span><br><span class="line">y=np.linspace(<span class="number">0</span>,<span class="number">1</span>,<span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line">fig=plt.figure()</span><br><span class="line">ax3=plt.axes(projection=<span class="string">'3d'</span>)</span><br><span class="line">X,Y=np.meshgrid(x,y)</span><br><span class="line">Z1=<span class="number">0.8</span>*(sigmoid(<span class="number">1000</span>,<span class="number">-100</span>,X)-sigmoid(<span class="number">1000</span>,<span class="number">-200</span>,X)\</span><br><span class="line">   +sigmoid(<span class="number">1000</span>,<span class="number">-800</span>,Y)-sigmoid(<span class="number">1000</span>,<span class="number">-900</span>,Y))<span class="number">-1.2</span></span><br><span class="line">Z2=<span class="number">0.5</span>*(sigmoid(<span class="number">1000</span>,<span class="number">-700</span>,X)-sigmoid(<span class="number">1000</span>,<span class="number">-800</span>,X)\</span><br><span class="line">   +sigmoid(<span class="number">1000</span>,<span class="number">-200</span>,Y)-sigmoid(<span class="number">1000</span>,<span class="number">-300</span>,Y))<span class="number">-0.75</span></span><br><span class="line">Z3=<span class="number">0.8</span>*sigma(Z1)+<span class="number">0.5</span>*sigma(Z2)</span><br><span class="line"></span><br><span class="line">ax3.plot_surface(X,Y,Z3,color=<span class="string">"red"</span>)</span><br><span class="line">ax3.set_xlabel(<span class="string">'X'</span>)</span><br><span class="line">ax3.set_ylabel(<span class="string">'Y'</span>)</span><br><span class="line">ax3.set_zlabel(<span class="string">'output'</span>)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>却得到下图：</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/tower3.png" style="zoom:80%;" />
+
+<p>即<strong>会多出两个tower</strong>，简单分析一下这是合并的必然结果，然而我并不知道如何修正。<br></p>
+<p>所以要得到最终的函数f(x)，仍然只需output层的输入为σ<sup>-1</sup>(f)即可，这与之前的情况一样。更高维的情况同理可证，只不过不能可视化了。</p>
+<h2 id="Extension-beyond-sigmoid-neurons"><a href="#Extension-beyond-sigmoid-neurons" class="headerlink" title="Extension beyond sigmoid neurons"></a>Extension beyond sigmoid neurons</h2><p>至此，已经证明了activation function为sigmoid的神经网络可以学习出任何函数，但对于其他激励函数呢？事实上，对于以上证明，我们期望当w很大时，hidden layer的输出趋于阶跃函数，显然，activation function要满足如下条件：①当x→-∞和x→∞是，函数是收敛的；②上述两个极限值不同。举个例子，如下函数满足条件：</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/another function.PNG" style="zoom:80%;" />
+
+<p>显然，y=x不满足上述条件，并且它不适合作为激励函数，书上说</p>
+<blockquote>
+<p>such neurons can’t be used to do universal computation.</p>
+</blockquote>
+<p>同理，ReLU也不满足上述条件，但是</p>
+<blockquote>
+<p>The rectified linear units are universal for computation.</p>
+</blockquote>
+<p>所以对于ReLU的普适性需要其他证明方法。</p>
+<h2 id="Fixing-up-the-step-functions"><a href="#Fixing-up-the-step-functions" class="headerlink" title="Fixing up the step functions"></a>Fixing up the step functions</h2><p>然而，不要忽略一个事实：无论weights取得多大，hidden layer的输出始终只能<strong>趋于</strong>阶跃函数，即之前图片的阶跃过程并不是完全“竖直”的，中间那段斜率仍是一个非常大的<strong>有限值</strong>。<br>对此，可以将weights设置地足够大，或者将“箱子”设置地足够narrow来减少误差，但这些方法总感觉很粗暴，这是作者就想出了一个很漂亮的方法。<br></p>
+<p>如下图，用“箱子”计算一个函数时，将上述误差更明显地表现如下：</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/22.PNG" alt="error" style="zoom:80%;" />
+
+<p>“箱子”交界处即误差出现处，假设要学习的函数是σ<sup>-1</sup>(f(x))，可以分别学习两次σ<sup>-1</sup>(f(x))/2，第一次仍像上图一样学习，只不过“箱子”高度都减半了。但第二次学习时，先将“箱子”统一右移其宽度的一般长度，再根据实际函数调整“箱子”高度。两次结果相加，显然原来的误差会减半。同样，可以右移更小的长度，比如“箱子”宽度的1/10，右移9次，这样误差就变成了原来的十分之一。其实这与“多次测量取平均”的思想相同。</p>
+<h2 id="Others"><a href="#Others" class="headerlink" title="Others"></a>Others</h2><p>证明了单隐藏层network可以学习任何函数，那实际操作为什么常常是多隐藏层呢？这在前面提过，以图像识别为例，需要学习的图片轮廓、颜色以及其他无法描述的特征可能并不是一个函数就可以精确表示出来的，常常需要学习多个函数。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Mianzhi Pan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://yoursite.com/2020/02/11/A-visual-proof-that-neural-nets-can-compute-any-function/" title="A visual proof that neural nets can compute any function">http://yoursite.com/2020/02/11/A-visual-proof-that-neural-nets-can-compute-any-function/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/08/Improving-the-way-neural-networks-learn-weight-initialization/" rel="next" title="Improving the way neural networks learn(weight initialization)">
+                <i class="fa fa-chevron-left"></i> Improving the way neural networks learn(weight initialization)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpg"
+                alt="Mianzhi Pan" />
+            
+              <p class="site-author-name" itemprop="name">Mianzhi Pan</p>
+              <p class="site-description motion-element" itemprop="description">Mianzhi Pan's personal website(QQ 964298041)</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/panmianzhi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/wan-wan-ya-44-93/activities" target="_blank" title="Zhihu">
+                      
+                        <i class="fa fa-fw fa-snapchat"></i>Zhihu</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:panmianzhi@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28427771&auto=1&height=66"></iframe>
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#One-input-Two-dimensional-function"><span class="nav-number">1.</span> <span class="nav-text">One input(Two-dimensional function)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Many-input-variables-Three-dimensional-function"><span class="nav-number">2.</span> <span class="nav-text">Many input variables(Three-dimensional function)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extension-beyond-sigmoid-neurons"><span class="nav-number">3.</span> <span class="nav-text">Extension beyond sigmoid neurons</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fixing-up-the-step-functions"><span class="nav-number">4.</span> <span class="nav-text">Fixing up the step functions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Others"><span class="nav-number">5.</span> <span class="nav-text">Others</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mianzhi Pan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
