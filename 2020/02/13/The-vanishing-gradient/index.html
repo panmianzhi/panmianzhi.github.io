@@ -86,18 +86,22 @@
 
 
 
-<meta name="description" content="2019&#x2F;12&#x2F;23：">
+<meta name="description" content="原文链接：neural networks and deep learning.chapter 5">
 <meta property="og:type" content="article">
-<meta property="og:title" content="inline assembly">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;23&#x2F;NJU-ics-lab2-x86-64%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96&#x2F;index.html">
+<meta property="og:title" content="The vanishing gradient">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;13&#x2F;The-vanishing-gradient&#x2F;index.html">
 <meta property="og:site_name" content="Paul&#39;s Blog">
-<meta property="og:description" content="2019&#x2F;12&#x2F;23：">
+<meta property="og:description" content="原文链接：neural networks and deep learning.chapter 5">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2019-12-23T12:12:43.000Z">
-<meta property="article:modified_time" content="2020-01-27T10:18:35.066Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190115111735555.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190115112112331.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190115130020107.png">
+<meta property="article:published_time" content="2020-02-13T03:44:36.000Z">
+<meta property="article:modified_time" content="2020-02-14T02:10:25.304Z">
 <meta property="article:author" content="Mianzhi Pan">
 <meta property="article:tag" content="recording">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190115111735555.png">
 
 
 
@@ -127,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/12/23/NJU-ics-lab2-x86-64内联汇编/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/02/13/The-vanishing-gradient/"/>
 
 
 
 
 
-  <title>inline assembly | Paul's Blog</title>
+  <title>The vanishing gradient | Paul's Blog</title>
   
 
 
@@ -250,7 +254,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/23/NJU-ics-lab2-x86-64%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/13/The-vanishing-gradient/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mianzhi Pan">
@@ -267,7 +271,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">inline assembly</h1>
+          <h1 class="post-title" itemprop="name headline">The vanishing gradient</h1>
         
 
         <div class="post-meta">
@@ -279,8 +283,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-23T20:12:43+08:00">
-                2019-12-23
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-13T11:44:36+08:00">
+                2020-02-13
               </time>
             
 
@@ -302,8 +306,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ICS/" itemprop="url" rel="index">
-                    <span itemprop="name">ICS</span>
+                  <a href="/categories/AI/" itemprop="url" rel="index">
+                    <span itemprop="name">AI</span>
                   </a>
                 </span>
 
@@ -339,9 +343,24 @@
       
 
       
-        <h1 id="2019-12-23："><a href="#2019-12-23：" class="headerlink" title="2019/12/23："></a>2019/12/23：</h1><a id="more"></a>
-<p>今天把lab2交掉了，我只实现了add和memcpy，后者还是抄的linux内核代码，setjmp和longjmp就不说了，写的跟shit一样，但也没办法，自己把lab拖到现在做是得遭报应的。However，我最气的是debug了两天的asm_popcnt到最终还是失败了。简单记录了一下我写inline assembly的一些坑。<br><br><strong>1.</strong>inline assembly的基本语法，这里有个不错的介绍:<a href="https://www.cnblogs.com/scu-cjx/p/6878222.html" target="_blank" rel="noopener">C语言内联汇编语法</a>。<br><br><strong>2.</strong>Instruction List后面的三个冒号后面分别对应着output,input和可能被更改的内容。以最后可能被更改的内容为例，<code>:&quot;%eax&quot;</code>和<code>:memory</code>分别表示eax寄存器和内存在汇编指令执行的过程中被更改了，这是一定要指出来的。<strong>另外，作为input和output的寄存器不要写到最后的Clobber/Modify里面！</strong>否则会出现”error:’asm’ operand has impossible constraints”的报错。<br><br><strong>3.</strong>x86-64的寄存器除了有IA32扩展的通用寄存器rax等等外，还有r8、r9……r15这几个寄存器，具体可见这里<a href="https://blog.csdn.net/dayancn/article/details/51328959" target="_blank" rel="noopener">x86-64寄存器和栈帧</a>。<br><br><strong>4.</strong>汇编语言里面有pushf和popf指令，前者表示将标志寄存器压栈，后者表示从栈中取出数据，输入标志寄存器(说的不是很清楚)，参考的是这个链接<a href="https://blog.csdn.net/zhangjiuding/article/details/79156039" target="_blank" rel="noopener">寄存器在Debug中的表示</a>。<br><br><strong>5.Inline Assembly中许多指令、寄存器的缩写以及仍需学习（寒假回去干！）</strong>，我很懵逼的%0和%1表示的是第0个和第1个操作表达式使用相同的寄存器/内存，其实就是通用修饰符，关于这个在第一点的链接里面有具体的介绍。<strong>寒假回去要学下！！！</strong><br><br><strong>6.恶心的setjmp和longjmp函数，</strong>关于他们的具体操作，其实就相当于快照，实现过程类似于pa中的保存上下文和回复上下文，但我写（抄）的代码里面有这样的汇编指令：<code>mov asm_setjmp, 144(%1)</code>，这个有错，因为mov的两个操作数都是main memory，我改为了<code>&quot;mov asm_setjmp, %%eax\n\t&quot;&quot;mov %%eax, 144(%1)\n\t&quot;</code>，另外还有<code>jmp asm_setjmp</code>，前者其实就是保存setjmp函数的地址，后者就是在longjmp中跳回到setjmp，然而链接时报错：”relocation R_X86_64_32 against ‘asm-jmp’……”，这个bug仍未解决，我是直接删掉了这两条指令，直接交了个错误代码上去（至少这样还能生成.out文件，否则更没有分）。<br></p>
-<h1 id="2019-1-2"><a href="#2019-1-2" class="headerlink" title="2019/1/2"></a>2019/1/2</h1><p>照着lcx大佬的实验报告改了一下asm_setjmp和asm_longjmp，运行仍然会有segmentation fault……我看他实验报告中统计二进制数中1的个数的算法很巧妙，寒假看一下。<br>在重新提交lab2时,总是报一个奇怪的错误：<code>curl: Could not resolve host:ics.nju.edu.cn</code>，当时着实吓了一跳，STFW后找到的一堆解决方案着实令我头大，后来才发现是虚拟机网络没有连接，这个问题在多次保存虚拟机状态再启动时会发生，即使主机联网了，虚拟机仍然显示没有网络（<strong>猜测可能是开机前后换了网络，导致的host或是IP的问题</strong>，这点需要研究一下），目前的解决方案是重新启动。</p>
+        <p><strong>原文链接：</strong><a href="http://neuralnetworksanddeeplearning.com/chap5.html" target="_blank" rel="noopener">neural networks and deep learning.chapter 5</a></p>
+<a id="more"></a>
+
+<h2 id="Vanishing-gradient"><a href="#Vanishing-gradient" class="headerlink" title="Vanishing gradient"></a>Vanishing gradient</h2><p>直觉告诉我们更深层次的神经网络拥有更强的学习能力，之前提过图像识别中，不同的隐藏层学习到的特征可能都是不同的，如轮廓、颜色等等。然而实际情况却并没有这么简单，之前识别手写数字使用的是单隐藏层的网络，为探究更深层的神经网络能力是否真的强于浅层网络，作者分别将hidden layer增加到2、3、4层（每层30个neuron），除了两个hidden layer的网络的evaluation accuracy有微小的提升外，其他两个网络的evaluation accuracy都有不同程度的下降。<br>上述情况并非偶然，显然的原因便是weights和bias没有得到充分的更新，联系两者的更新公式，问题很有可能处在偏导上，即<br>$$<br>\frac{\partial{C}}{\partial{b^l_j}}=\delta^l_j<br>$$</p>
+<p>$$<br>\frac{\partial{C}}{\partial{w^l_{jk}}}=a^{l-1}_k\delta^l_j<br>$$</p>
+<p>同时上式也是衡量学习速度的重要指标，之前δ我们定义为error，现在为更好的监测网络的学习状态，结合公式，把δ<sup>l</sup><sub>j</sub>定义为“梯度”，用来表示第l层第j个neuron的学习速度——显然无论是bias还是weight的更新速度都是与δ<sup>l</sup><sub>j</sub>正相关的，把一层neuron的“梯度”写成向量形式，即为δ<sup>l</sup>，据此我们就可以用该向量的模||δ<sup>l</sup>||表示第l个hidden layer的学习速度（这里不考虑input层和output层）。<br>通过500个epoch的训练，作者绘制了”||δ<sup>l</sup>||-epoch”的图像，发现无论是2个hidden layer还是3个、4个，越靠前的hidden layer的||δ<sup>l</sup>||，即学习速度就越低，在4 hidden layer的网络中，第一个hidden layer学习得比第四个hidden layer慢将近100倍！这种“梯度”随着反向传播递减的现象被称为<strong><em>vanishing gradient problem</em></strong>，即梯度消失问题。<br>然而可能有人有疑惑，梯度消失真的可以算作问题吗——或许前面hidden layer的weight和bias真的达到最优值了呢？这显然有误，前面的hidden layer的“梯度”从刚开始训练就较小，一直持续到训练结束，其参数得到的更新就相对较少，导致在前几层——尤其是第一个hidden layer处input信息就损失了许多，这样后层的参数训练地再好也无济于事。<br></p>
+<h2 id="The-cause-of-gradient-vanishing"><a href="#The-cause-of-gradient-vanishing" class="headerlink" title="The cause of gradient vanishing"></a>The cause of gradient vanishing</h2><h3 id="signal-neuron-in-each-layer"><a href="#signal-neuron-in-each-layer" class="headerlink" title="signal neuron in each layer"></a>signal neuron in each layer</h3><p>考虑三个hidden layer，每层只有一个neuron的网络：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190115111735555.png" alt="net"></p>
+<p>根据chain-rule很容易算出第一个hidden layer的“梯度”：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190115112112331.png" alt="grad"></p>
+<p>可以看到除了首项和末项，式中都是w<sub>l</sub>σ’(z<sub>l</sub>)的结构，由于weight初始化为均值为0，标准差为1的Gaussian变量，所以有|w<sub>l</sub>|&lt;1，而σ’(z)&lt;σ’(0)=1/4，所以有|w<sub>l</sub>σ’(z<sub>l</sub>)|&lt;1/4。所以显然，第一个hidden layer的“梯度”<strong>至多</strong>是第二层的1/4，是第三层的1/16，所以梯度消失的问题得到了初步解释。<br>但是稍加思索就会发现上面的证明其实是由问题的，因为只能在第一次反向传播时确保|w<sub>l</sub>|&lt;1，update后的weight并不能保证仍然小于1——没错，当|w<sub>l</sub>|更新到足够大时（并且σ’不很），前隐藏层的“梯度”就会远大于后hidden layer，此时这种现象称为<strong><em>exploding gradient problem.</em></strong>可见采用梯度下降法导致的连乘将会使前层的梯度极不稳定，因此上面的两种问题统称为<strong><em>unstable gradient problem.</em></strong><br>想解决上述问题，期望|w<sub>l</sub>σ’(z<sub>l</sub>)|≥1（不要过大），这并不是易事，w较大时，σ’(wa+b)就会减小，所以对于a的值有严格的限制，作者此时提出了3个problem:</p>
+<p>①证明上述情况发生时weight满足|w|≥4。<br></p>
+<p>②上述情况中a波动范围限制如下宽度<br>$$<br>\frac{2}{|w|}\ln (\frac{|w|(1+\sqrt{1-4/|w|})}{2}-1)<br>$$<br>③上式在|w|≈6.9是取得最大值，为约为0.45。<br></p>
+<p>从其中的三个结论——尤其是问题三可以看出，a满足的条件还是较为苛刻的。<br></p>
+<h3 id="More-complex-network"><a href="#More-complex-network" class="headerlink" title="More complex network"></a>More complex network</h3><p>当每层的neuron不止一个时，某一层的梯度为</p>
+<p><img src="https://img-blog.csdnimg.cn/20190115130020107.png" alt="grad2"></p>
+<p>其中Σ’(z<sup>l</sup>)是对角矩阵，其对角元为第l层所有σ’(z)，w<sup>l</sup>就是权重矩阵，▽<sub>a</sub>C是C对output层每个a的偏导组成的向量，该式与之前单neuron的情况大同小异。</p>
+<h2 id="Others"><a href="#Others" class="headerlink" title="Others"></a>Others</h2><p>深层次的神经网络除了梯度不稳定外还有其他问题，可能是activation function的选取、更新方法的问题，也可能与全连接网络这种结构有关。</p>
 
       
     </div>
@@ -362,7 +381,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="http://yoursite.com/2019/12/23/NJU-ics-lab2-x86-64%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" title="inline assembly">http://yoursite.com/2019/12/23/NJU-ics-lab2-x86-64%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/</a>
+    <a href="http://yoursite.com/2020/02/13/The-vanishing-gradient/" title="The vanishing gradient">http://yoursite.com/2020/02/13/The-vanishing-gradient/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -384,14 +403,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2020/02/11/A-visual-proof-that-neural-nets-can-compute-any-function/" rel="next" title="A visual proof that neural nets can compute any function">
+                <i class="fa fa-chevron-left"></i> A visual proof that neural nets can compute any function
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/12/24/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%AF%BC%E8%AE%BA-Assignment5-mini-go/" rel="prev" title="mini_AlphaGo">
-                mini_AlphaGo <i class="fa fa-chevron-right"></i>
+              <a href="/2020/02/16/Deep-learning-CNN/" rel="prev" title="Deep learning(CNN)">
+                Deep learning(CNN) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -543,7 +566,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2019-12-23："><span class="nav-number">1.</span> <span class="nav-text">2019&#x2F;12&#x2F;23：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2019-1-2"><span class="nav-number">2.</span> <span class="nav-text">2019&#x2F;1&#x2F;2</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Vanishing-gradient"><span class="nav-number">1.</span> <span class="nav-text">Vanishing gradient</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-cause-of-gradient-vanishing"><span class="nav-number">2.</span> <span class="nav-text">The cause of gradient vanishing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#signal-neuron-in-each-layer"><span class="nav-number">2.1.</span> <span class="nav-text">signal neuron in each layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#More-complex-network"><span class="nav-number">2.2.</span> <span class="nav-text">More complex network</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Others"><span class="nav-number">3.</span> <span class="nav-text">Others</span></a></li></ol></div>
             
 
           </div>

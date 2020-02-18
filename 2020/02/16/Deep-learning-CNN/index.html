@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="说在前面的话：长文预警。除了介绍CNN外，还有许多作者对当前深度学习及AI行业的见解。另外，配置theano真的恶心（无奈代码用的是theano，否则早用tensorflow了，我的anaconda是卸了装，装了卸，到现在还没搞好），所以目前代码都没跑过，只能阅读分析了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deep learning(CNN)">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;16&#x2F;Deep-learning-CNN&#x2F;index.html">
+<meta property="og:site_name" content="Paul&#39;s Blog">
+<meta property="og:description" content="说在前面的话：长文预警。除了介绍CNN外，还有许多作者对当前深度学习及AI行业的见解。另外，配置theano真的恶心（无奈代码用的是theano，否则早用tensorflow了，我的anaconda是卸了装，装了卸，到现在还没搞好），所以目前代码都没跑过，只能阅读分析了。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190115193349717.png?x-oss-process&#x3D;image&#x2F;watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L25peWlkYW4wNTI3,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190115194515414.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190115201950171.png?x-oss-process&#x3D;image&#x2F;watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L25peWlkYW4wNTI3,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;IMG_0353(20200216-163210).PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;201901152127530.png?x-oss-process&#x3D;image&#x2F;watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L25peWlkYW4wNTI3,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190115212957479.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190115213516185.png?x-oss-process&#x3D;image&#x2F;watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L25peWlkYW4wNTI3,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https:&#x2F;&#x2F;cn.bing.com&#x2F;th?id&#x3D;OIP.0cr6Vk65z-uZhbTOnD-kvwHaD4&amp;pid&#x3D;Api&amp;rs&#x3D;1">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;IMG_0354(20200218-093439).PNG">
+<meta property="article:published_time" content="2020-02-16T07:45:40.000Z">
+<meta property="article:modified_time" content="2020-02-18T04:19:29.160Z">
+<meta property="article:author" content="Mianzhi Pan">
+<meta property="article:tag" content="recording">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190115193349717.png?x-oss-process&#x3D;image&#x2F;watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L25peWlkYW4wNTI3,size_16,color_FFFFFF,t_70">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/02/16/Deep-learning-CNN/"/>
+
+
+
+
+
+  <title>Deep learning(CNN) | Paul's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paul's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Strive for a postgraduate recommendation.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/16/Deep-learning-CNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mianzhi Pan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paul's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Deep learning(CNN)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-16T15:45:40+08:00">
+                2020-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index">
+                    <span itemprop="name">AI</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>说在前面的话：</strong>长文预警。除了介绍CNN外，还有许多作者对当前深度学习及AI行业的见解。另外，配置theano真的恶心（无奈代码用的是theano，否则早用tensorflow了，我的anaconda是卸了装，装了卸，到现在还没搞好），所以目前代码都没跑过，只能阅读分析了。</p>
+<a id="more"></a>
+
+<p>在介绍CNN前，先看一下<code>network3.py</code>中的<code>FullyConnectedLayer</code>类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FullyConnectedLayer</span><span class="params">(object)</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, n_in, n_out, activation_fn=sigmoid, p_dropout=<span class="number">0.0</span>)</span>:</span></span><br><span class="line">        self.n_in = n_in</span><br><span class="line">        self.n_out = n_out</span><br><span class="line">        self.activation_fn = activation_fn</span><br><span class="line">        self.p_dropout = p_dropout</span><br><span class="line">        <span class="comment"># Initialize weights and biases</span></span><br><span class="line">        self.w = theano.shared(</span><br><span class="line">            np.asarray(</span><br><span class="line">                np.random.normal(</span><br><span class="line">                    loc=<span class="number">0.0</span>, scale=np.sqrt(<span class="number">1.0</span>/n_out), size=(n_in, n_out)),</span><br><span class="line">                dtype=theano.config.floatX),</span><br><span class="line">            name=<span class="string">'w'</span>, borrow=<span class="literal">True</span>)</span><br><span class="line">        self.b = theano.shared(</span><br><span class="line">            np.asarray(np.random.normal(loc=<span class="number">0.0</span>, scale=<span class="number">1.0</span>, size=(n_out,)),</span><br><span class="line">                       dtype=theano.config.floatX),</span><br><span class="line">            name=<span class="string">'b'</span>, borrow=<span class="literal">True</span>)</span><br><span class="line">        self.params = [self.w, self.b]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_inpt</span><span class="params">(self, inpt, inpt_dropout, mini_batch_size)</span>:</span></span><br><span class="line">        self.inpt = inpt.reshape((mini_batch_size, self.n_in))</span><br><span class="line">        self.output = self.activation_fn(</span><br><span class="line">            (<span class="number">1</span>-self.p_dropout)*T.dot(self.inpt, self.w) + self.b)</span><br><span class="line">        self.y_out = T.argmax(self.output, axis=<span class="number">1</span>)</span><br><span class="line">        self.inpt_dropout = dropout_layer(</span><br><span class="line">            inpt_dropout.reshape((mini_batch_size, self.n_in)), self.p_dropout)</span><br><span class="line">        self.output_dropout = self.activation_fn(</span><br><span class="line">            T.dot(self.inpt_dropout, self.w) + self.b)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">accuracy</span><span class="params">(self, y)</span>:</span></span><br><span class="line">        <span class="string">"Return the accuracy for the mini-batch."</span></span><br><span class="line">        <span class="keyword">return</span> T.mean(T.eq(y, self.y_out))</span><br></pre></td></tr></table></figure>
+
+<p><code>init</code>就是初始化一些参数，这里bias初始化为<code>(n_out,)</code>形状，其实就是一个<code>n_out</code>列的一维数组，这样使得它在后续的运算中有扩展性，可以同时加到<code>mini_batch</code>个数据上。需要注意<code>p_dropout</code>是被dropout的概率，因为我们要使用dropout方法了（具体实施后面会说），初始化权重和bias时采用的是theano的共享变量，指出了变量名分别为’w’和’b’，borrow参数设置为True，表示变量可以被后续操作更改。<code>set_inpt</code>方法是输入数据并计算出output的，注意设置input时用了两种方法，<code>self.inpt</code>和<code>self.output</code>用于validation和test，它们没用用dropout，虽然输出时前面乘了<code>(1-self.dropout)</code>，但这只是把所有元素都缩放了相同的倍数，实际上并没有用到dropout（虽然我不知道到底乘了干嘛）。<code>self.inpt_dropout</code>和<code>self.output_dropout</code>用于train，它们真正用了dropout，其中的<code>dropout_layer</code>函数如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dropout_layer</span><span class="params">(layer, p_dropout)</span>:</span></span><br><span class="line">    srng = shared_randomstreams.RandomStreams(</span><br><span class="line">        np.random.RandomState(<span class="number">0</span>).randint(<span class="number">999999</span>))</span><br><span class="line">    mask = srng.binomial(n=<span class="number">1</span>, p=<span class="number">1</span>-p_dropout, size=layer.shape)</span><br><span class="line">    <span class="keyword">return</span> layer*T.cast(mask, theano.config.floatX)</span><br></pre></td></tr></table></figure>
+
+<p>由于不了解theano，我只能知道它的大体思想是通过随机流srng生成一个与layer同shape的二项分布，将其数据格式转换成与w、b相同的<code>theano.config.floatX</code>后与layer做内积，这样就达到了随机舍弃部分neuron的目的，注意舍弃的数目由<code>p_dropout</code>控制。这个函数我觉得很巧妙：将理论上的舍弃——即要么是0要么是1用二项分布实现。</p>
+<h2 id="Convolutional-networks"><a href="#Convolutional-networks" class="headerlink" title="Convolutional networks"></a>Convolutional networks</h2><p>之前的全连接网络总给人一种“暴力求解”的感觉，因为由于其全连接性，导致每一层似乎都把输入图像的许多特征都糅合起来，即没有考虑图像的空间结构<strong>spatial structure</strong>（说的有点模糊，意会即可），而CNN则很好地使用了图像的spatial structure。</p>
+<h3 id="Local-receptive-fields"><a href="#Local-receptive-fields" class="headerlink" title="Local receptive fields"></a>Local receptive fields</h3><p>之前我们的输入是784×1的数据，现在CNN中的输入是28×28的数据，此时取一个固定大小的“窗口”，从图片左上角以一定的步长从左到右、从上到下移动到右下角，即（可能有重叠地）覆盖整张图片，每次移动，整个这个“窗口“的内容都会被映射成一个数字（具体方法接下来介绍）。这个”窗口“即为<strong><em>local receptive fields</em></strong>，移动的”步长“即为<strong><em>stride length</em></strong>，以5×5的”窗口“，步长1为例如下图：</p>
+<img src="https://img-blog.csdnimg.cn/20190115193349717.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L25peWlkYW4wNTI3,size_16,color_FFFFFF,t_70" alt="local" style="zoom:80%;" />
+
+<p>很容易看出原本28×28的图片经过这样的处理变成了24×24。</p>
+<h3 id="Shared-weights-and-biases"><a href="#Shared-weights-and-biases" class="headerlink" title="Shared weights and biases"></a>Shared weights and biases</h3><p>和FC net相邻两层的神经元两两之间都有各自的weight不同，CNN采用共享的权重和偏置。<br>上面提到了以窗口为单位映射的方法，如何把一个窗口内数据映射为单个数值？仍以上面5×5的窗口为例，将其与一个5×5的weight做内积（即convolution，这也是CNN名字的由来）即可。事实上，对于窗口覆盖完图片这一整个过程，每次映射采用的weight都是一样的，至于bias则是在所有内积做完后再加上。于是这样一个不变的weight就可以想象提炼成图片的一个特征，随着窗口内数据的变化，得到的output内容也不同，并且其仍会呈现spatial structure。所以，这样一整个映射就是一次<strong><em>feature map</em></strong>，其weight和bias即为<strong><em>shared weight</em></strong>和<strong><em>shared bias</em></strong>，这两个参数也定义了<strong><em>kernel or filter</em></strong>(也就是原来的神经元，只不过由于共享参数它便具有了”过滤”特征的功能)。</p>
+<img src="https://img-blog.csdnimg.cn/20190115194515414.png" alt="gongshi" style="zoom:80%;" />
+
+<p>上式w是一个5×5的矩阵，显然(j,k)对应的是当前窗口左上角的”坐标“。<br></p>
+<p>事实上，提取的特征也并不局限在一个，图像识别需要更多的特征——多搞几个weight就是了，早期的LeNet-5就采用了6个特征，其local receptive field也是5×5，所以，原本的28×28数据就变成了6×24×24的数据，也可以看成此时有了六个filter。将特征（20个）可视化可以更清楚地理解feature map的过程：</p>
+<img src="https://img-blog.csdnimg.cn/20190115201950171.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L25peWlkYW4wNTI3,size_16,color_FFFFFF,t_70" alt="map" style="zoom:50%;" />
+
+<p>颜色较深的像素对应着较大的weight元素，反之则较小。其实最后训练好的weight有些可以看出其对应feature，比如轮廓等，但大部分是看不懂的。<br>于是，CNN参数显然远远少于FC net，这就意味着更高的学习速度，更深的网络。这里再贴出我的一张笔记：</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/IMG_0353(20200216-163210).PNG" alt="biji" style="zoom: 33%;" />
+
+<h3 id="Pooling-layers"><a href="#Pooling-layers" class="headerlink" title="Pooling layers"></a>Pooling layers</h3><p>池化层通常紧跟着卷积层，作用是简化信息——其实就类似于缩小图片。<strong><em>max-pooling</em></strong>是很常用的一种池化方法，在卷积层的24×24取一个窗口（先以一个feature为例），不妨设窗口大小为2×2，取其中灰度值最大的像素（如果是RGB三色通道貌似看RGB平均值），其他三个像素丢弃，如下图（貌似池化层的窗口不重叠）：</p>
+<p><img src="https://img-blog.csdnimg.cn/201901152127530.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L25peWlkYW4wNTI3,size_16,color_FFFFFF,t_70" alt="pooling"></p>
+<p>实际操作效果就类似于缩小图片。这里了解一个概念：平移不变性，我只是偶然想到这个概念，[知乎这个回答](深度学习cnn中，怎么理解图像进行池化（pooling）后的平移不变性？ - 三符的回答 - 知乎 <a href="https://www.zhihu.com/question/34898241/answer/60705313)感觉说的不错，这位答主还提到了***average" target="_blank" rel="noopener">https://www.zhihu.com/question/34898241/answer/60705313)感觉说的不错，这位答主还提到了***average</a> pooling<strong><em>（另一种池化方法，此外还有</em></strong>L2 pooling***——取窗口数据的均方根）对背景保留更好，max pooling对纹理提取更好。可见相对于其他特征，某个特征的具体位置并不算重要。<br>对于多个feature map，每一个map后的output都要pooling：</p>
+<img src="https://img-blog.csdnimg.cn/20190115212957479.png" alt="more" style="zoom:80%;" />
+
+<p>需要说明的是，这里把pooling layer单独看作一层，但由于其往往连在卷积层之后，所以它和卷积层也可以一起看作一层，即<strong><em>convolutional-pooling layers</em></strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConvPoolLayer</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, filter_shape, image_shape, poolsize=<span class="params">(<span class="number">2</span>, <span class="number">2</span>)</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 activation_fn=sigmoid)</span>:</span></span><br><span class="line">        <span class="string">"""`filter_shape` is a tuple of length 4, whose entries are the number</span></span><br><span class="line"><span class="string">        of filters, the number of input feature maps, the filter height, and the</span></span><br><span class="line"><span class="string">        filter width.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        `image_shape` is a tuple of length 4, whose entries are the</span></span><br><span class="line"><span class="string">        mini-batch size, the number of input feature maps, the image</span></span><br><span class="line"><span class="string">        height, and the image width.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        `poolsize` is a tuple of length 2, whose entries are the y and</span></span><br><span class="line"><span class="string">        x pooling sizes.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.filter_shape = filter_shape</span><br><span class="line">        self.image_shape = image_shape</span><br><span class="line">        self.poolsize = poolsize</span><br><span class="line">        self.activation_fn=activation_fn</span><br><span class="line">        <span class="comment"># initialize weights and biases</span></span><br><span class="line">        n_out = (filter_shape[<span class="number">0</span>]*np.prod(filter_shape[<span class="number">2</span>:])/np.prod(poolsize))</span><br><span class="line">        self.w = theano.shared(</span><br><span class="line">            np.asarray(</span><br><span class="line">                np.random.normal(loc=<span class="number">0</span>, scale=np.sqrt(<span class="number">1.0</span>/n_out), size=filter_shape),</span><br><span class="line">                dtype=theano.config.floatX),</span><br><span class="line">            borrow=<span class="literal">True</span>)</span><br><span class="line">        self.b = theano.shared(</span><br><span class="line">            np.asarray(</span><br><span class="line">                np.random.normal(loc=<span class="number">0</span>, scale=<span class="number">1.0</span>, size=(filter_shape[<span class="number">0</span>],)),</span><br><span class="line">                dtype=theano.config.floatX),</span><br><span class="line">            borrow=<span class="literal">True</span>)</span><br><span class="line">        self.params = [self.w, self.b]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_inpt</span><span class="params">(self, inpt, inpt_dropout, mini_batch_size)</span>:</span></span><br><span class="line">        self.inpt = inpt.reshape(self.image_shape)</span><br><span class="line">        conv_out = conv.conv2d(</span><br><span class="line">            input=self.inpt, filters=self.w, filter_shape=self.filter_shape,</span><br><span class="line">            image_shape=self.image_shape)</span><br><span class="line">        pooled_out = pool_2d(</span><br><span class="line">            input=conv_out, ws=self.poolsize, ignore_border=<span class="literal">True</span>)</span><br><span class="line">        self.output = self.activation_fn(</span><br><span class="line">            pooled_out + self.b.dimshuffle(<span class="string">'x'</span>, <span class="number">0</span>, <span class="string">'x'</span>, <span class="string">'x'</span>))</span><br><span class="line">        self.output_dropout = self.output <span class="comment"># no dropout in the convolutional layers</span></span><br></pre></td></tr></table></figure>
+
+<p>有一点疑惑是，在初始化权重时，根据注释，假设<code>filter_shape=(20,1,5,5)</code>，那么<code>n_out</code>就等于20×(5×5)/(2×2)=125，有点搞不明白。倒数第二行的<code>dimshuffle()</code>方法可以把原本shape为(20,)的bias转换为(1,20,1,1)shape，由此可见输出的shape为(1,20,1,1)，但theano中conv_2d、pool_2d方法具体运算过程我还是没有透彻了解，<strong>这里需要加强学习。</strong></p>
+<h3 id="Putting-it-all-together"><a href="#Putting-it-all-together" class="headerlink" title="Putting it all together"></a>Putting it all together</h3><p>至于最后的输出，只要在最后加一个FC层即可：</p>
+<img src="https://img-blog.csdnimg.cn/20190115213516185.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L25peWlkYW4wNTI3,size_16,color_FFFFFF,t_70" alt="output" style="zoom:80%;" />
+
+<p>FC层的十个neuron与池化层的三个neuron（应该是3个吧）全连接，训练方法与FC net一样采用SGD和BP算法，只不过其具体过程不似之前那般简单，作者也以Problem的形式提出来，我暂且还没有思考。<br>上面是最简单的CNN，其实卷积池化层、FC层的数量都不限于一个，择优录取即可。<br></p>
+<p>FC层默认的激励函数是sigmoid，然而输出层还可以用Softmax（更常见）:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SoftmaxLayer</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, n_in, n_out, p_dropout=<span class="number">0.0</span>)</span>:</span></span><br><span class="line">        self.n_in = n_in</span><br><span class="line">        self.n_out = n_out</span><br><span class="line">        self.p_dropout = p_dropout</span><br><span class="line">        <span class="comment"># Initialize weights and biases</span></span><br><span class="line">        self.w = theano.shared(</span><br><span class="line">            np.zeros((n_in, n_out), dtype=theano.config.floatX),</span><br><span class="line">            name=<span class="string">'w'</span>, borrow=<span class="literal">True</span>)</span><br><span class="line">        self.b = theano.shared(</span><br><span class="line">            np.zeros((n_out,), dtype=theano.config.floatX),</span><br><span class="line">            name=<span class="string">'b'</span>, borrow=<span class="literal">True</span>)</span><br><span class="line">        self.params = [self.w, self.b]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_inpt</span><span class="params">(self, inpt, inpt_dropout, mini_batch_size)</span>:</span></span><br><span class="line">        self.inpt = inpt.reshape((mini_batch_size, self.n_in))</span><br><span class="line">        self.output = softmax((<span class="number">1</span>-self.p_dropout)*T.dot(self.inpt, self.w) + self.b)</span><br><span class="line">        self.y_out = T.argmax(self.output, axis=<span class="number">1</span>)</span><br><span class="line">        self.inpt_dropout = dropout_layer(</span><br><span class="line">            inpt_dropout.reshape((mini_batch_size, self.n_in)), self.p_dropout)</span><br><span class="line">        self.output_dropout = softmax(T.dot(self.inpt_dropout, self.w) + self.b)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cost</span><span class="params">(self, net)</span>:</span></span><br><span class="line">        <span class="string">"Return the log-likelihood cost."</span></span><br><span class="line">        <span class="keyword">return</span> -T.mean(T.log(self.output_dropout)[T.arange(net.y.shape[<span class="number">0</span>]), net.y])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">accuracy</span><span class="params">(self, y)</span>:</span></span><br><span class="line">        <span class="string">"Return the accuracy for the mini-batch."</span></span><br><span class="line">        <span class="keyword">return</span> T.mean(T.eq(y, self.y_out))</span><br></pre></td></tr></table></figure>
+
+<p>与之前的layer大体相同，一点不同是，Softmax将权重和偏置都初始化为0，因为之前对它们初始化的方法的讨论都是基于sigmoid的，对Softmax未必适用，所以干脆直接初始化为0。另外里面还用到了theano的softmax网络，具体还要去看theano手册。<br>有了基本的layer，就可以用他们搭建一个网络了，初始化过程包括各种参数以及前向计算方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Network</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, layers, mini_batch_size)</span>:</span></span><br><span class="line">        <span class="string">"""Takes a list of `layers`, describing the network architecture, and</span></span><br><span class="line"><span class="string">        a value for the `mini_batch_size` to be used during training</span></span><br><span class="line"><span class="string">        by stochastic gradient descent.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.layers = layers</span><br><span class="line">        self.mini_batch_size = mini_batch_size</span><br><span class="line">        self.params = [param <span class="keyword">for</span> layer <span class="keyword">in</span> self.layers <span class="keyword">for</span> param <span class="keyword">in</span> layer.params]<span class="comment">#all weights and bias</span></span><br><span class="line">        self.x = T.matrix(<span class="string">"x"</span>)<span class="comment">#a 2-d array whose name is "x"</span></span><br><span class="line">        self.y = T.ivector(<span class="string">"y"</span>)<span class="comment">#a vector whose elements are int</span></span><br><span class="line">        init_layer = self.layers[<span class="number">0</span>]</span><br><span class="line">        init_layer.set_inpt(self.x, self.x, self.mini_batch_size)</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, len(self.layers)):</span><br><span class="line">            prev_layer, layer  = self.layers[j<span class="number">-1</span>], self.layers[j]</span><br><span class="line">            layer.set_inpt(</span><br><span class="line">                prev_layer.output, prev_layer.output_dropout, self.mini_batch_size)</span><br><span class="line">        self.output = self.layers[<span class="number">-1</span>].output</span><br><span class="line">        self.output_dropout = self.layers[<span class="number">-1</span>].output_dropout</span><br></pre></td></tr></table></figure>
+
+<p>然后和之前的代码一样用SGD训练，先看一部分代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SGD</span><span class="params">(self, training_data, epochs, mini_batch_size, eta,</span></span></span><br><span class="line"><span class="function"><span class="params">        validation_data, test_data, lmbda=<span class="number">0.0</span>)</span>:</span></span><br><span class="line">    <span class="string">"""Train the network using mini-batch stochastic gradient descent."""</span></span><br><span class="line">    training_x, training_y = training_data</span><br><span class="line">    validation_x, validation_y = validation_data</span><br><span class="line">    test_x, test_y = test_data</span><br><span class="line"></span><br><span class="line">    <span class="comment"># compute number of minibatches for training, validation and testing</span></span><br><span class="line">    num_training_batches = int(size(training_data)/mini_batch_size)</span><br><span class="line">    num_validation_batches = int(size(validation_data)/mini_batch_size)</span><br><span class="line">    num_test_batches = int(size(test_data)/mini_batch_size)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># define the (regularized) cost function, symbolic gradients, and updates</span></span><br><span class="line">    l2_norm_squared = sum([(layer.w**<span class="number">2</span>).sum() <span class="keyword">for</span> layer <span class="keyword">in</span> self.layers])</span><br><span class="line">    cost = self.layers[<span class="number">-1</span>].cost(self)+\</span><br><span class="line">           <span class="number">0.5</span>*lmbda*l2_norm_squared/num_training_batches</span><br><span class="line">    grads = T.grad(cost, self.params)</span><br><span class="line">    updates = [(param, param-eta*grad)</span><br><span class="line">               <span class="keyword">for</span> param, grad <span class="keyword">in</span> zip(self.params, grads)]</span><br></pre></td></tr></table></figure>
+
+<p>这里初始化了数据集，计算了三个数据集中各自mini_batch的数目，并且使用了L2 regularization，给出了cost的表达式和更新参数的公式，这里theano.tensor中的<code>grad</code>方法直接给出了cost对于weight和bias的<strong>导函数</strong>，大大减少了代码量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># define functions to train a mini-batch, and to compute the</span></span><br><span class="line">   <span class="comment"># accuracy in validation and test mini-batches.</span></span><br><span class="line">   i = T.lscalar() <span class="comment"># mini-batch index(long int)</span></span><br><span class="line">   train_mb = theano.function(</span><br><span class="line">       [i], cost, updates=updates,</span><br><span class="line">       givens=&#123;</span><br><span class="line">           self.x:</span><br><span class="line">           training_x[i*self.mini_batch_size: (i+<span class="number">1</span>)*self.mini_batch_size],</span><br><span class="line">           self.y:</span><br><span class="line">           training_y[i*self.mini_batch_size: (i+<span class="number">1</span>)*self.mini_batch_size]</span><br><span class="line">       &#125;)</span><br><span class="line">   validate_mb_accuracy = theano.function(</span><br><span class="line">       [i], self.layers[<span class="number">-1</span>].accuracy(self.y),</span><br><span class="line">       givens=&#123;</span><br><span class="line">           self.x:</span><br><span class="line">           validation_x[i*self.mini_batch_size: (i+<span class="number">1</span>)*self.mini_batch_size],</span><br><span class="line">           self.y:</span><br><span class="line">           validation_y[i*self.mini_batch_size: (i+<span class="number">1</span>)*self.mini_batch_size]</span><br><span class="line">       &#125;)</span><br><span class="line">   test_mb_accuracy = theano.function(</span><br><span class="line">       [i], self.layers[<span class="number">-1</span>].accuracy(self.y),</span><br><span class="line">       givens=&#123;</span><br><span class="line">           self.x:</span><br><span class="line">           test_x[i*self.mini_batch_size: (i+<span class="number">1</span>)*self.mini_batch_size],</span><br><span class="line">           self.y:</span><br><span class="line">           test_y[i*self.mini_batch_size: (i+<span class="number">1</span>)*self.mini_batch_size]</span><br><span class="line">       &#125;)</span><br><span class="line">   self.test_mb_predictions = theano.function(</span><br><span class="line">       [i], self.layers[<span class="number">-1</span>].y_out,</span><br><span class="line">       givens=&#123;</span><br><span class="line">           self.x:</span><br><span class="line">           test_x[i*self.mini_batch_size: (i+<span class="number">1</span>)*self.mini_batch_size]</span><br><span class="line">       &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>这段代码初看有点令人头大，但实际上非常简单，首先用<code>T.lscalar()</code>初始化一个long int用于表示mini_batch index，接下来的<code>theano.function</code>是重头戏，<a href="https://github.com/Theano/theano/blob/d395439aec5a6ddde8ef5c266fd976412a5c5695/theano/compile/function.py#L74-L318" target="_blank" rel="noopener">这里</a>是该方法源码，<a href="https://blog.csdn.net/u014519377/article/details/54354088" target="_blank" rel="noopener">这篇blog</a>介绍的也很好，简单来说，该方法就是通过input（即第一个参数<code>[i]</code>）返回待计算的output（第二个参数，<code>cost</code>、<code>accuracy</code>等），计算过程中需要用到updates（如果有需要更新的参数，输入形式是<code>(shared variables,update expression)</code>）和givens（上面的代码用的是字典，每次都会根据input更新，但字典的key不变）。<br>所以，上面其实就是定义了四个函数，分别是训练cost、验证accuracy、测试accuracy和预测函数，前三个有点类似于<code>network2.py</code>中的四个指标。</p>
+<p>接下来的代码用到了上面的四个函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Do the actual training</span></span><br><span class="line">        best_validation_accuracy = <span class="number">0.0</span></span><br><span class="line">        <span class="keyword">for</span> epoch <span class="keyword">in</span> range(epochs):</span><br><span class="line">            <span class="keyword">for</span> minibatch_index <span class="keyword">in</span> range(num_training_batches):</span><br><span class="line">                iteration = num_training_batches*epoch+minibatch_index</span><br><span class="line">                <span class="keyword">if</span> iteration % <span class="number">1000</span> == <span class="number">0</span>:</span><br><span class="line">                    print(<span class="string">"Training mini-batch number &#123;0&#125;"</span>.format(iteration))</span><br><span class="line">                cost_ij = train_mb(minibatch_index)</span><br><span class="line">                <span class="keyword">if</span> (iteration+<span class="number">1</span>) % num_training_batches == <span class="number">0</span>:</span><br><span class="line">                    validation_accuracy = np.mean(</span><br><span class="line">                        [validate_mb_accuracy(j) <span class="keyword">for</span> j <span class="keyword">in</span> range(num_validation_batches)])</span><br><span class="line">                    print(<span class="string">"Epoch &#123;0&#125;: validation accuracy &#123;1:.2%&#125;"</span>.format(</span><br><span class="line">                        epoch, validation_accuracy))</span><br><span class="line">                    <span class="keyword">if</span> validation_accuracy &gt;= best_validation_accuracy:</span><br><span class="line">                        print(<span class="string">"This is the best validation accuracy to date."</span>)</span><br><span class="line">                        best_validation_accuracy = validation_accuracy</span><br><span class="line">                        best_iteration = iteration</span><br><span class="line">                        <span class="keyword">if</span> test_data:</span><br><span class="line">                            test_accuracy = np.mean(</span><br><span class="line">                                [test_mb_accuracy(j) <span class="keyword">for</span> j <span class="keyword">in</span> range(num_test_batches)])</span><br><span class="line">                            print(<span class="string">'The corresponding test accuracy is &#123;0:.2%&#125;'</span>.format(</span><br><span class="line">                                test_accuracy))</span><br><span class="line">        print(<span class="string">"Finished training network."</span>)</span><br><span class="line">        print(<span class="string">"Best validation accuracy of &#123;0:.2%&#125; obtained at iteration &#123;1&#125;"</span>.format(</span><br><span class="line">            best_validation_accuracy, best_iteration))</span><br><span class="line">        print(<span class="string">"Corresponding test accuracy of &#123;0:.2%&#125;"</span>.format(test_accuracy))</span><br></pre></td></tr></table></figure>
+
+<p><code>iteration</code>是迭代mini_batch的轮数，每满1000轮输出一条信息。一个epoch将所有的traning_batches迭代一遍，并且在每个epoch最后一次迭代后（<code>cost_ij</code>算完后）计算验证集accuracy，更新最佳验证精度，并记住最佳验证精度对应的迭代轮数<code>best_iteration</code>。</p>
+<h2 id="Practical-application-of-CNN"><a href="#Practical-application-of-CNN" class="headerlink" title="Practical application of CNN"></a>Practical application of CNN</h2><p>为提高减少overfitting，作者通过<code>expand_mnist.py</code>手动扩大数据集，具体代码没有看，据作者自己介绍，是通过上下左右各移动一个pixel实现的，所以原来的50000条data就扩大到了250000条。另外，通过采用多FC层、将每个FC层neuron数增至1000、在其中使用dropout、用ReLU作为激励函数、采用Softmax等方法，最终作者得到了99.60％的准确率。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">net = Network([</span><br><span class="line">	ConvPoolLayer(image_shape=(mini_batch_size, <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>),</span><br><span class="line">				  filter_shape=(<span class="number">20</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">5</span>),</span><br><span class="line">				  poolsize=(<span class="number">2</span>, <span class="number">2</span>),</span><br><span class="line">				  activation_fn=ReLU),</span><br><span class="line">   ConvPoolLayer(image_shape=(mini_batch_size, <span class="number">20</span>, <span class="number">12</span>, <span class="number">12</span>),</span><br><span class="line">				  filter_shape=(<span class="number">40</span>, <span class="number">20</span>, <span class="number">5</span>, <span class="number">5</span>),</span><br><span class="line">				  poolsize=(<span class="number">2</span>, <span class="number">2</span>),</span><br><span class="line">				  activation_fn=ReLU),</span><br><span class="line">   FullyConnectedLayer(</span><br><span class="line">		n_in=<span class="number">40</span>*<span class="number">4</span>*<span class="number">4</span>, n_out=<span class="number">1000</span>, activation_fn=ReLU, p_dropout=<span class="number">0.5</span>),</span><br><span class="line">   FullyConnectedLayer(</span><br><span class="line">		n_in=<span class="number">1000</span>, n_out=<span class="number">1000</span>, activation_fn=ReLU, p_dropout=<span class="number">0.5</span>),</span><br><span class="line">   SoftmaxLayer(n_in=<span class="number">1000</span>, n_out=<span class="number">10</span>, p_dropout=<span class="number">0.5</span>)],</span><br><span class="line">	mini_batch_size)</span><br><span class="line">net.SGD(expanded_training_data, <span class="number">40</span>, mini_batch_size, <span class="number">0.03</span>,validation_data, test_data)</span><br></pre></td></tr></table></figure>
+
+<p>作者训练了5个这样的网络，通过投票策略识别手写数字，又将准确率提高到99.67％。<br>值得一提的是，作者只在FC层用了dropout策略，卷积池化层并没有，这是因为后者由于共享权重的机制（每个权重只学一个feature，学到的noise较少），本身就不易overfitting。<br>之前提过unstable gradient的问题，那这章是怎么解决的呢？作者这里说的有点模糊</p>
+<blockquote>
+<p>Of course, the answer is that we haven’t avoided these results.</p>
+</blockquote>
+<p>说白了，并没有明确的一个方法解决unstable gradient。但采用了其他许多方法（除了上面提到的外，还有使用GPU等）提高学习速度、减少overfitting，并得到了不错的accuracy。</p>
+<h2 id="Recent-progress"><a href="#Recent-progress" class="headerlink" title="Recent progress"></a>Recent progress</h2><p><a href="https://blog.csdn.net/feimengjuan/article/details/69666981" target="_blank" rel="noopener">这篇博客</a>介绍了最近的一些深度学习论文，立个flag：把这些论文都研究一下。<br>2014年的ImageNet Large-Scale Visual Recognition Challenge (ILSVRC)竞赛上，GoogleLeNet以93.33％的accuracy获胜，在许多物体的识别上与人类不相上下甚至超过人类。2013年Google的一个团队用深度卷积神经网络识别街景街道号，达到了与人类差不多的准确率，在一些区域为GoogleMap的地理编号提供了巨大帮助。是不是这些就代表ANN性能已经超过了人类视觉？答案是否定的，它的训练、测试数据都是从网络爬下来的，而这些数据与实际应用往往有着较大差异，并不具有代表性，我的理解是ANN在“抗噪”能力上ANN远不如人类。2013年的一篇paper <strong><em>Intriguing properties of neural networks</em></strong>中指出，深度网络会面临<strong><em>effectively blind spots</em></strong>的问题：在能够被正确分类的图像上添加一些噪音会导致分类错误——尽管人眼看上去处理过的图片（adversarial negatives）与原始图片差异并不大：</p>
+<p><img src="https://cn.bing.com/th?id=OIP.0cr6Vk65z-uZhbTOnD-kvwHaD4&pid=Api&rs=1" alt="distort"></p>
+<p>可能网络把原本连续的函数学习成了不连续的函数，幸运的是这种情况实际操作中并不多见，就像有理数在实数轴的分布一样，但这仍值得探究。</p>
+<h2 id="Other-techniques"><a href="#Other-techniques" class="headerlink" title="Other techniques"></a>Other techniques</h2><p>除了之前提到的FC net、CNN外，还有神经网络模型。</p>
+<h3 id="RNN-amp-LSTMS"><a href="#RNN-amp-LSTMS" class="headerlink" title="RNN&amp;LSTMS"></a>RNN&amp;LSTMS</h3><p>之前的所有网络其结构都是固定的，<strong><em>recurrent neural network(RNN)</em></strong>却不是这样，其结构是动态的，即RNN某一层的activation不仅受到前层的影响，同时也受到之前自己输出的影响。这种动态性使得RNN在视频处理、语音识别等领域效果很好。然而，仅仅是空间的连接就会导致unstable gradient，加上时间势必导致更严重的问题，所以RNN需要选择性地接受前段时间的activation，所以就有了<strong><em>Long short-term memory units(LSTMS)</em></strong>。</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/IMG_0354(20200218-093439).PNG" alt="lstm" style="zoom: 33%;" />
+
+<h3 id="DBNS-amp-Boltzmann-machine"><a href="#DBNS-amp-Boltzmann-machine" class="headerlink" title="DBNS&amp;Boltzmann machine"></a>DBNS&amp;Boltzmann machine</h3><p>DBNS全程<strong><em>deep belief networks</em></strong>，它除了可以前向运算（e.x.图像识别）外，还可以被指定一些特征神经元的值后“反向运行”产生“输入值”，即它不仅有“读”的能力，还有“写”的能力。此外，以图像识别为例，DBNS还可以将学到的特征用到其他图片上（说的很概括），即便那些图片没有label，这样就可以实现无监督或半监督学习。Boltzmann machine则是DBNS的关键组成部分。</p>
+<h2 id="Epilogue"><a href="#Epilogue" class="headerlink" title="Epilogue"></a>Epilogue</h2><p>在系统设计与工程方面有Conway’s law:</p>
+<blockquote>
+<p>Any organization that designs a system… will inevitably produce a design whose structure is a copy of the organization’s communication structure.</p>
+</blockquote>
+<p>说的就是我们要理解系统的结构，然而对于AI这个law却不那么适用，因为我们甚至都不知道AI的组成、基本问题，换言之，AI更偏向于是一个science而不是engineering。以医学为例，由最初简单的看病演化出了诸如药理学、解剖学等许多重要分支，所以作者指出science上的Conway law：</p>
+<blockquote>
+<p>And so the structure of our knowledge shapes the social organization of science. But that social shape in turn constrains and helps determine what we can discover.</p>
+</blockquote>
+<p>反观当前deep learning，许多工作仍然局限在用SGD最小化cost上，尚未延伸出深远的子领域，从这点来说，deep learning还是一个相对较shallow的领域。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Mianzhi Pan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://yoursite.com/2020/02/16/Deep-learning-CNN/" title="Deep learning(CNN)">http://yoursite.com/2020/02/16/Deep-learning-CNN/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/13/The-vanishing-gradient/" rel="next" title="The vanishing gradient">
+                <i class="fa fa-chevron-left"></i> The vanishing gradient
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpg"
+                alt="Mianzhi Pan" />
+            
+              <p class="site-author-name" itemprop="name">Mianzhi Pan</p>
+              <p class="site-description motion-element" itemprop="description">Mianzhi Pan's personal website(QQ 964298041)</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/panmianzhi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/wan-wan-ya-44-93/activities" target="_blank" title="Zhihu">
+                      
+                        <i class="fa fa-fw fa-snapchat"></i>Zhihu</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:panmianzhi@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28427771&auto=1&height=66"></iframe>
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Convolutional-networks"><span class="nav-number">1.</span> <span class="nav-text">Convolutional networks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Local-receptive-fields"><span class="nav-number">1.1.</span> <span class="nav-text">Local receptive fields</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shared-weights-and-biases"><span class="nav-number">1.2.</span> <span class="nav-text">Shared weights and biases</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pooling-layers"><span class="nav-number">1.3.</span> <span class="nav-text">Pooling layers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Putting-it-all-together"><span class="nav-number">1.4.</span> <span class="nav-text">Putting it all together</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Practical-application-of-CNN"><span class="nav-number">2.</span> <span class="nav-text">Practical application of CNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Recent-progress"><span class="nav-number">3.</span> <span class="nav-text">Recent progress</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Other-techniques"><span class="nav-number">4.</span> <span class="nav-text">Other techniques</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RNN-amp-LSTMS"><span class="nav-number">4.1.</span> <span class="nav-text">RNN&amp;LSTMS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DBNS-amp-Boltzmann-machine"><span class="nav-number">4.2.</span> <span class="nav-text">DBNS&amp;Boltzmann machine</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Epilogue"><span class="nav-number">5.</span> <span class="nav-text">Epilogue</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mianzhi Pan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
