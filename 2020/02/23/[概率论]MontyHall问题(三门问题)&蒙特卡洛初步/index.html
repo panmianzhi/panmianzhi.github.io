@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="参考链接1，参考链接2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[概率论]MontyHall问题(三门问题)&amp;蒙特卡洛初步">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;23&#x2F;[%E6%A6%82%E7%8E%87%E8%AE%BA]MontyHall%E9%97%AE%E9%A2%98(%E4%B8%89%E9%97%A8%E9%97%AE%E9%A2%98)&amp;%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E5%88%9D%E6%AD%A5&#x2F;index.html">
+<meta property="og:site_name" content="Paul&#39;s Blog">
+<meta property="og:description" content="参考链接1，参考链接2">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https:&#x2F;&#x2F;www.mayi888.com&#x2F;wp-content&#x2F;uploads&#x2F;2017&#x2F;11&#x2F;QQ20171109-111700@2x-1024x662.png">
+<meta property="article:published_time" content="2020-02-23T02:42:21.000Z">
+<meta property="article:modified_time" content="2020-02-23T09:38:56.996Z">
+<meta property="article:author" content="Mianzhi Pan">
+<meta property="article:tag" content="recording">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;www.mayi888.com&#x2F;wp-content&#x2F;uploads&#x2F;2017&#x2F;11&#x2F;QQ20171109-111700@2x-1024x662.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/02/23/[概率论]MontyHall问题(三门问题)&蒙特卡洛初步/"/>
+
+
+
+
+
+  <title>[概率论]MontyHall问题(三门问题)&蒙特卡洛初步 | Paul's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paul's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Strive for a postgraduate recommendation.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/23/%5B%E6%A6%82%E7%8E%87%E8%AE%BA%5DMontyHall%E9%97%AE%E9%A2%98(%E4%B8%89%E9%97%A8%E9%97%AE%E9%A2%98)&%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E5%88%9D%E6%AD%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mianzhi Pan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paul's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[概率论]MontyHall问题(三门问题)&蒙特卡洛初步</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-23T10:42:21+08:00">
+                2020-02-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mathematics/" itemprop="url" rel="index">
+                    <span itemprop="name">mathematics</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://www.cnblogs.com/antineutrino/p/4821580.html" target="_blank" rel="noopener">参考链接1</a>，<a href="http://blog.sciencenet.cn/blog-826653-669134.html" target="_blank" rel="noopener">参考链接2</a></p>
+<a id="more"></a>
+
+<h2 id="MontyHall问题"><a href="#MontyHall问题" class="headerlink" title="MontyHall问题"></a>MontyHall问题</h2><p>问题描述如下：</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">参赛者面前有三扇关闭着的门，其中一扇的后面是一辆汽车，选中后面有车的那扇门就可以赢得该汽车，</span><br><span class="line">而另外两扇门后面则各藏有一只山羊。当参赛者选定了一扇门，但未去开启它的时候，主持人会开启剩</span><br><span class="line">下两扇门中的一扇，露出其中一只山羊。主持人其后会问参赛者要不要更换选择，选另一扇仍然关着的门。</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>首先给出结论：更换的话选到车的概率是2/3，不更换选中车的概率是1/3。用python代码模拟：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">initDoor</span><span class="params">()</span>:</span></span><br><span class="line">    door=[]</span><br><span class="line">    carid=random.randint(<span class="number">1</span>,<span class="number">3</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">3</span>):</span><br><span class="line">        <span class="keyword">if</span> i == (carid<span class="number">-1</span>):</span><br><span class="line">            door.insert(i,<span class="string">"car"</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            door.insert(i,<span class="string">"goat"</span>)</span><br><span class="line">    <span class="keyword">return</span> door</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hostchoose</span><span class="params">(doorid,playerchoice,carid)</span>:</span></span><br><span class="line">    doorid.remove(carid)</span><br><span class="line">    <span class="keyword">if</span> playerchoice == carid:</span><br><span class="line">        hostchoice = random.choice(doorid)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        doorid.remove(playerchoice)</span><br><span class="line">        hostchoice = doorid[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> hostchoice</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">play</span><span class="params">(choice,change,door)</span>:</span></span><br><span class="line">    doorid=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">    dooridd=doorid.copy()</span><br><span class="line"></span><br><span class="line">    carid = door.index(<span class="string">"car"</span>)+<span class="number">1</span></span><br><span class="line">    hostchoice = hostchoose(doorid,choice,carid)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> change == <span class="number">1</span>:</span><br><span class="line">        dooridd.remove(hostchoice)</span><br><span class="line">        dooridd.remove(choice)</span><br><span class="line">        newchoice = dooridd[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        newchoice = choice</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> newchoice == carid:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">"__main__"</span>:</span><br><span class="line">    win = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10000</span>):</span><br><span class="line">        door = initDoor()</span><br><span class="line">        choice = random.randint(<span class="number">1</span>,<span class="number">3</span>)</span><br><span class="line">        win = win + play(choice,<span class="number">0</span>,door)</span><br><span class="line">    print(win)</span><br></pre></td></tr></table></figure>
+
+<p>运行结果与上面的结论相符合。<br>借鉴了文章开头的两个参考链接，对此结论有如下解释：</p>
+<p>穷举出所有可能情况，假设玩家选择1号门，那么主持人就要从2、3号门中打开有🐏的门，车在1、2、3号门中等可能：</p>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>1号门</th>
+<th>2号门</th>
+<th>3号门</th>
+<th>换</th>
+<th>不换</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>car</td>
+<td>goat</td>
+<td>goat</td>
+<td>输</td>
+<td>赢</td>
+</tr>
+<tr>
+<td>2</td>
+<td>goat</td>
+<td>car</td>
+<td>goat</td>
+<td>赢</td>
+<td>输</td>
+</tr>
+<tr>
+<td>3</td>
+<td>goat</td>
+<td>goat</td>
+<td>car</td>
+<td>赢</td>
+<td>输</td>
+</tr>
+</tbody></table>
+<p>可见改变选择选中车的概率是2/3；不改变选择，选中车的概率是1/3。<br>从上表可以逆向思考：如果刚开始选到车，更换选择后必选不到；如果开始没有选到车，更换选择后必选到。所以<strong>更换选择后选到车的概率其实就是刚开始没有选到车的概率</strong>，即为2/3。</p>
+<p>网上争来争去（包括这个问题刚刚出来时有很多类似的争论），归根到底还是：为什么从剩下的两扇门中选中车的概率不是1/2？换言之，假设在主持人打开一扇“羊门”后，找一个对之前发生的事都不知情的路人在剩下的两扇门中选择，显然选中车的概率是1/2，并不是2/3。这就是<strong>蒙特霍尔悖论</strong>。问题出在哪里呢？<br>我认为，无论是之前的玩家，还是后来找来的路人，虽然它们看上去都是要在两个门中做出选择，但事实上两者进行的并不是同一个实验——因为两者掌握的信息并不对等。后者不必分析，显然是fifty fifty；对于前者，一开始选到车的概率是1/3，主持人打开“羊门”并不会改变这个概率（即选到车与主持人开门两个事件是相互独立的）。<br>仍然假设玩家选择一号门，不妨设事件A：车在一号门后面。事件B：主持人选到“羊门”。则显然有P(A)=1/3，P(B)=1，并且A、B相互独立，则由独立事件性质<br>$$<br>P(A|B)=P(A)=1/3<br>$$<br>即不改变选择选到车的概率仍是1/3。类似的问题还有很多，举一个极端情况，例如100 0000张彩票有1张有奖，你选择一张后，去掉剩余彩票中的99 9998张无奖彩票，问是否换成另外一张，答案显然是更换，此时你中奖概率高达0.999999，显然不是1/2。</p>
+<h2 id="蒙特卡洛初步"><a href="#蒙特卡洛初步" class="headerlink" title="蒙特卡洛初步"></a>蒙特卡洛初步</h2><p>蒙特卡洛方法是一种基于“随机数”的计算方法，以求Π为例。考虑边长为2（图中是1）的正方形的内切圆</p>
+<img src="https://www.mayi888.com/wp-content/uploads/2017/11/QQ20171109-111700@2x-1024x662.png" style="zoom: 50%;" />
+
+<p>随机抛一点下去，落入内切圆中的概率显然是<br>$$<br>P=\frac{\pi}{4}<br>$$<br>所以<br>$$<br>\pi =4P<br>$$<br>只要求得P即可，可用python模拟随机落点的行为计算：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calPi</span><span class="params">(count)</span>:</span></span><br><span class="line">    k = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(count):</span><br><span class="line">        x = random.uniform(<span class="number">-1</span>,<span class="number">1</span>)</span><br><span class="line">        y = random.uniform(<span class="number">-1</span>,<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">if</span> x**<span class="number">2</span>+y**<span class="number">2</span>&lt;<span class="number">1</span>:</span><br><span class="line">            k=k+<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> float(<span class="number">4</span>*k/count)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">"__main__"</span>:</span><br><span class="line">    print(calPi(<span class="number">10000000</span>))</span><br></pre></td></tr></table></figure>
+
+<p>模拟1000 0000次的结果是3.14194。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Mianzhi Pan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://yoursite.com/2020/02/23/[%E6%A6%82%E7%8E%87%E8%AE%BA]MontyHall%E9%97%AE%E9%A2%98(%E4%B8%89%E9%97%A8%E9%97%AE%E9%A2%98)&%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E5%88%9D%E6%AD%A5/" title="[概率论]MontyHall问题(三门问题)&蒙特卡洛初步">http://yoursite.com/2020/02/23/[%E6%A6%82%E7%8E%87%E8%AE%BA]MontyHall%E9%97%AE%E9%A2%98(%E4%B8%89%E9%97%A8%E9%97%AE%E9%A2%98)&%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E5%88%9D%E6%AD%A5/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/16/Deep-learning-CNN/" rel="next" title="Deep learning(CNN)">
+                <i class="fa fa-chevron-left"></i> Deep learning(CNN)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpg"
+                alt="Mianzhi Pan" />
+            
+              <p class="site-author-name" itemprop="name">Mianzhi Pan</p>
+              <p class="site-description motion-element" itemprop="description">Mianzhi Pan's personal website(QQ 964298041)</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/panmianzhi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/wan-wan-ya-44-93/activities" target="_blank" title="Zhihu">
+                      
+                        <i class="fa fa-fw fa-snapchat"></i>Zhihu</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:panmianzhi@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28427771&auto=1&height=66"></iframe>
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MontyHall问题"><span class="nav-number">1.</span> <span class="nav-text">MontyHall问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#蒙特卡洛初步"><span class="nav-number">2.</span> <span class="nav-text">蒙特卡洛初步</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mianzhi Pan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
