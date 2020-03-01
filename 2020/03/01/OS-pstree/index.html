@@ -86,15 +86,15 @@
 
 
 
-<meta name="description" content="Makefile初步使用参考资料：Makefile常用语法">
+<meta name="description" content="第一个MiniLab算是告一段落了，最近在家极其低效地磨着L0，也没有什么时间对M1做进一步优化拓展，虽说OJ是AC了，但我清楚我的实现中还有许多问题：多线程没有考虑、打印的树仅用缩进表示父子关系等。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Makefile初步使用">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;24&#x2F;Makefile%E5%88%9D%E6%AD%A5%E4%BD%BF%E7%94%A8&#x2F;index.html">
+<meta property="og:title" content="[OS]pstree">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;01&#x2F;OS-pstree&#x2F;index.html">
 <meta property="og:site_name" content="Paul&#39;s Blog">
-<meta property="og:description" content="Makefile初步使用参考资料：Makefile常用语法">
+<meta property="og:description" content="第一个MiniLab算是告一段落了，最近在家极其低效地磨着L0，也没有什么时间对M1做进一步优化拓展，虽说OJ是AC了，但我清楚我的实现中还有许多问题：多线程没有考虑、打印的树仅用缩进表示父子关系等。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-01-24T08:38:27.000Z">
-<meta property="article:modified_time" content="2020-01-29T14:57:00.443Z">
+<meta property="article:published_time" content="2020-03-01T00:58:20.000Z">
+<meta property="article:modified_time" content="2020-03-01T01:00:49.432Z">
 <meta property="article:author" content="Mianzhi Pan">
 <meta property="article:tag" content="recording">
 <meta name="twitter:card" content="summary">
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/01/24/Makefile初步使用/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/03/01/OS-pstree/"/>
 
 
 
 
 
-  <title>Makefile初步使用 | Paul's Blog</title>
+  <title>[OS]pstree | Paul's Blog</title>
   
 
 
@@ -250,7 +250,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/24/Makefile%E5%88%9D%E6%AD%A5%E4%BD%BF%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/01/OS-pstree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mianzhi Pan">
@@ -267,7 +267,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Makefile初步使用</h1>
+          <h1 class="post-title" itemprop="name headline">[OS]pstree</h1>
         
 
         <div class="post-meta">
@@ -279,8 +279,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-24T16:38:27+08:00">
-                2020-01-24
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-01T08:58:20+08:00">
+                2020-03-01
               </time>
             
 
@@ -302,8 +302,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ICS/" itemprop="url" rel="index">
-                    <span itemprop="name">ICS</span>
+                  <a href="/categories/OS/" itemprop="url" rel="index">
+                    <span itemprop="name">OS</span>
                   </a>
                 </span>
 
@@ -339,16 +339,29 @@
       
 
       
-        <h1 id="Makefile初步使用"><a href="#Makefile初步使用" class="headerlink" title="Makefile初步使用"></a>Makefile初步使用</h1><p>参考资料：<a href="https://blog.csdn.net/ruglcc/article/details/7814546" target="_blank" rel="noopener">Makefile常用语法</a></p>
-<hr>
-<a id="more"></a><br>作为我第一次编写Makefile的Project，里面包含了`add.c`、`fun1.c`、`loop.c`、`main.c`这四个源文件，目标是编译生成可执行文件test。直接用gcc在命令行编译很麻烦而且不利于维护（当然这个Project很简单），下面直接贴出Makefile代码:<br>
+        <p>第一个MiniLab算是告一段落了，最近在家<strong>极其低效</strong>地磨着L0，也没有什么时间对M1做进一步优化拓展，虽说OJ是AC了，但我清楚我的实现中还有许多问题：多线程没有考虑、打印的树仅用缩进表示父子关系等。</p>
+<a id="more"></a>
 
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#obj = main.o fun1.o loop.o add.o                                  </span></span><br><span class="line">src = <span class="variable">$(<span class="built_in">wildcard</span> ./*.c)</span>                                           </span><br><span class="line"><span class="comment">#obj = $(src:%.c = %.o)                                         </span></span><br><span class="line">obj = <span class="variable">$(<span class="built_in">patsubst</span> %.c,%.o,<span class="variable">$(src)</span>)</span>                                 </span><br><span class="line">targets = test                                               </span><br><span class="line">CC = gcc                                                                                       </span><br><span class="line"><span class="variable">$(targets)</span>: <span class="variable">$(obj)</span>                                              	</span><br><span class="line">	<span class="variable">$(CC)</span> -o <span class="variable">$(targets)</span> <span class="variable">$(obj)</span>                                                                 </span><br><span class="line"><span class="section">%.o: %.c                                                       		</span></span><br><span class="line">	<span class="variable">$(CC)</span> -c <span class="variable">$&lt;</span> -o <span class="variable">$@</span>                                                                          </span><br><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: clean run                                                  </span></span><br><span class="line"><span class="section">clean:                                                           </span></span><br><span class="line">	-rm <span class="variable">$(targets)</span> *.o                                                                         </span><br><span class="line"><span class="section">run:                                                  </span></span><br><span class="line">	./<span class="variable">$(targets)</span>                                                                               </span><br><span class="line">COUNT := <span class="variable">$(<span class="built_in">shell</span> find . -name "*.c" -<span class="built_in">or</span> -name "*.h" | xargs grep -Ev "^$$" | wc -l)</span>            </span><br><span class="line"><span class="section">count:                                                       </span></span><br><span class="line">	@echo Totally <span class="variable">$(COUNT)</span> lines of code in this directory except empty lines</span><br></pre></td></tr></table></figure>
+<p>对于所要打印出来的信息，我用简单的结构体存储，包含进程号、进程名、父进程号：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">process</span>&#123;</span></span><br><span class="line">	<span class="keyword">pid_t</span> pid;</span><br><span class="line">	<span class="keyword">char</span> *comm;</span><br><span class="line">	<span class="keyword">pid_t</span> ppid;</span><br><span class="line">&#125;<span class="built_in">process</span>;</span><br></pre></td></tr></table></figure>
 
-<p>关于变量obj的生成，我上面采用了三种方法，第一行是最浅显易懂的，直接把相应<code>.c</code>文件对应的可重定位文件枚举一下即可，但一旦添加了<code>.c</code>文件，又得修改Makefile，很是麻烦，于是有了后面两种。<br></p>
-<p>src是目录下的所有<code>.c</code>文件，通过<code>wildcard</code>函数实现。obj都是根据src下面的文件生成对应的<code>.o</code>文件，第三种<code>patsubst</code>是字符串替换函数。通过实际运行我发现，一、三两种写法会在目录下面生成中间过程产生的可重定位文件，而使用<code>obj = $(src:%.c = %.o)</code>语句并不会在目录下面生成<code>.o</code>文件，刚开始我并没有注意到这一点，clean方法写的是<code>-rm $(targets) $(obj)</code>，结果导致目录下的<code>.c</code>文件都被删除了。所以，假如采用第二种写法，clean方法只要写成<code>-rm $(targets)</code>，否则要额外删除<code>.o</code>文件，吸取教训后我采用了如上代码中的语句。<br></p>
-<p>最后我还实现了PA中实现过的统计不包括空行的代码行数的方法<code>make count</code>。<br></p>
-<p>Makefile里面还有很多东西值得探索，开头的链接值得一读。</p>
+<p>命令行参数方面，我最初想的是像上学期ics课的lab3一样直接在<code>main</code>函数里简单粗暴地解决：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(argv[i] == <span class="string">"-p"</span> || argv[i] == <span class="string">"--show-pids"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>但受网上代码的启发，决定使用pa里面用过的“优美”的方式（虽然本质上和上面的方式一样）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">option</span>&#123;</span></span><br><span class="line">	<span class="keyword">char</span> *name;</span><br><span class="line">	<span class="keyword">char</span> *fullname;</span><br><span class="line">	<span class="keyword">bool</span> *target;	</span><br><span class="line">&#125;option;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> option optionList[] = &#123;</span><br><span class="line">	&#123;<span class="string">"-p"</span>, <span class="string">"--show-pids"</span>, &amp;showPids&#125;,</span><br><span class="line">	&#123;<span class="string">"-n"</span>, <span class="string">"--numeric-sort"</span>, &amp;isSort&#125;,</span><br><span class="line">	&#123;<span class="string">"-V"</span>, <span class="string">"--version"</span>, &amp;showVersion&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>最麻烦的莫过于打印进程树这部分了，初期预想是通过采用打印二叉树类似的方法实现，网上许多都是这样做的，但<a href="https://github.com/StardustDL/NJU-OS-Lab/tree/master/src/pstree" target="_blank" rel="noopener">这位大佬</a>实现的方式却更加简洁也易懂，也与jyy讲义上提示的<strong>递归打印多行文本</strong>的想法一致。具体实现用<code>showTree()</code>打印所有没有父进程的进程（即根节点）以及他们的子进程，对于那些子进程再递归调用<code>showTree()</code>，缩进通过全局变量<code>offset</code>控制。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> offset = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showTree</span><span class="params">(<span class="keyword">int</span> pid, <span class="built_in">process</span> *root)</span></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> tmp[<span class="number">128</span>];</span><br><span class="line">	<span class="keyword">int</span> proc_num = get_proc_num();</span><br><span class="line">	<span class="keyword">int</span> child[proc_num], childLen = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;offset; i++) <span class="built_in">putchar</span>(<span class="string">' '</span>);</span><br><span class="line">    <span class="keyword">if</span>(showPids) <span class="built_in">sprintf</span>(tmp,<span class="string">"%s(%d)"</span>,root-&gt;comm,root-&gt;pid);</span><br><span class="line">	<span class="keyword">else</span> <span class="built_in">sprintf</span>(tmp,<span class="string">"%s"</span>,root-&gt;comm);</span><br><span class="line">    <span class="built_in">puts</span>(tmp);</span><br><span class="line">	offset+=<span class="number">4</span>;	</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> pi=<span class="number">0</span>; pi&lt;proc_num;pi++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(proc[pi].ppid != root-&gt;pid) <span class="keyword">continue</span>;</span><br><span class="line">        child[childLen++] = pi;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(isSort) qsort(child,childLen,<span class="keyword">sizeof</span>(<span class="keyword">int</span>),cmpareById);</span><br><span class="line">	<span class="keyword">else</span> qsort(child,childLen,<span class="keyword">sizeof</span>(<span class="keyword">int</span>),cmpByName);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;childLen;i++)</span><br><span class="line">		showTree(proc[child[i]].pid,&amp;proc[child[i]]);</span><br><span class="line">	</span><br><span class="line">	offset-=<span class="number">4</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>提交前还发生了一些小插曲：AM_HOME环境变量没有配好导致提交出错，经gc大佬提醒才在L0的讲义上发现要改成<code>abstract_machine</code>的绝对地址，在搞这个的过程中我的ubuntu又不知道什么原因崩溃，原因并不清楚，猜测可能与boot区爆满、误删内核、随意搞网卡有关（所以对我这样的lj就<strong>不要瞎折腾，做好的作业及时git上去</strong>），万般无奈之下只好花了一天重装、配置系统。<br>初次提交hard test并没有过，但OJ有提示</p>
+<blockquote>
+<p><code>pstree-64 --version</code> (tricky! try “<code>pstree -V &gt; /dev/null</code>” in terminal.)</p>
+</blockquote>
+<p>关于这条指令，<a href="https://www.cnblogs.com/itsharehome/p/8503206.html" target="_blank" rel="noopener">这篇博客</a>介绍的不错，即使将标准输出输出重定向到空设备文件，终端上仍有输出信息，改用标准错误输出即可</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(showVersion) <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>,<span class="string">"pstree (PSmisc) 23.1\nCopyright@Mianzhi Pan, 181240045, NJU\n"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>另外，<code>/proc</code>目录下的东西真的太多，<code>man</code>指令永远不过时。PS：<code>[pid]/task</code>这个目录就值得一看，里面存的是某进程的各个线程，这点还没有在代码中实现。</p>
 
       
     </div>
@@ -369,7 +382,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="http://yoursite.com/2020/01/24/Makefile%E5%88%9D%E6%AD%A5%E4%BD%BF%E7%94%A8/" title="Makefile初步使用">http://yoursite.com/2020/01/24/Makefile%E5%88%9D%E6%AD%A5%E4%BD%BF%E7%94%A8/</a>
+    <a href="http://yoursite.com/2020/03/01/OS-pstree/" title="[OS]pstree">http://yoursite.com/2020/03/01/OS-pstree/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -391,8 +404,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/01/20/%E5%9F%BA%E4%BA%8Eselenium%E6%A8%A1%E6%8B%9F%E7%AC%AC%E4%B8%89%E6%96%B9%E8%B4%A6%E5%8F%B7%E7%99%BB%E5%BD%95%E7%9F%A5%E4%B9%8E/" rel="next" title="基于selenium模拟第三方账号登录知乎">
-                <i class="fa fa-chevron-left"></i> 基于selenium模拟第三方账号登录知乎
+              <a href="/2020/02/23/%5B%E6%A6%82%E7%8E%87%E8%AE%BA%5DMontyHall%E9%97%AE%E9%A2%98(%E4%B8%89%E9%97%A8%E9%97%AE%E9%A2%98)&%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E5%88%9D%E6%AD%A5/" rel="next" title="[概率论]MontyHall问题(三门问题)&蒙特卡洛初步">
+                <i class="fa fa-chevron-left"></i> [概率论]MontyHall问题(三门问题)&蒙特卡洛初步
               </a>
             
           </div>
@@ -400,10 +413,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/01/29/A-simple-full-connected-neural-network/" rel="prev" title="A simple full connected neural network">
-                A simple full connected neural network <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -455,17 +464,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -544,22 +544,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile初步使用"><span class="nav-number">1.</span> <span class="nav-text">Makefile初步使用</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
