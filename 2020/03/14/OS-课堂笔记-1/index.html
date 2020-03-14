@@ -86,21 +86,21 @@
 
 
 
-<meta name="description" content="阅读assignment5的代码做的一些阅读笔记。 2019&#x2F;12&#x2F;24">
+<meta name="description" content="jyy os-class 整理。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mini_AlphaGo">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;24&#x2F;%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%AF%BC%E8%AE%BA-Assignment5-mini-go&#x2F;index.html">
+<meta property="og:title" content="[OS]课堂笔记(1)">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;14&#x2F;OS-%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0-1&#x2F;index.html">
 <meta property="og:site_name" content="Paul&#39;s Blog">
-<meta property="og:description" content="阅读assignment5的代码做的一些阅读笔记。 2019&#x2F;12&#x2F;24">
+<meta property="og:description" content="jyy os-class 整理。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;timestep.PNG">
-<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;timestep(2).PNG">
-<meta property="article:published_time" content="2019-12-24T14:10:36.000Z">
-<meta property="article:modified_time" content="2020-01-27T10:18:15.960Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;IMG_0449(20200313-221418).PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;IMG_0450(20200313-225714).PNG">
+<meta property="article:published_time" content="2020-03-14T01:27:09.000Z">
+<meta property="article:modified_time" content="2020-03-14T01:42:31.668Z">
 <meta property="article:author" content="Mianzhi Pan">
 <meta property="article:tag" content="recording">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;timestep.PNG">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;IMG_0449(20200313-221418).PNG">
 
 
 
@@ -130,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/12/24/人工智能导论-Assignment5-mini-go/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/03/14/OS-课堂笔记-1/"/>
 
 
 
 
 
-  <title>mini_AlphaGo | Paul's Blog</title>
+  <title>[OS]课堂笔记(1) | Paul's Blog</title>
   
 
 
@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/24/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%AF%BC%E8%AE%BA-Assignment5-mini-go/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/14/OS-%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mianzhi Pan">
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">mini_AlphaGo</h1>
+          <h1 class="post-title" itemprop="name headline">[OS]课堂笔记(1)</h1>
         
 
         <div class="post-meta">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-24T22:10:36+08:00">
-                2019-12-24
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-14T09:27:09+08:00">
+                2020-03-14
               </time>
             
 
@@ -305,8 +305,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AI/" itemprop="url" rel="index">
-                    <span itemprop="name">AI</span>
+                  <a href="/categories/OS/" itemprop="url" rel="index">
+                    <span itemprop="name">OS</span>
                   </a>
                 </span>
 
@@ -342,12 +342,42 @@
       
 
       
-        <p><strong><em>阅读assignment5的代码做的一些阅读笔记。</em></strong><br></p>
-<h2 id="2019-12-24"><a href="#2019-12-24" class="headerlink" title="2019/12/24"></a>2019/12/24</h2><a id="more"></a>
-<p>###关于一些python库、函数的记录<br><strong>1.</strong>go.py中有这样的代码<code>N=int(os.environ.get(&#39;BOARD_SIZE&#39;,19))</code>，STFW发现是获取环境变量的函数（不太懂），只要知道N=19就是了。这是关于os.environ.get的链接<a href="https://www.cnblogs.com/chaojiyingxiong/p/11076257.html" target="_blank" rel="noopener">os.environ.get用法</a>。<br><br><strong>2.</strong>coords.py中出现了divmod函数，其作用是把除数和余数运算结果结合起来，返回一个包含商和余数的元组(a // b, a % b)。<br>e.g.<code>&gt;&gt;&gt;divmod(7,2)</code><br> &emsp;&emsp;&emsp;<code>(3,1)</code><br><br><strong>3.</strong>filter()过滤序列，过滤掉不符合条件的元素，返回由符合条件元素组成的新列表。<code>filter(function,iterable)</code><br><br><strong>4.</strong>set()创建一个无序不重复元素集，可进行关系测试，删除重复数据，还可以计算交集、差集、并集等。<code>class set([iterable])</code>,<a href="https://www.runoob.com/python/python-func-set.html" target="_blank" rel="noopener">set()</a><br><br><strong>5.</strong>numpy居然还可以用<a href="https://blog.csdn.net/xidianbaby/article/details/87212459" target="_blank" rel="noopener">元组作为索引</a>。<br><br><strong>6.</strong>List的pop方法移除列表最后一个元素并返回其值。<br><br><strong>7.</strong><a href="https://blog.csdn.net/helei001/article/details/52692128" target="_blank" rel="noopener">collections.namedtuple()方法</a>类似于C里面的struct。<br><br><strong>8.</strong>time.time()返回当前的时间戳。<br><br><strong>9.</strong>tensorflow中placeholder用法<a href="https://www.jianshu.com/p/195e4da1dde7" target="_blank" rel="noopener">example1</a>，<a href="https://www.jb51.net/article/143407.htm" target="_blank" rel="noopener">example2</a><br><br><strong>10.</strong><a href="https://blog.csdn.net/qq_39404258/article/details/98490387" target="_blank" rel="noopener">absl库中flags</a>可在命令行传入参数，但我用windows的命令行一直觉得很别扭（典型的中文输入法下的英文字体看着难受），跟main函数传参不同的是，可以指定参数名赋值，否则用默认值，非常便捷，使用时只要在命令行<code>python xxx.py --parametername=parametervalue</code>即可。tensorflow库下面好像也有类似的功能:<a href="https://blog.csdn.net/qq_36653505/article/details/81124533" target="_blank" rel="noopener">Tensorflow使用flags定义命令行参数详解</a><br><br><strong>11.</strong>组合新的目录<a href="https://blog.csdn.net/u012193416/article/details/77247432" target="_blank" rel="noopener">os.path.join()</a>。<br></p>
-<h3 id="围棋环境environment阅读"><a href="#围棋环境environment阅读" class="headerlink" title="围棋环境environment阅读"></a>围棋环境environment阅读</h3><h4 id="coords-py"><a href="#coords-py" class="headerlink" title="coords.py"></a>coords.py</h4><p><strong>1.</strong>这个比较简单，就是介绍了棋盘坐标的四种表示方式minigo coord、flat、SGF、GTP，以及坐标之间的转化。我们框架代码中用的是minigo coord，即一个二元数组(a,b),0&lt;=a,b&lt;=18<br></p>
-<h4 id="go-py"><a href="#go-py" class="headerlink" title="go.py"></a>go.py</h4><p><strong>1.</strong>棋盘board用19×19的numpy数组表示，每个位置存的是颜色，黑、白、空分别用1，-1，0表示，这样交换颜色的话可以直接对数组取负。玩家动作是(Color,Move)的元组。而Move是(Coordinate c|None)。<br><br><strong>2.</strong>_check_bound(c)是检查二元组c有没有越过棋盘边界的。<br><br><strong>3.</strong>place_stones(),应该是在棋盘s处下上颜色为color的棋。<br><br><strong>4.</strong>replay_position(),对一个位置的历史动作均重新玩一次，每次返回新的位置。<br><br><strong>5.</strong>里面许多函数的参数c其实是位置坐标(line,column)。<br><br><strong>6.</strong>find_reached()函数返回的chain是包含状态c的列表，reached是包含当前位置c上下左右四个位置与其颜色不同的位置的列表。<br><br><strong>玛德太多了，先不看了，等在算法中用到再回来看了</strong><br></p>
-<h2 id="2019-12-25"><a href="#2019-12-25" class="headerlink" title="2019/12/25"></a>2019/12/25</h2><p>前几天光顾着死磕代码，没有发现目录下还有一个readme.md(晕了),便根据它的指引阅读代码，从rl_loop.py入手了解围棋环境数据的具体交互过程。<br>计时函数就不用说了，首先创建一个围棋环境<code>env=Go()</code>，Go这个类在GoEnv.py中，其类变量包括<code>__state</code>，这是一个Position()类，在go.py中定义，其中包含了棋盘状态、当前已走步数、历史动作等等，需要注意的是那个komi参数，代码给的解释有点迷，我发现它是类Position()中评分函数score的一个参数,score()是类Position的一个方法，返回值为结束时棋盘上<strong>黑子数-白子数-komi</strong>，<code>__state</code>将komi初始化为0.5，即黑子让白子半子。<br><br>Position类下的result方法就是根据score评分返回结果，分数大于0则result取1，即win；score小于0result取-1，即lose；否则取0。<br><br>Go的类变量还有<code>__flatten_state</code>，用来表示坐标系是否是flat，我把其初始值改为了False（<strong>1月13号更新：这个最好不要轻易地改动，否则在运行<code>dqn_vs_random_demo.py</code>和<code>a2c_vs_random_demo.py</code>时会因为数据shape的问题报ValueError的错</strong>）。其他类变量就很简单，一看就懂。<br><br>Go的两个方法step()和reset()相对重要，在看他们之前需要了解GoEnv.py上面的TimeStep类，其中最重要的是用collections.nametuple定义了一个类似于C中“struct”的东西，姑且也叫他TimeStep结构体吧，其结构如下：<img src="https://github.com/panmianzhi/IMG/raw/master/timestep.PNG" alt="timestep">)。<br>其中的变量<code>observations,reward,discounts,step_type</code>分别表示棋盘状态、reward,discount和<code>step_type</code>（等于没说），这个光看注释不太好懂，这里贴出做step()过程中（即运行<code>rl_loop.py</code>时TimeStep的具体内容）<img src="https://github.com/panmianzhi/IMG/raw/master/timestep(2).PNG" alt="TimeStep结构体">)，这就很好理解了。<br>回到Go中的step()方法，将<code>self.__state</code>用<code>play_move</code>（这个具体我没看）执行动作，同时更新TimeStep中的各项变量，每一步返回更新后的TimeStep。<br>reset()这是就很好理解了，就是初始化<code>__state</code>，包括初始化<code>__state</code>（komi=0.5），以及初始化TimeStep。<br>好了，回到<code>rl_loop.py</code>中，创建完围棋环境之后，再创建包含两个智能体Agent的列表用于对弈，这里用的是Agent.py中的RandomAgent智能体，也可以换成其他的。再进行十局对局，每次的对局过程上面也讲过了，就是先用<code>reset()</code>初始化timestep，然后两个player轮流用step更新TimeStep，一直训练到最后（这里应该是训练），最后调用agent中的step根据模拟最后的状态随机填子，代码的注释时”episode is over, step all agents with final info state”，这边我有点疑惑了。<br>看<code>random_test.py</code>，其操作同上面也是几乎一样，不同的是在每次agent执行动作后都用Go()的<code>get_cuttent_board</code>输出了棋盘的样式。<br>##2020/1/13<br><strong><font size=5>It’s necessary to read codes attentively!!</font></strong><br><br>阅读了<code>dqn_va_random.py</code>，发现并没有之前想象的那么复杂。<br><br>首先用absl库里的flags定义了一些变量，这样就可以直接在命令行里面改变参数，包括训练周期<code>num_train_episodes</code>、评估周期<code>num_eval</code>、评估频率<code>eval_every</code>（就是每隔多少周期评估一次）、保存频率<code>save_every</code>（默认和评估频率一样是2000）等等。<br>在<code>main</code>中，首先是计时和初始化一些参数，包括棋盘大小、动作空间大小以及神经网络地一些参数等等，<strong>需要注意这里用的coordinate是flat</strong>，这些都很好理解。导入agent后，初始化了用于存放返回rewards的列表ret和列表长度<code>max_len</code>，其值为2000。<code>with tf.Session() as sess</code>这行代码就是通过session执行操作（貌似tensorflow中大部分操作都是这样的），agents列表中有两个智能体，分别是DQN（用的是sonnet下的MLP网络）和Random，<code>sess.run(tf.global_variables_initializer())</code>是用来初始化模型，具体可STFW，我目前也不是特别清楚，后面用的时候照抄就行。<br><br><strong>然后就到了train这一部分了</strong>，训练周期默认是10000次，每训练2000个episodes就输出一次信息，也就是我们在运行时看到的那些东西，同时把这些数据写入到一个日志中（所以每run一次目录下面就会多出一个<code>log_xxx_xxx</code>文件）。However，那些输出的东西到底是什么？Episodes不用解释，Losses是DQN的loss方法，其值为<code>_last_loss_vaule</code>，通过<code>dqn.py</code>下的learn方法计算，即一个batch的样本的损失（具体函数没研究）。Rewards是ret元素的平均值，ret元素就是DQN每打完一局的reward，赢的话就是1，否则是-1（貌似没有0这种情况）。<br>输出之后还有一个保存model的过程，在创建的目录<code>saved_model</code>下面保存，文件名是ep+1,即2000、4000等等，后缀有<code>.meta</code>、<code>.index</code>、<code>.data-00000-of-00001</code>，看了一下DQN，发现save用的是<a href="https://www.cnblogs.com/chamie/p/8780508.html" target="_blank" rel="noopener">tf.train.Saver模块</a>下的save方法（好吧，我又不会）。<br>接下来的codes就很熟悉了，和<code>rl_loop.py</code>一样，就是两个agent博弈，同时像之前所说的向ret里面append元素，元素个数不超过<code>max_len</code>。<br><br><strong>接着是评估trained agent的过程</strong>，先用Saver模块的restore方法恢复模型，所用的是经过<code>num_train_episodes</code>轮训练后保存的文件，同训练时一样，也把DQN的rewards保存到新的ret中，但不同的是evaluate时DQN step方法的参数<code>is_evaluation</code>为True，<code>add_transition_record</code>为False，分别表示处于evaluation状态以及没有replay buffer（悔棋）。最后输出平均rewards和训练评估的总时间。</p>
+        <p>jyy os-class 整理。</p>
+<a id="more"></a>
+
+<h1 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a>互斥</h1><p>直观理解：线程==人 &amp;&amp; 共享内存==物理世界；线程不想被打断</p>
+<p>实现lock_t数据结构（一把排他性的锁）和lock/unlock API<br>状态机视角：lock返回会进入”locked”状态；unlock会清楚该状态 &amp;&amp; 初始状态不能到达两个threads都进入locked的状态。<br>    lock/unlock保护的区域为一个<strong>原子</strong>的黑盒子<br>    黑盒子的代码不能随意并发，<strong>顺序</strong>要么1→2，要么2→1<br>    先完成的黑盒子的内存访问在之后的黑盒子中<strong>可见</strong></p>
+<h2 id="共享内存上的互斥"><a href="#共享内存上的互斥" class="headerlink" title="共享内存上的互斥"></a>共享内存上的互斥</h2><p>假设线程可以完成三种指令：<br>①load(读)<br>②store(写)<br>③thread-local(本地计算，其他线程不可见，如寄存器、堆栈)</p>
+<p>load/store是原子的（<strong><em>状态机每次执行一条load/store</em></strong>）==&gt; 不能同时读/写内存（只能干看/闭着眼睛写）</p>
+<h3 id="Peterson算法的问题"><a href="#Peterson算法的问题" class="headerlink" title="Peterson算法的问题"></a>Peterson算法的问题</h3><p>两个线程用Peterson算法可以简化为如下指令:<br></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">thread <span class="number">1</span>                                               thread <span class="number">2</span>                    </span><br><span class="line">[<span class="number">1</span>]store(x)                                            [<span class="number">1</span>]store(y)<span class="comment">//举自己旗子</span></span><br><span class="line">[<span class="number">2</span>]store(<span class="built_in">turn</span>)                                         [<span class="number">2</span>]store(<span class="built_in">turn</span>)<span class="comment">//挂对方牌子      </span></span><br><span class="line">[<span class="number">3</span>]load(y)                                             [<span class="number">3</span>]load(x)<span class="comment">//看对方旗子 </span></span><br><span class="line">[<span class="number">4</span>]load(<span class="built_in">turn</span>)                                          [<span class="number">4</span>]load(<span class="built_in">turn</span>)<span class="comment">//看门上牌子</span></span><br></pre></td></tr></table></figure>
+
+<p>然而处理器允许指令乱序，可能thread 1可能先<code>load(y)</code>，thread 2先<code>load(x)</code>，导致同时进入临界区。所以该算法在现代处理器上是错误的。</p>
+<h3 id="共享内存带来的更多问题"><a href="#共享内存带来的更多问题" class="headerlink" title="共享内存带来的更多问题"></a>共享内存带来的更多问题</h3><p>用内联汇编实现<code>do_sum()</code>并且禁止编译器优化</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_sum</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i&lt;<span class="number">1000000</span>; i++)</span><br><span class="line">		<span class="function"><span class="keyword">asm</span> <span class="title">volitile</span><span class="params">(<span class="string">"addq $1, %0"</span>: <span class="string">"=m"</span>(sum))</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然而结果仍然与预期不符。</p>
+<p>由于现代处理器一次只能一次load/store，所以一条add实际被拆成了<code>t=load(x); t++; store(x,t)</code>，现代处理器下许多个这样的指令可能乱序执行，造成意想不到的结果。</p>
+<p>另外，如果在两个处理器上执行，有可能thread 1已经执行了多次<code>sum++</code>，但数据仍在CPU1的store buffer中，未写入共享内存，而thread 2读sum时直接从共享内存中读。</p>
+<p><strong>状态机一步执行一个线程执行一条指令是错误的假设</strong><br>编译器/处理器乱序<br>表面“原子”的一条指令并不原子</p>
+<h3 id="实现互斥"><a href="#实现互斥" class="headerlink" title="实现互斥"></a>实现互斥</h3><p>以下locked实现是错误的</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">critical_section</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">[<span class="number">1</span>]    <span class="keyword">if</span> (!locked) &#123;</span><br><span class="line">[<span class="number">2</span>]      locked = <span class="number">1</span>;</span><br><span class="line">[<span class="number">3</span>]      <span class="keyword">break</span>;</span><br><span class="line">       &#125;</span><br><span class="line">     <span class="comment">// 进入临界区</span></span><br><span class="line">[<span class="number">4</span>]    locked = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用状态机分析如下</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/IMG_0449(20200313-221418).PNG" style="zoom: 33%;" />
+
+<p>需要一条”test-and-set”指令，使得<code>t=load(locked);if(t==0) store(locked,1)</code>可以同时执行。<br><strong>原子指令：</strong>一次共享内存的load；向同一个共享内存地址store；以及一些本地运算<br>x86 lock指令前缀(<code>lock addq)</code>；<code>xchg</code>指令。</p>
+<h3 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h3><p>实现</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> table = KEY;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">int</span> got = xchg(&amp;table, NOTE);</span><br><span class="line">    <span class="keyword">if</span> (got == KEY) <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  xchg(&amp;table, KEY)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>简化</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> locked = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span>   </span>&#123;</span><br><span class="line">  <span class="keyword">while</span> (xchg(&amp;locked, <span class="number">1</span>)) ;<span class="comment">//返回0表示得到钥匙</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  xchg(&amp;locked, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="RISC-V：另一种原子操作设计"><a href="#RISC-V：另一种原子操作设计" class="headerlink" title="RISC-V：另一种原子操作设计"></a>RISC-V：另一种原子操作设计</h3><p>原子操作本质是：<br>    load(x)<br>    thread-local operation<br>    store(x)</p>
+<p><strong>LR(load-reserved)/SC(store-conditional)</strong>，前者在共享内存上做了标记，后者会清楚内存上的所有标记。假设有两个threads分别执行f<sub>1</sub>(x)和f<sub>2</sub>(x)，证明最后的结果是f<sub>1</sub>(f<sub>2</sub>(x))即可：</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/IMG_0450(20200313-225714).PNG" style="zoom:33%;" />
+
+<h3 id="数据竞争"><a href="#数据竞争" class="headerlink" title="数据竞争"></a>数据竞争</h3><p>两个不同线程的两个操作访问同一段内存，切至少有一个是store，其中没有原子操作间隔。<br>数据竞争=undefined behavior<br>编程时避免数据竞争&lt;==&gt;所有线程间的共享变量都被<strong>同一把</strong>互斥锁保护 </p>
 
       
     </div>
@@ -368,7 +398,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="http://yoursite.com/2019/12/24/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%AF%BC%E8%AE%BA-Assignment5-mini-go/" title="mini_AlphaGo">http://yoursite.com/2019/12/24/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%AF%BC%E8%AE%BA-Assignment5-mini-go/</a>
+    <a href="http://yoursite.com/2020/03/14/OS-%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0-1/" title="[OS]课堂笔记(1)">http://yoursite.com/2020/03/14/OS-%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0-1/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -390,8 +420,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/12/23/NJU-ics-lab2-x86-64%E5%86%85%E8%81%94%E6%B1%87%E7%BC%96/" rel="next" title="inline assembly">
-                <i class="fa fa-chevron-left"></i> inline assembly
+              <a href="/2020/03/03/OS-%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/" rel="next" title="[OS]课堂笔记">
+                <i class="fa fa-chevron-left"></i> [OS]课堂笔记
               </a>
             
           </div>
@@ -399,10 +429,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/12/24/Jacobi%E7%9F%A9%E9%98%B5%E5%92%8CHessian%E7%9F%A9%E9%98%B5%E5%AD%A6%E4%B9%A0/" rel="prev" title="Jacobi&Hessian matrix">
-                Jacobi&Hessian matrix <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -553,7 +579,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2019-12-24"><span class="nav-number">1.</span> <span class="nav-text">2019&#x2F;12&#x2F;24</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#围棋环境environment阅读"><span class="nav-number">1.1.</span> <span class="nav-text">围棋环境environment阅读</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#coords-py"><span class="nav-number">1.1.1.</span> <span class="nav-text">coords.py</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-py"><span class="nav-number">1.1.2.</span> <span class="nav-text">go.py</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2019-12-25"><span class="nav-number">2.</span> <span class="nav-text">2019&#x2F;12&#x2F;25</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#互斥"><span class="nav-number">1.</span> <span class="nav-text">互斥</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#共享内存上的互斥"><span class="nav-number">1.1.</span> <span class="nav-text">共享内存上的互斥</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Peterson算法的问题"><span class="nav-number">1.1.1.</span> <span class="nav-text">Peterson算法的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#共享内存带来的更多问题"><span class="nav-number">1.1.2.</span> <span class="nav-text">共享内存带来的更多问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现互斥"><span class="nav-number">1.1.3.</span> <span class="nav-text">实现互斥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自旋锁"><span class="nav-number">1.1.4.</span> <span class="nav-text">自旋锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RISC-V：另一种原子操作设计"><span class="nav-number">1.1.5.</span> <span class="nav-text">RISC-V：另一种原子操作设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据竞争"><span class="nav-number">1.1.6.</span> <span class="nav-text">数据竞争</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
