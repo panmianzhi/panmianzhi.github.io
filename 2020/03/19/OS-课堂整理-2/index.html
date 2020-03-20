@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="第三次OS笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[OS]课堂整理(2)">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;19&#x2F;OS-%E8%AF%BE%E5%A0%82%E6%95%B4%E7%90%86-2&#x2F;index.html">
+<meta property="og:site_name" content="Paul&#39;s Blog">
+<meta property="og:description" content="第三次OS笔记。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;IMG_0467(20200319-174216).PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;IMG_0468(20200319-181047).PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;IMG_0470(20200320-123330).PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;IMG_0469(20200320-122857).PNG">
+<meta property="article:published_time" content="2020-03-19T08:51:51.000Z">
+<meta property="article:modified_time" content="2020-03-20T04:42:11.044Z">
+<meta property="article:author" content="Mianzhi Pan">
+<meta property="article:tag" content="recording">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;IMG_0467(20200319-174216).PNG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/19/OS-课堂整理-2/"/>
+
+
+
+
+
+  <title>[OS]课堂整理(2) | Paul's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paul's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Strive for a postgraduate recommendation.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/19/OS-%E8%AF%BE%E5%A0%82%E6%95%B4%E7%90%86-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mianzhi Pan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paul's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[OS]课堂整理(2)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-19T16:51:51+08:00">
+                2020-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OS/" itemprop="url" rel="index">
+                    <span itemprop="name">OS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>第三次OS笔记。</p>
+<a id="more"></a>
+
+<h2 id="操作系统是一个状态机"><a href="#操作系统是一个状态机" class="headerlink" title="操作系统是一个状态机"></a>操作系统是一个状态机</h2><p>程序运行时，每个处理器独立执行、独立响应中断；中断到来时，保存寄存器现场（的指针），切换到下一个task执行。</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/IMG_0467(20200319-174216).PNG" style="zoom: 50%;" />
+
+<h2 id="操作系统上的自旋锁"><a href="#操作系统上的自旋锁" class="headerlink" title="操作系统上的自旋锁"></a>操作系统上的自旋锁</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">  lock(&amp;biglock);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"Thread-%s on CPU #%d acquired the lock\n"</span>, arg, _cpu());</span><br><span class="line">  unlock(&amp;biglock);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> <span class="keyword">volatile</span> i = <span class="number">0</span>; i &lt; <span class="number">100000</span>; i++) ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="BUG1"><a href="#BUG1" class="headerlink" title="BUG1"></a>BUG1</h3><p>如果把lock/unlock注释掉：原子性被破坏（执行<code>printf</code>的过程随时可能被打断，从而出现“错位”现象）；<br>把最后一行造成延迟的语句去掉，safety和liveness都无问题，但是公平性出现了问题（一段时间几乎总是同一个线程占有锁）</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/IMG_0468(20200319-181047).PNG" style="zoom:50%;" />
+
+<p>其原因是<code>printf</code>指令执行时间相对较长，中断很有可能出现在其中，此时<br>    locked == 1（执行<code>printf</code>的线程持有锁)<br>    切换到另一个线程自旋<br>    由于locked == 1，处理器的其他线程都在自旋<br>    最后还是回到了自己。。。</p>
+<p><strong>修复：</strong>获得自旋锁的线程（处理器）不应被中断；关闭中断后，处理器上的执行流完全确定</p>
+<p>中断的原子性/顺序<br>    关中断后，操作系统上的程序独占处理器、不会被打断<br>    asm volatile 汇编保证编译器不会调换指令顺序<br>中断的可见性<br>    硬件保证中断必定发生在指令边界<br>    中断前的数据全部写入（缓存/内存）</p>
+<p>关中断+自旋</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">spin_lock</span><span class="params">(<span class="keyword">spinlock_t</span> &amp;lk)</span> </span>&#123;</span><br><span class="line">  cli();<span class="comment">//_intr_write(0)</span></span><br><span class="line">  <span class="keyword">while</span> (atomic_xchg(&amp;lk-&gt;locked, <span class="number">1</span>)) ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">spin_unlock</span><span class="params">(<span class="keyword">spinlock_t</span> &amp;lk)</span> </span>&#123;</span><br><span class="line">  atomic_xchg(&amp;lk-&gt;locked, <span class="number">0</span>);</span><br><span class="line">  sti();<span class="comment">//_intr_write(1)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意要先关中断再自旋；先释放锁再开中断！</strong></p>
+<h3 id="BUG2"><a href="#BUG2" class="headerlink" title="BUG2"></a>BUG2</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">//IF=1  </span></span><br><span class="line">  [<span class="number">1</span>]spin_lock(&amp;lock_a);</span><br><span class="line">  <span class="comment">//IF=0  </span></span><br><span class="line">  [<span class="number">2</span>]spin_lock(&amp;lock_b);</span><br><span class="line">  <span class="comment">//IF=0  </span></span><br><span class="line">  [<span class="number">3</span>]spin_unlock(&amp;lock_b);</span><br><span class="line">  <span class="comment">//IF=1  </span></span><br><span class="line">  [<span class="number">4</span>]spin_unlock(&amp;lock_a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在[3]处开中断，导致在lock_a仍处于持有锁的状态下，中断打开。<br>所以在unlock时，要查看对应lock时的IF状态，如果lock时IF已经为0，对应的unlock就不要开中断；如果lock时IF为1，就要开中断。</p>
+<p><strong>在线程第一次lock时保存中断状态（把EFlags push到堆栈中）、关闭中断；最后一次unlock时恢复保存的中断状态。</strong>中间多次lock会多次push EFlags（其中的中断位为0），对应的unlock会弹出相应的栈帧，直到最后一次unlock才会把第一次push的EFlags pop到CPU上。</p>
+<p>flags栈可以保存在线程结构体里，也可以保存在CPU结构体里，因为关中断后两者绑定，但由于CPU的数量一般少于线程数量，所以更好的选择是保存在CPU结构体里。</p>
+<h3 id="BUG3"><a href="#BUG3" class="headerlink" title="BUG3"></a>BUG3</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// It's not a bug, it's a feature!</span></span><br><span class="line">lock(&amp;lk);</span><br><span class="line">lock(&amp;lk);</span><br><span class="line"><span class="built_in">printf</span>(...);</span><br><span class="line">unlock(&amp;lk);</span><br><span class="line">unlock(&amp;lk);</span><br></pre></td></tr></table></figure>
+
+<p><strong>重入</strong>，连续对同一个对象lock两次，直接形成死锁。（第一次lock后locked == 1，第二次执行时就相当于另外一个线程得到了锁，所以会不停地自旋）。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p><strong>关中断+自旋</strong>用来保护一段较短的临界区：持有锁期间，线程（处理器）不能被中断；其他线程（处理器）在关中断的前提下自旋——“一核享用，九核围观”。</p>
+<h2 id="xv6自旋锁实现"><a href="#xv6自旋锁实现" class="headerlink" title="xv6自旋锁实现"></a>xv6自旋锁实现</h2><p><code>acquire()</code>,<code>psuhcli()</code>,<code>popcli()</code>…随处可见的调试功能（<code>getcallerpcs()</code>打印函数调用栈！！！！）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pushcli</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> eflags;</span><br><span class="line">	</span><br><span class="line">	eflags = readeflags();</span><br><span class="line">	cli();</span><br><span class="line">	<span class="keyword">if</span>(mycpu()-&gt;ncli == <span class="number">0</span>)<span class="comment">//第一次push，则保存eflags</span></span><br><span class="line">		mycpu()-&gt;intena = eflags &amp; FL_IF;</span><br><span class="line">	my_cpu()-&gt;ncli += <span class="number">1</span>;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">popcli</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(readeflags()&amp;FL_IF)</span><br><span class="line">        panic(<span class="string">"popcli - interruptible"</span>);</span><br><span class="line">    <span class="keyword">if</span>(--mycpu()-&gt;ncli &lt; <span class="number">0</span>)<span class="comment">//unlock的数量与lock不匹配</span></span><br><span class="line">        panic(<span class="string">"popcli"</span>);</span><br><span class="line">    <span class="keyword">if</span>(mycpu()-&gt;ncli == <span class="number">0</span> &amp;&amp; mycpu()-&gt;intena)</span><br><span class="line">        sti();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><p>对于长临界区，获得锁的处理器中断丢失、使其他处理器空转/中断丢失……<br>例如读取磁盘信息，临界区执行时间可能很长、中断根本无法到达处理器（磁盘由中断驱动）。</p>
+<p>希望<br>    持有锁的进程<br>        允许处理器响应中断<br>        允许切换到其他线程执行<br>    等待锁的线程<br>        不要占用处理器资源自旋</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mutex_lock</span><span class="params">(<span class="keyword">spinlock_t</span> *lk)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">while</span> (atomic_xchg(&amp;lk-&gt;locked, <span class="number">1</span>)) &#123;</span><br><span class="line">    <span class="comment">// 在 atomic_xchg 执行的时候，已经有人得到了锁</span></span><br><span class="line">    <span class="comment">// 因为是长临界区，所以预期要等很久</span></span><br><span class="line">    let_another_thread_to_execute(); <span class="comment">// 不如让其他线程执行</span></span><br><span class="line">    <span class="comment">// _yield() on AbstractMachine;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果等待锁的线程很多，不如干脆直接暂停这个线程执行，等有人解锁后再调度执行。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mutex_lock</span><span class="params">(<span class="keyword">mutexlock_t</span> *lk)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> acquired = <span class="number">0</span>;</span><br><span class="line">  spin_lock(&amp;lk-&gt;spinlock);<span class="comment">//用自旋锁保护</span></span><br><span class="line">  <span class="keyword">if</span> (lk-&gt;locked != <span class="number">0</span>) &#123;<span class="comment">//锁已经被占有了</span></span><br><span class="line">    enqueue(lk-&gt;wait_list, current);<span class="comment">//current放入等待队列</span></span><br><span class="line">    current-&gt;status = BLOCKED;<span class="comment">//标记current为BLOCKED:在等待某个锁</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;<span class="comment">//否则占有锁</span></span><br><span class="line">    lk-&gt;locked = <span class="number">1</span>;</span><br><span class="line">    acquired = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  spin_unlock(&amp;lk-&gt;spinlock);</span><br><span class="line">  <span class="keyword">if</span> (!acquired) <span class="built_in">yield</span>(); <span class="comment">// 主动切换到其他线程执行</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mutex_unlock</span><span class="params">(<span class="keyword">mutexlock_t</span> *lk)</span> </span>&#123;</span><br><span class="line">  spin_lock(&amp;lk-&gt;spinlock);</span><br><span class="line">  <span class="keyword">if</span> (!empty(lk-&gt;wait_list)) &#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">task_t</span> *<span class="title">task</span> = <span class="title">dequeue</span>(<span class="title">lk</span>-&gt;<span class="title">wait_list</span>);</span></span><br><span class="line">    task-&gt;status = RUNNABLE; <span class="comment">// 唤醒之前睡眠的线程，RUNNABLE:可被调度执行</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    lk-&gt;locked = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  spin_unlock(&amp;lk-&gt;spinlock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看作游泳馆模型！操作系统相当于“管理员”，线程是游泳者，先到者与管理员交谈（自旋锁）获得手环，从而进入游泳馆；后到者同样与管理员交谈（自旋锁），没有手环，排队等待；先到者出来后归还手环。。。。。。</p>
+<h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><p>一个较好的双向链表删除节点代码（优秀的assert机制）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">list_check</span><span class="params">(<span class="keyword">node_t</span> *node)</span> </span>&#123;</span><br><span class="line">  assert(node == node-&gt;prev-&gt;next); <span class="comment">// circular list's offer</span></span><br><span class="line">  assert(node == node-&gt;next-&gt;prev);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">list_remove</span><span class="params">(<span class="keyword">node_t</span> *node)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">node_t</span> *prev = node-&gt;prev;</span><br><span class="line">  <span class="keyword">node_t</span> *next = node-&gt;next;</span><br><span class="line">  assert(node != prev   <span class="comment">// defensive</span></span><br><span class="line">      &amp;&amp; node != next); <span class="comment">// more checks than necessary</span></span><br><span class="line">                        <span class="comment">// may find bugs in other parts of the system</span></span><br><span class="line">  prev-&gt;next = next;</span><br><span class="line">  next-&gt;prev = prev; <span class="comment">// possibly prev == next</span></span><br><span class="line">  list_check(prev); list_check(next);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="List-Head：嵌入式链表"><a href="#List-Head：嵌入式链表" class="headerlink" title="List Head：嵌入式链表"></a>List Head：嵌入式链表</h3><p><strong>嵌入</strong>在其他对象（数据结构）中的双向循环链表</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> *<span class="title">next</span>, *<span class="title">prev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>对象只存在于单一的列表中，用<code>list &lt;struct task*&gt; task_list</code>较好，但操作系统中，通常一个对象会属于多个列表，分开实现多个列表会浪费空间<br>进程既在proc目录下的任务列表中（遍历proc获得所有进程），在获得锁时又在等待队列中。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">task</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">wait_queue</span>;</span> <span class="comment">// for mutex</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">task_list</span>;</span>  <span class="comment">// for procfs</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上面的<code>task</code>里面嵌入了两个list，解决了一个对象在多个列表里的问题。</p>
+<p><strong>优点：</strong><br>    “跟着对象走”减少分配内存的次数和大小<br>    局部性友好：访问对象里的链表→大概率访问对象里的数据<br><img src="https://github.com/panmianzhi/IMG/raw/master/IMG_0470(20200320-123330).PNG" style="zoom: 50%;" /><br>从list_head指针找到对象首地址：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> list_entry(ptr, type, member) \</span></span><br><span class="line">  ((type *) \</span><br><span class="line">    ( (<span class="keyword">char</span> *)(ptr) - (<span class="keyword">uintptr_t</span>)(&amp;((type *)<span class="number">0</span>)-&gt;member) ) \</span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line"><span class="comment">// ptr to struct list_head</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">task</span> *<span class="title">task</span> = <span class="title">list_entry</span>(<span class="title">ptr</span>, <span class="title">struct</span> <span class="title">task</span>, <span class="title">wait_queue</span>);</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的<code>(&amp;((type *)0)-&gt;member) )</code>先把0强制类型转化成对象类型指针，这样最后得到的就是member成员在对象结构体里的偏移量。</p>
+<h2 id="并发数据结构"><a href="#并发数据结构" class="headerlink" title="并发数据结构"></a>并发数据结构</h2><p>自旋锁（互斥锁）帮助我们串行化对数据结构的并发访问。<br>但是容易犯错：重入、不同的锁</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">you_did_it_2</span><span class="params">()</span> </span>&#123; lock(&amp;a); lock(&amp;b); ... &#125;<span class="comment">//T1</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">you_did_it_3</span><span class="params">()</span> </span>&#123; lock(&amp;b); lock(&amp;a); ... &#125;<span class="comment">//T2</span></span><br></pre></td></tr></table></figure>
+
+<p>若T1 lock(&amp;a)→T2 lock(&amp;b)，之后T1、T2再向下执行就会出现“互相等待”的情况。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">you_did_it_4</span><span class="params">()</span> </span>&#123; lock(&amp;a); ... <span class="keyword">if</span> (...) <span class="keyword">return</span>; ... unlock(&amp;a); &#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果执行到if分支，导致死锁。</p>
+<h3 id="C-RAII"><a href="#C-RAII" class="headerlink" title="C RAII"></a>C RAII</h3><p>这里不是很懂。。。。。。。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HoldLock(lk) \</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> __lock_var = (pthread_mutex_lock(lk), <span class="number">0</span>); \</span><br><span class="line">           __lock_var &lt; <span class="number">1</span>; \</span><br><span class="line">           pthread_mutex_unlock(lk), __lock_var++)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">node_t</span> *node, <span class="keyword">node_t</span> *cur)</span> </span>&#123;</span><br><span class="line">  HoldLock(&amp;list_lock) &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// 此处不能调用break/return等跳出此块</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="malloc-free"><a href="#malloc-free" class="headerlink" title="malloc/free"></a>malloc/free</h3><p>malloc本质：分配一段指定大小的额外内存。<br>    古代方法：<code>void *sbrk(intptr_t increment);</code>堆区的末尾就是break（相当于内存的边界），<code>sbrk</code>做的就是改变break的指针。<br>    现代方法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mmap</span><span class="params">(<span class="keyword">void</span> *addr,    <span class="comment">// 建议的分配位置，可为 NULL</span></span></span></span><br><span class="line"><span class="function"><span class="params">           <span class="keyword">size_t</span> length, <span class="comment">// 大小</span></span></span></span><br><span class="line"><span class="function"><span class="params">           <span class="keyword">int</span> port,      <span class="comment">// 访问权限 PROT_READ | PROT_WRITE</span></span></span></span><br><span class="line"><span class="function"><span class="params">           <span class="keyword">int</span> flags,     <span class="comment">// MAP_ANONYMOUS，匿名映射 = 内存分配</span></span></span></span><br><span class="line"><span class="function"><span class="params">           <span class="keyword">int</span> fd,        <span class="comment">// 不涉及任何文件描述符；-1</span></span></span></span><br><span class="line"><span class="function"><span class="params">           <span class="keyword">off_t</span> offset)</span></span>; <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+
+<p>我们需要<strong>维护一个被分配区间的集合</strong><br>    malloc：从已有的[L,R)切出一段[l,r)<br>    free：给定l，删除[l,r)<br>        怎么从左端点找到右端点（不知道大小）：实际malloc(size+head)，多分配的头部里面有大小等信息。<br>        什么样的数据结构管理区间集合</p>
+<h4 id="现代malloc-free算法-Fast-Path-and-Slow-Path"><a href="#现代malloc-free算法-Fast-Path-and-Slow-Path" class="headerlink" title="现代malloc/free算法(Fast Path and Slow Path)"></a>现代malloc/free算法(Fast Path and Slow Path)</h4><p><strong>一些工具</strong><br>    strace：追踪系统调用；<br>    ltrace：追踪库函数调用<br>    mtrace：追踪调用的内存分配函数（这是jyy基于ltrace编写的一个shell脚本，这里先放一个<a href="https://blog.csdn.net/qq_36119192/article/details/82964713" target="_blank" rel="noopener">Linux中编写Shell脚本</a>，以后学）</p>
+<p><strong>Fast Path：</strong>小内存<br>    key insight：对象越小，分配越频繁，越可能是性能瓶颈<br>    策略：线程本地分配；使用简单的数据结构<br>    <strong>Slab分配器</strong>（segregated list）：对每个常见分配大小（8B,16B, 24B……）设置per-thread分配缓存。根据所需分配内存的大小决定属于哪个Slab（e.g. 20B的内存分配24B的Slab），管理一个Slab的对象可使用链表，或bitmap（未分配0，分配1）。</p>
+<p><strong>Slow Path：</strong>大内存<br>    Slab分配失败（per-thread满了），此时执行一次大内存分配（从全局获得一个新的Slab，per-thread的Slab用链表连接）。<br>    用线段树管理</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/IMG_0469(20200320-122857).PNG" style="zoom: 50%;" />
+
+<p>任何一个区间都可以用若干个节点表示。实际情况下可以用radix tree。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Mianzhi Pan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://yoursite.com/2020/03/19/OS-%E8%AF%BE%E5%A0%82%E6%95%B4%E7%90%86-2/" title="[OS]课堂整理(2)">http://yoursite.com/2020/03/19/OS-%E8%AF%BE%E5%A0%82%E6%95%B4%E7%90%86-2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/17/%E4%B8%80%E4%BA%9B%E7%BA%BF%E4%BB%A3%E7%9F%A5%E8%AF%86/" rel="next" title="一些线代知识">
+                <i class="fa fa-chevron-left"></i> 一些线代知识
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpg"
+                alt="Mianzhi Pan" />
+            
+              <p class="site-author-name" itemprop="name">Mianzhi Pan</p>
+              <p class="site-description motion-element" itemprop="description">Mianzhi Pan's personal website(QQ 964298041)</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/panmianzhi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/wan-wan-ya-44-93/activities" target="_blank" title="Zhihu">
+                      
+                        <i class="fa fa-fw fa-snapchat"></i>Zhihu</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:panmianzhi@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28427771&auto=1&height=66"></iframe>
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#操作系统是一个状态机"><span class="nav-number">1.</span> <span class="nav-text">操作系统是一个状态机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作系统上的自旋锁"><span class="nav-number">2.</span> <span class="nav-text">操作系统上的自旋锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BUG1"><span class="nav-number">2.1.</span> <span class="nav-text">BUG1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BUG2"><span class="nav-number">2.2.</span> <span class="nav-text">BUG2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BUG3"><span class="nav-number">2.3.</span> <span class="nav-text">BUG3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">2.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xv6自旋锁实现"><span class="nav-number">3.</span> <span class="nav-text">xv6自旋锁实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#互斥锁"><span class="nav-number">4.</span> <span class="nav-text">互斥锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构"><span class="nav-number">5.</span> <span class="nav-text">数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#List-Head：嵌入式链表"><span class="nav-number">5.1.</span> <span class="nav-text">List Head：嵌入式链表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发数据结构"><span class="nav-number">6.</span> <span class="nav-text">并发数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-RAII"><span class="nav-number">6.1.</span> <span class="nav-text">C RAII</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#malloc-free"><span class="nav-number">6.2.</span> <span class="nav-text">malloc&#x2F;free</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#现代malloc-free算法-Fast-Path-and-Slow-Path"><span class="nav-number">6.2.1.</span> <span class="nav-text">现代malloc&#x2F;free算法(Fast Path and Slow Path)</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mianzhi Pan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
