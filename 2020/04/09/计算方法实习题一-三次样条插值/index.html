@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这是实验报告">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算方法实习题一(三次样条插值)">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;09&#x2F;%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95%E5%AE%9E%E4%B9%A0%E9%A2%98%E4%B8%80-%E4%B8%89%E6%AC%A1%E6%A0%B7%E6%9D%A1%E6%8F%92%E5%80%BC&#x2F;index.html">
+<meta property="og:site_name" content="Paul&#39;s Blog">
+<meta property="og:description" content="这是实验报告">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;swj1.PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;swj2.PNG">
+<meta property="og:image" content="c:&#x2F;Users&#x2F;panmi&#x2F;AppData&#x2F;Roaming&#x2F;Typora&#x2F;typora-user-images&#x2F;image-20200409174344298.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;swj4.PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;swj5.PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;swj7.PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;swj6.PNG">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;swjFigure_1.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;swjFigure_2.png">
+<meta property="article:published_time" content="2020-04-09T06:50:53.000Z">
+<meta property="article:modified_time" content="2020-04-09T11:28:04.736Z">
+<meta property="article:author" content="Mianzhi Pan">
+<meta property="article:tag" content="recording">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;swj1.PNG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/04/09/计算方法实习题一-三次样条插值/"/>
+
+
+
+
+
+  <title>计算方法实习题一(三次样条插值) | Paul's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paul's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Strive for a postgraduate recommendation.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/09/%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95%E5%AE%9E%E4%B9%A0%E9%A2%98%E4%B8%80-%E4%B8%89%E6%AC%A1%E6%A0%B7%E6%9D%A1%E6%8F%92%E5%80%BC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mianzhi Pan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paul's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算方法实习题一(三次样条插值)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-09T14:50:53+08:00">
+                2020-04-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mathematics/" itemprop="url" rel="index">
+                    <span itemprop="name">mathematics</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这是实验报告</p>
+<a id="more"></a>
+
+<h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p><strong>操作系统：</strong>Windows 10家庭中文版64位（10.0，版本 18362）<br><strong>系统型号：</strong>Inspiron 7472<br><strong>处理器：</strong>Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz (8 CPUs), ~1.8Ghz<br><strong>所用算法语言：</strong>Python</p>
+<h2 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h2><p>由于需要使用追赶法解三弯矩方程，所以我首先定义了追赶法的相关函数，包括对三弯矩方程组系数矩阵进行LU分解的函数<code>LUDecompose(a,b,c)</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LUDecompose</span><span class="params">(a,b,c)</span>:</span></span><br><span class="line">    n = len(b)</span><br><span class="line">    gamma, alpha, beta =a, np.zeros(n), np.zeros(n<span class="number">-1</span>)</span><br><span class="line">    alpha[<span class="number">0</span>] = b[<span class="number">0</span>]</span><br><span class="line">    beta[<span class="number">0</span>] = c[<span class="number">0</span>]/b[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n<span class="number">-1</span>):</span><br><span class="line">        beta[i] = c[i]/(b[i]-a[i<span class="number">-1</span>]*beta[i<span class="number">-1</span>])</span><br><span class="line">        alpha[i] = b[i] - a[i<span class="number">-1</span>]*beta[i<span class="number">-1</span>]</span><br><span class="line">    alpha[n<span class="number">-1</span>] = b[n<span class="number">-1</span>] - a[n<span class="number">-2</span>]*beta[n<span class="number">-2</span>]</span><br><span class="line">    <span class="keyword">return</span> gamma, alpha, beta</span><br></pre></td></tr></table></figure>
+
+<p>其中参数<code>a,b,c,gamma(γ),alpha(α),beta(β)</code>为存放如下a<sub>i</sub>,b<sub>i</sub>,c<sub>i</sub>,γ<sub>i</sub>,α<sub>i</sub>,β<sub>i</sub>的数组<br><img src="https://github.com/panmianzhi/IMG/raw/master/swj1.PNG" style="zoom:50%;" /></p>
+<p>接着根据追赶法解三弯矩方程的步骤定义了<code>chasing(a,b,c,f)</code>函数：首先将系数矩阵LU分解，接着分别计算Ly=f和Ux=y两个方程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chasing</span><span class="params">(a,b,c,f)</span>:</span></span><br><span class="line">    n = len(b)</span><br><span class="line">    gamma, alpha, beta = LUDecompose(a,b,c)</span><br><span class="line">    <span class="comment">#solve Ly=f</span></span><br><span class="line">    y = np.zeros(n)</span><br><span class="line">    y[<span class="number">0</span>] = f[<span class="number">0</span>]/alpha[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n):</span><br><span class="line">        y[i] = (f[i]-gamma[i<span class="number">-1</span>]*y[i<span class="number">-1</span>])/alpha[i]</span><br><span class="line">    <span class="comment">#solve Ux=y</span></span><br><span class="line">    x = np.zeros(n)</span><br><span class="line">    x[n<span class="number">-1</span>] = y[n<span class="number">-1</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n<span class="number">-1</span>):</span><br><span class="line">        x[n<span class="number">-2</span>-i] = y[n<span class="number">-2</span>-i] - beta[n<span class="number">-2</span>-i]*x[n<span class="number">-1</span>-i]</span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+
+<p>参数<code>a,b,c,x,f</code>（都是数组）定义如下<br><img src="https://github.com/panmianzhi/IMG/raw/master/swj2.PNG" style="zoom:50%;" /></p>
+<p>于是接下来只要构造不同边界条件下的三弯矩方程组即可。<br>首先无论对于何种边界条件，求结点间距h<sub>i</sub>=x<sub>i+1</sub>-x<sub>i</sub>，一阶差商f[x<sub>i</sub>,x<sub>i+1</sub>]以及二阶差商f[x<sub>i</sub>,x<sub>i+1</sub>,x<sub>i+2</sub>]都是不可避免的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">X=[<span class="number">.2</span>, <span class="number">.4</span>, <span class="number">.6</span>, <span class="number">.8</span>, <span class="number">1.0</span>]</span><br><span class="line">Fx=[<span class="number">1.01398</span>, <span class="number">.89177</span>, <span class="number">.81203</span>, <span class="number">.72860</span>, <span class="number">.38437</span>]</span><br><span class="line">h = [X[i]-X[i<span class="number">-1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(X))]</span><br><span class="line">first_diff_quot = [(Fx[i]-Fx[i<span class="number">-1</span>])/h[i<span class="number">-1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(X))]</span><br><span class="line">second_diff_quot = [(first_diff_quot[i]-first_diff_quot[<span class="number">0</span>])/(X[i+<span class="number">1</span>]-X[<span class="number">0</span>])\</span><br><span class="line">                     <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(first_diff_quot))]</span><br></pre></td></tr></table></figure>
+
+<p>并且可以根据公式$\mu_j=\frac{h_j}{h_j+h_{j+1}}$，$\lambda_j=1-\mu_j$求解出λ,μ</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mu = [h[i]/(h[i]+h[i+<span class="number">1</span>]) <span class="keyword">for</span> i <span class="keyword">in</span> range(len(h)<span class="number">-1</span>)]</span><br><span class="line">lamda = [<span class="number">1</span>-m <span class="keyword">for</span> m <span class="keyword">in</span> mu]</span><br></pre></td></tr></table></figure>
+
+<h3 id="自然边界条件"><a href="#自然边界条件" class="headerlink" title="自然边界条件"></a>自然边界条件</h3><p>已经给出条件M<sub>0</sub>=M<sub>n</sub>=0，于是可以构造如下三弯矩方程组</p>
+<img src="C:\Users\panmi\AppData\Roaming\Typora\typora-user-images\image-20200409174344298.png" style="zoom:50%;" />
+
+<p>其中求解d<sub>i</sub>(i=1,2,…,n-1)的代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">D = [<span class="number">6</span>*second_diff_quot[i] <span class="keyword">for</span> i <span class="keyword">in</span> range(len(second_diff_quot))]</span><br></pre></td></tr></table></figure>
+
+<p>再调用之前定义的<code>chasing()</code>函数可以很容易解出M。</p>
+<h3 id="第一种边界条件"><a href="#第一种边界条件" class="headerlink" title="第一种边界条件"></a>第一种边界条件</h3><p>需要构造的方程如下<br><img src="https://github.com/panmianzhi/IMG/raw/master/swj4.PNG" style="zoom:50%;" /></p>
+<p>缺少的参数只有d<sub>0</sub>和d<sub>n</sub>，由公式<br><img src="https://github.com/panmianzhi/IMG/raw/master/swj5.PNG" style="zoom:67%;" /></p>
+<p>很容易求出(本题n=4):</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">D[<span class="number">0</span>] = <span class="number">6</span>*(first_diff_quot[<span class="number">0</span>] - m0)/h[<span class="number">0</span>]</span><br><span class="line">D[<span class="number">4</span>] = <span class="number">6</span>*(m4 - first_diff_quot[<span class="number">3</span>])/h[<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<p>以上两种方法都可以解出M，接着带入函数<code>spline()</code>可以得到插值函数</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/swj7.PNG" style="zoom:50%;" />
+
+<p>函数<code>draw()</code>可以分段做出三次样条函数（具体内容见报告最后的代码）。</p>
+<h2 id="算法正确性验证"><a href="#算法正确性验证" class="headerlink" title="算法正确性验证"></a>算法正确性验证</h2><p>构造三弯矩方程组并不难，关键在用追赶法求解三弯矩方程组时容易出错，为此我用课上讲过的一道例题做了验证</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/swj6.PNG" style="zoom:50%;" />
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__==<span class="string">"__main__"</span>:</span><br><span class="line">    a,b,c,f = np.ones(<span class="number">14</span>),np.ones(<span class="number">15</span>),np.ones(<span class="number">14</span>),np.ones(<span class="number">15</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">14</span>):</span><br><span class="line">        b[i] = <span class="number">4</span></span><br><span class="line">        c[i] = <span class="number">2</span></span><br><span class="line">        f[i] = <span class="number">7</span></span><br><span class="line">    f[<span class="number">0</span>] = <span class="number">6</span></span><br><span class="line">    f[<span class="number">14</span>] = <span class="number">5</span></span><br><span class="line">    b[<span class="number">14</span>] = <span class="number">4</span></span><br><span class="line">    x = chasing(a,b,c,f)</span><br><span class="line">    print(x)</span><br></pre></td></tr></table></figure>
+
+<p>得到结果<code>[1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]</code>，与参考答案一致，验证了<code>chasing()</code>函数的正确性。</p>
+<h2 id="计算结果及分析"><a href="#计算结果及分析" class="headerlink" title="计算结果及分析"></a>计算结果及分析</h2><h3 id="自然边界条件-1"><a href="#自然边界条件-1" class="headerlink" title="自然边界条件"></a>自然边界条件</h3><p>CPU时间：0.0001565<br>解出M如下</p>
+<table>
+<thead>
+<tr>
+<th>M<sub>0</sub></th>
+<th>M<sub>1</sub></th>
+<th>M<sub>2</sub></th>
+<th>M<sub>3</sub></th>
+<th>M<sub>4</sub></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0.</td>
+<td>1.13203571</td>
+<td>1.84235714</td>
+<td>-4.62346429</td>
+<td>0.</td>
+</tr>
+</tbody></table>
+<p>S(x)图像如下</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/swjFigure_1.png" style="zoom: 67%;" />
+
+<h3 id="第一边界条件"><a href="#第一边界条件" class="headerlink" title="第一边界条件"></a>第一边界条件</h3><p>CPU时间：0.0001618<br>解得M</p>
+<table>
+<thead>
+<tr>
+<th>M0</th>
+<th>M1</th>
+<th>M2</th>
+<th>M3</th>
+<th>M4</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-14.13612381</td>
+<td>3.85944762</td>
+<td>5.06883333</td>
+<td>-20.25678095</td>
+<td>59.30679048</td>
+</tr>
+</tbody></table>
+<p>S(x)图像如下</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/swjFigure_2.png" style="zoom:67%;" />
+
+<p><strong>S(x)在不同点的值：</strong></p>
+<table>
+<thead>
+<tr>
+<th>x</th>
+<th>f(x)</th>
+<th>自然边界条件S(x)</th>
+<th>第一边界条件S(x)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0.2</td>
+<td>1.01398</td>
+<td>1.01398</td>
+<td>1.01398</td>
+</tr>
+<tr>
+<td>0.3</td>
+<td>\</td>
+<td>0.9500449107142858</td>
+<td>0.9785666904761905</td>
+</tr>
+<tr>
+<td>0.4</td>
+<td>.89177</td>
+<td>0.89177</td>
+<td>0.8917699999999998</td>
+</tr>
+<tr>
+<td>0.5</td>
+<td>\</td>
+<td>0.8444640178571428</td>
+<td>0.8295792976190476</td>
+</tr>
+<tr>
+<td>0.6</td>
+<td>.81203</td>
+<td>0.8120300000000001</td>
+<td>0.81203</td>
+</tr>
+<tr>
+<td>0.7</td>
+<td>\</td>
+<td>0.7772677678571429</td>
+<td>0.8082848690476192</td>
+</tr>
+<tr>
+<td>0.8</td>
+<td>.72860</td>
+<td>0.7286</td>
+<td>0.7285999999999999</td>
+</tr>
+<tr>
+<td>0.9</td>
+<td>\</td>
+<td>0.5680436607142858</td>
+<td>0.45885997619047614</td>
+</tr>
+<tr>
+<td>1.0</td>
+<td>.38437</td>
+<td>0.38437</td>
+<td>0.38437</td>
+</tr>
+</tbody></table>
+<h3 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h3><p>观察图像发现三次样条函数不仅避免了Runge现象，而且在节点处光滑。<br>同时自然边界条件下的计算速度略快与第一边界条件下的计算速度——这无论从算法步骤还是代码中都可以很容易看出来。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这次实验加深了我对三次样条插值和解线性方程组的追赶法的理解。同时，我的程序中将矩阵得LU分解和用追赶法求解三弯矩方程组分别封装成了<code>LUDecompose()</code>和<code>chasing()</code>函数，不仅使代码更加简洁，更提升了程序的通用性。</p>
+<h2 id="程序清单"><a href="#程序清单" class="headerlink" title="程序清单"></a>程序清单</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LUDecompose</span><span class="params">(a,b,c)</span>:</span></span><br><span class="line">    <span class="string">"decompose a matrix\</span></span><br><span class="line"><span class="string">    b is an array with n elements\</span></span><br><span class="line"><span class="string">    a and c are arrays both with (n-1) elements"</span></span><br><span class="line">    n = len(b)</span><br><span class="line">    gamma, alpha, beta =a, np.zeros(n), np.zeros(n<span class="number">-1</span>)</span><br><span class="line">    alpha[<span class="number">0</span>] = b[<span class="number">0</span>]</span><br><span class="line">    beta[<span class="number">0</span>] = c[<span class="number">0</span>]/b[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n<span class="number">-1</span>):</span><br><span class="line">        beta[i] = c[i]/(b[i]-a[i<span class="number">-1</span>]*beta[i<span class="number">-1</span>])</span><br><span class="line">        alpha[i] = b[i] - a[i<span class="number">-1</span>]*beta[i<span class="number">-1</span>]</span><br><span class="line">    alpha[n<span class="number">-1</span>] = b[n<span class="number">-1</span>] - a[n<span class="number">-2</span>]*beta[n<span class="number">-2</span>]</span><br><span class="line">    <span class="keyword">return</span> gamma, alpha, beta</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chasing</span><span class="params">(a,b,c,f)</span>:</span></span><br><span class="line">    <span class="string">"solve equation Ax=f\</span></span><br><span class="line"><span class="string">    f is an array with n elements"</span></span><br><span class="line">    n = len(b)</span><br><span class="line">    gamma, alpha, beta = LUDecompose(a,b,c)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#solve Ly=f</span></span><br><span class="line">    y = np.zeros(n)</span><br><span class="line">    y[<span class="number">0</span>] = f[<span class="number">0</span>]/alpha[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n):</span><br><span class="line">        y[i] = (f[i]-gamma[i<span class="number">-1</span>]*y[i<span class="number">-1</span>])/alpha[i]</span><br><span class="line"></span><br><span class="line">    <span class="comment">#solve Ux=y</span></span><br><span class="line">    x = np.zeros(n)</span><br><span class="line">    x[n<span class="number">-1</span>] = y[n<span class="number">-1</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n<span class="number">-1</span>):</span><br><span class="line">        x[n<span class="number">-2</span>-i] = y[n<span class="number">-2</span>-i] - beta[n<span class="number">-2</span>-i]*x[n<span class="number">-1</span>-i]</span><br><span class="line">    <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">spline</span><span class="params">(X,Fx,h,M,xx,i)</span>:</span></span><br><span class="line">    <span class="string">"the cubic spline function between X[i] and X[i+1]\</span></span><br><span class="line"><span class="string">    X: list containing the nodes\</span></span><br><span class="line"><span class="string">    Fx: list containing the func value at nodes\</span></span><br><span class="line"><span class="string">    h: interval between two nodes\</span></span><br><span class="line"><span class="string">    M: list containing second derivative at nodes\</span></span><br><span class="line"><span class="string">    xx: list containing the arguments\</span></span><br><span class="line"><span class="string">    i: the ith node"</span></span><br><span class="line">    S = [(M[i] * (X[i + <span class="number">1</span>] - x) ** <span class="number">3</span> / (<span class="number">6</span> * h[i])) + \</span><br><span class="line">         (M[i + <span class="number">1</span>] * (x - X[i]) ** <span class="number">3</span> / (<span class="number">6</span> * h[i])) + \</span><br><span class="line">         (Fx[i] - M[i] * h[i] ** <span class="number">2</span> / <span class="number">6</span>) * (X[i + <span class="number">1</span>] - x) / h[i] + \</span><br><span class="line">         (Fx[i + <span class="number">1</span>] - M[i + <span class="number">1</span>] * h[i] ** <span class="number">2</span> / <span class="number">6</span>) * (x - X[i]) / h[i] \</span><br><span class="line">         <span class="keyword">for</span> x <span class="keyword">in</span> xx]</span><br><span class="line">    <span class="keyword">return</span> S</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">draw</span><span class="params">(X,Fx,h,M)</span>:</span></span><br><span class="line">    plt.scatter(X,Fx,color=<span class="string">"red"</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(X)<span class="number">-1</span>):</span><br><span class="line">        xx = np.arange(X[i],X[i+<span class="number">1</span>],<span class="number">0.001</span>)</span><br><span class="line">        S = spline(X,Fx,h,M,xx,i)</span><br><span class="line">        plt.plot(xx,S,color=<span class="string">"blue"</span>)</span><br><span class="line">    <span class="comment">#plt.title("Natural boundary conditions")</span></span><br><span class="line">    plt.title(<span class="string">"First boundary conditions"</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">"__main__"</span>:</span><br><span class="line">    start = time.clock()</span><br><span class="line">    X=[<span class="number">.2</span>, <span class="number">.4</span>, <span class="number">.6</span>, <span class="number">.8</span>, <span class="number">1.0</span>]</span><br><span class="line">    Fx=[<span class="number">1.01398</span>, <span class="number">.89177</span>, <span class="number">.81203</span>, <span class="number">.72860</span>, <span class="number">.38437</span>]</span><br><span class="line">    h = [X[i]-X[i<span class="number">-1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(X))]<span class="comment">#[h0,h1,h2,h3]</span></span><br><span class="line">    mu = [h[i]/(h[i]+h[i+<span class="number">1</span>]) <span class="keyword">for</span> i <span class="keyword">in</span> range(len(h)<span class="number">-1</span>)]<span class="comment">#[mu0,mu1,mu2]</span></span><br><span class="line">    lamda = [<span class="number">1</span>-m <span class="keyword">for</span> m <span class="keyword">in</span> mu]<span class="comment">#[lamda0,lamda1,lamda2]</span></span><br><span class="line"></span><br><span class="line">    first_diff_quot = [(Fx[i]-Fx[i<span class="number">-1</span>])/h[i<span class="number">-1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(X))]<span class="comment">#[f[x0,x1],f[x1,x2],f[x2,x3],f[x3,x4]]</span></span><br><span class="line">    second_diff_quot = [(first_diff_quot[i]-first_diff_quot[<span class="number">0</span>])/(X[i+<span class="number">1</span>]-X[<span class="number">0</span>])\</span><br><span class="line">                         <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(first_diff_quot))]<span class="comment">#[f[x0,x1,x2],f[x1,x2,x3],f[x2,x3,x4]]</span></span><br><span class="line"></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    D = [6*second_diff_quot[i] for i in range(len(second_diff_quot))]</span></span><br><span class="line"><span class="string">    M0 = 0</span></span><br><span class="line"><span class="string">    M4 = 0</span></span><br><span class="line"><span class="string">    a = np.array([mu[i] for i in range(1,len(mu))])#[mu1,mu2]</span></span><br><span class="line"><span class="string">    b = np.array([2,2,2])</span></span><br><span class="line"><span class="string">    c = np.array([lamda[i] for i in range(len(lamda)-1)])#[lamda0,lamda1]</span></span><br><span class="line"><span class="string">    f = np.array([D[0]-mu[0]*M0,D[1],D[2]-lamda[2]*M4])</span></span><br><span class="line"><span class="string">    mm = chasing(a,b,c,f)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    M = np.zeros(5)</span></span><br><span class="line"><span class="string">    M[0] = M0</span></span><br><span class="line"><span class="string">    M[4] = M4</span></span><br><span class="line"><span class="string">    for i in range(1,4):</span></span><br><span class="line"><span class="string">        M[i] = mm[i-1]</span></span><br><span class="line"><span class="string">    #print(M)</span></span><br><span class="line"><span class="string">    #draw(X,Fx,h,M)</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line"></span><br><span class="line">    m0 = <span class="number">0.20271</span></span><br><span class="line">    m4 = <span class="number">1.55741</span></span><br><span class="line">    D = np.zeros(<span class="number">5</span>)</span><br><span class="line">    D[<span class="number">0</span>] = <span class="number">6</span>*(first_diff_quot[<span class="number">0</span>] - m0)/h[<span class="number">0</span>]</span><br><span class="line">    D[<span class="number">4</span>] = <span class="number">6</span>*(m4 - first_diff_quot[<span class="number">3</span>])/h[<span class="number">3</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">4</span>):</span><br><span class="line">        D[i] = <span class="number">6</span>*second_diff_quot[i<span class="number">-1</span>]</span><br><span class="line">    a = np.array([mu[<span class="number">0</span>], mu[<span class="number">1</span>], mu[<span class="number">2</span>], <span class="number">1</span>])</span><br><span class="line">    b = np.array([<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>])</span><br><span class="line">    c = np.array([<span class="number">1</span>, lamda[<span class="number">0</span>], lamda[<span class="number">1</span>], lamda[<span class="number">2</span>]])</span><br><span class="line">    f = D</span><br><span class="line"></span><br><span class="line">    M = chasing(a,b,c,f)</span><br><span class="line">    <span class="comment">#print(M)</span></span><br><span class="line">    <span class="comment">#draw(X,Fx,h,M)</span></span><br><span class="line"></span><br><span class="line">    XX = [[<span class="number">.2</span>, <span class="number">.3</span>],[<span class="number">.4</span>, <span class="number">.5</span>],[<span class="number">.6</span>, <span class="number">.7</span>], [<span class="number">.8</span>, <span class="number">.9</span>, <span class="number">1.</span>]]</span><br><span class="line">    SS = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(XX)):</span><br><span class="line">        SS.extend(spline(X,Fx,h,M,XX[i],i))</span><br><span class="line">    print(SS)</span><br><span class="line"></span><br><span class="line">    end = time.clock()</span><br><span class="line">    print(<span class="string">"time is &#123;&#125;"</span>.format(end-start))</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Mianzhi Pan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://yoursite.com/2020/04/09/%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95%E5%AE%9E%E4%B9%A0%E9%A2%98%E4%B8%80-%E4%B8%89%E6%AC%A1%E6%A0%B7%E6%9D%A1%E6%8F%92%E5%80%BC/" title="计算方法实习题一(三次样条插值)">http://yoursite.com/2020/04/09/%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95%E5%AE%9E%E4%B9%A0%E9%A2%98%E4%B8%80-%E4%B8%89%E6%AC%A1%E6%A0%B7%E6%9D%A1%E6%8F%92%E5%80%BC/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/19/OS-%E8%AF%BE%E5%A0%82%E6%95%B4%E7%90%86-2/" rel="next" title="[OS]课堂整理(2)">
+                <i class="fa fa-chevron-left"></i> [OS]课堂整理(2)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpg"
+                alt="Mianzhi Pan" />
+            
+              <p class="site-author-name" itemprop="name">Mianzhi Pan</p>
+              <p class="site-description motion-element" itemprop="description">Mianzhi Pan's personal website(QQ 964298041)</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/panmianzhi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/wan-wan-ya-44-93/activities" target="_blank" title="Zhihu">
+                      
+                        <i class="fa fa-fw fa-snapchat"></i>Zhihu</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:panmianzhi@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28427771&auto=1&height=66"></iframe>
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法步骤"><span class="nav-number">2.</span> <span class="nav-text">算法步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自然边界条件"><span class="nav-number">2.1.</span> <span class="nav-text">自然边界条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一种边界条件"><span class="nav-number">2.2.</span> <span class="nav-text">第一种边界条件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法正确性验证"><span class="nav-number">3.</span> <span class="nav-text">算法正确性验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算结果及分析"><span class="nav-number">4.</span> <span class="nav-text">计算结果及分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自然边界条件-1"><span class="nav-number">4.1.</span> <span class="nav-text">自然边界条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一边界条件"><span class="nav-number">4.2.</span> <span class="nav-text">第一边界条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结果分析"><span class="nav-number">4.3.</span> <span class="nav-text">结果分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序清单"><span class="nav-number">6.</span> <span class="nav-text">程序清单</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mianzhi Pan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
