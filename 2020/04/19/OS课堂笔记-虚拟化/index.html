@@ -86,21 +86,20 @@
 
 
 
-<meta name="description" content="jyy os-class 整理。">
+<meta name="description" content="第二部分虚拟化的整理。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[OS]课堂笔记(1)">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;14&#x2F;OS-%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0-1&#x2F;index.html">
+<meta property="og:title" content="[OS课堂笔记]虚拟化">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;19&#x2F;OS%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0-%E8%99%9A%E6%8B%9F%E5%8C%96&#x2F;index.html">
 <meta property="og:site_name" content="Paul&#39;s Blog">
-<meta property="og:description" content="jyy os-class 整理。">
+<meta property="og:description" content="第二部分虚拟化的整理。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;IMG_0449(20200313-221418).PNG">
-<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;IMG_0450(20200313-225714).PNG">
-<meta property="article:published_time" content="2020-03-14T01:27:09.000Z">
-<meta property="article:modified_time" content="2020-03-14T01:42:31.668Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;pagetable64.png">
+<meta property="article:published_time" content="2020-04-19T10:30:15.000Z">
+<meta property="article:modified_time" content="2020-05-10T10:28:54.034Z">
 <meta property="article:author" content="Mianzhi Pan">
 <meta property="article:tag" content="recording">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;IMG_0449(20200313-221418).PNG">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;pagetable64.png">
 
 
 
@@ -130,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/03/14/OS-课堂笔记-1/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/04/19/OS课堂笔记-虚拟化/"/>
 
 
 
 
 
-  <title>[OS]课堂笔记(1) | Paul's Blog</title>
+  <title>[OS课堂笔记]虚拟化 | Paul's Blog</title>
   
 
 
@@ -253,7 +252,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/14/OS-%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0-1/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/19/OS%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0-%E8%99%9A%E6%8B%9F%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mianzhi Pan">
@@ -270,7 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">[OS]课堂笔记(1)</h1>
+          <h1 class="post-title" itemprop="name headline">[OS课堂笔记]虚拟化</h1>
         
 
         <div class="post-meta">
@@ -282,8 +281,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-14T09:27:09+08:00">
-                2020-03-14
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-19T18:30:15+08:00">
+                2020-04-19
               </time>
             
 
@@ -342,42 +341,44 @@
       
 
       
-        <p>jyy os-class 整理。</p>
+        <p>第二部分<strong>虚拟化</strong>的整理。</p>
 <a id="more"></a>
 
-<h1 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a>互斥</h1><p>直观理解：线程==人 &amp;&amp; 共享内存==物理世界；线程不想被打断</p>
-<p>实现lock_t数据结构（一把排他性的锁）和lock/unlock API<br>状态机视角：lock返回会进入”locked”状态；unlock会清楚该状态 &amp;&amp; 初始状态不能到达两个threads都进入locked的状态。<br>    lock/unlock保护的区域为一个<strong>原子</strong>的黑盒子<br>    黑盒子的代码不能随意并发，<strong>顺序</strong>要么1→2，要么2→1<br>    先完成的黑盒子的内存访问在之后的黑盒子中<strong>可见</strong></p>
-<h2 id="共享内存上的互斥"><a href="#共享内存上的互斥" class="headerlink" title="共享内存上的互斥"></a>共享内存上的互斥</h2><p>假设线程可以完成三种指令：<br>①load(读)<br>②store(写)<br>③thread-local(本地计算，其他线程不可见，如寄存器、堆栈)</p>
-<p>load/store是原子的（<strong><em>状态机每次执行一条load/store</em></strong>）==&gt; 不能同时读/写内存（只能干看/闭着眼睛写）</p>
-<h3 id="Peterson算法的问题"><a href="#Peterson算法的问题" class="headerlink" title="Peterson算法的问题"></a>Peterson算法的问题</h3><p>两个线程用Peterson算法可以简化为如下指令:<br></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">thread <span class="number">1</span>                                               thread <span class="number">2</span>                    </span><br><span class="line">[<span class="number">1</span>]store(x)                                            [<span class="number">1</span>]store(y)<span class="comment">//举自己旗子</span></span><br><span class="line">[<span class="number">2</span>]store(<span class="built_in">turn</span>)                                         [<span class="number">2</span>]store(<span class="built_in">turn</span>)<span class="comment">//挂对方牌子      </span></span><br><span class="line">[<span class="number">3</span>]load(y)                                             [<span class="number">3</span>]load(x)<span class="comment">//看对方旗子 </span></span><br><span class="line">[<span class="number">4</span>]load(<span class="built_in">turn</span>)                                          [<span class="number">4</span>]load(<span class="built_in">turn</span>)<span class="comment">//看门上牌子</span></span><br></pre></td></tr></table></figure>
+<h2 id="进程的地址空间"><a href="#进程的地址空间" class="headerlink" title="进程的地址空间"></a>进程的地址空间</h2><p>代码，数据，堆栈（它们都可以用指针访问），动态链接库，运行时分配的内存。<br>分为若干“段”，每一段是可访问（R/W/EXE）的内存。<code>pmap+进程号</code>查看进程地址空间（<code>pmap()</code>是基于procfs中的maps实现的：<code>cat /proc/[pid]/maps</code>）。<br>相关系统调用：<br>    <code>mmap()</code>：文件→内存（创建）；<code>munmap()</code>：抹去；<code>mprotect()</code>：修改权限</p>
+<p><code>gcc a.c</code>是动态链接；<code>gcc -static a.c -o a.out</code>是静态链接（慢&amp;大）。<br><code>(gdb) starti</code>, 执行第一条指令时进程的地址空间并没有libc，只有加载器的代码。<br><code>(gdb) info inferiors</code><br><code>(gdb) !+instruction</code></p>
+<p>进程地址空间高位有三个“宝藏“：[vvar], [vdso], [vsyscall]。(man 7 vdso)</p>
+<p>让内核和进程共享数据(内核可写，进程只读)<br>    vvar: 内核和进程共享的数据<br>    vdso: 系统调用代码实现<br>    vsyscall: 普通系统调用的封装</p>
+<p>只用int指令系统调用慢。SYSCALL —— Fast System Call。(man 2 syscall)<br>系统调用发生时，进程要和操作系统同步一次?（syscall/共享内存?）</p>
+<p>游戏外挂（修改进程地址空间）</p>
+<h2 id="实现虚拟存储：分页机制"><a href="#实现虚拟存储：分页机制" class="headerlink" title="实现虚拟存储：分页机制"></a>实现虚拟存储：分页机制</h2><p>L0 amgame: 向显存的地址写入数据</p>
+<p>需要一个函数f: [0,M)→[0,M)，把VA翻译成PA；f由操作系统控制。<br>以页面为单位映射(页面之间任意映射，页面内offset确定: VA+100→PA+100)！<br>e.g. 地址空间32GB，x86页面4KiB。本质上要将2<sup>20</sup>个数字映射到另外2<sup>20</sup>个数字。①Hash table：reversed page table。②使用radix tree(x86)。<br>x86用的三层的radix tree(PD+PT+Page)，32bit = 10bit+10bit(4KB/sizeof(int)=1KB)+12bit(offset)。<br>x86-64: PML4(PDPT+PD+PT+Page)</p>
+<img src="https://github.com/panmianzhi/IMG/raw/master/pagetable64.png" style="zoom:50%;" />
 
-<p>然而处理器允许指令乱序，可能thread 1可能先<code>load(y)</code>，thread 2先<code>load(x)</code>，导致同时进入临界区。所以该算法在现代处理器上是错误的。</p>
-<h3 id="共享内存带来的更多问题"><a href="#共享内存带来的更多问题" class="headerlink" title="共享内存带来的更多问题"></a>共享内存带来的更多问题</h3><p>用内联汇编实现<code>do_sum()</code>并且禁止编译器优化</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_sum</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i&lt;<span class="number">1000000</span>; i++)</span><br><span class="line">		<span class="function"><span class="keyword">asm</span> <span class="title">volitile</span><span class="params">(<span class="string">"addq $1, %0"</span>: <span class="string">"=m"</span>(sum))</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>然而结果仍然与预期不符。</p>
-<p>由于现代处理器一次只能一次load/store，所以一条add实际被拆成了<code>t=load(x); t++; store(x,t)</code>，现代处理器下许多个这样的指令可能乱序执行，造成意想不到的结果。</p>
-<p>另外，如果在两个处理器上执行，有可能thread 1已经执行了多次<code>sum++</code>，但数据仍在CPU1的store buffer中，未写入共享内存，而thread 2读sum时直接从共享内存中读。</p>
-<p><strong>状态机一步执行一个线程执行一条指令是错误的假设</strong><br>编译器/处理器乱序<br>表面“原子”的一条指令并不原子</p>
-<h3 id="实现互斥"><a href="#实现互斥" class="headerlink" title="实现互斥"></a>实现互斥</h3><p>以下locked实现是错误的</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">critical_section</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">[<span class="number">1</span>]    <span class="keyword">if</span> (!locked) &#123;</span><br><span class="line">[<span class="number">2</span>]      locked = <span class="number">1</span>;</span><br><span class="line">[<span class="number">3</span>]      <span class="keyword">break</span>;</span><br><span class="line">       &#125;</span><br><span class="line">     <span class="comment">// 进入临界区</span></span><br><span class="line">[<span class="number">4</span>]    locked = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>用状态机分析如下</p>
-<img src="https://github.com/panmianzhi/IMG/raw/master/IMG_0449(20200313-221418).PNG" style="zoom: 33%;" />
-
-<p>需要一条”test-and-set”指令，使得<code>t=load(locked);if(t==0) store(locked,1)</code>可以同时执行。<br><strong>原子指令：</strong>一次共享内存的load；向同一个共享内存地址store；以及一些本地运算<br>x86 lock指令前缀(<code>lock addq)</code>；<code>xchg</code>指令。</p>
-<h3 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h3><p>实现</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> table = KEY;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">int</span> got = xchg(&amp;table, NOTE);</span><br><span class="line">    <span class="keyword">if</span> (got == KEY) <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  xchg(&amp;table, KEY)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>简化</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> locked = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span>   </span>&#123;</span><br><span class="line">  <span class="keyword">while</span> (xchg(&amp;locked, <span class="number">1</span>)) ;<span class="comment">//返回0表示得到钥匙</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  xchg(&amp;locked, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="RISC-V：另一种原子操作设计"><a href="#RISC-V：另一种原子操作设计" class="headerlink" title="RISC-V：另一种原子操作设计"></a>RISC-V：另一种原子操作设计</h3><p>原子操作本质是：<br>    load(x)<br>    thread-local operation<br>    store(x)</p>
-<p><strong>LR(load-reserved)/SC(store-conditional)</strong>，前者在共享内存上做了标记，后者会清楚内存上的所有标记。假设有两个threads分别执行f<sub>1</sub>(x)和f<sub>2</sub>(x)，证明最后的结果是f<sub>1</sub>(f<sub>2</sub>(x))即可：</p>
-<img src="https://github.com/panmianzhi/IMG/raw/master/IMG_0450(20200313-225714).PNG" style="zoom:33%;" />
-
-<h3 id="数据竞争"><a href="#数据竞争" class="headerlink" title="数据竞争"></a>数据竞争</h3><p>两个不同线程的两个操作访问同一段内存，切至少有一个是store，其中没有原子操作间隔。<br>数据竞争=undefined behavior<br>编程时避免数据竞争&lt;==&gt;所有线程间的共享变量都被<strong>同一把</strong>互斥锁保护 </p>
+<p><code>mmap()</code>实际上只是更新了操作系统内部”一张表“，并没有真正给进程分配页面，直到进程执行遇到缺页（此时执行流进入OS，OS查”表“发现已经”映射“过了）。缺页时OS会得到缺页地址(%cr2)<br>    访问合法，分配一页（匿名内存，直接返回；文件，read把文件读到内存）<br>    非法，发送信号（SIGSEGV）</p>
+<p>Memory-Mapping File一致性问题，msync(2)</p>
+<h2 id="链接与加载"><a href="#链接与加载" class="headerlink" title="链接与加载"></a>链接与加载</h2><p>大文件→小文件；C语言眼里只有内存&amp;指针，不同的“解读”即各种类型。</p>
+<h3 id="Static"><a href="#Static" class="headerlink" title="Static"></a>Static</h3><p>编译后不能直接执行：指令中rip相对寻址的offset为00 00 00 00，链接时才把符号的位置填入offset。使用readelf，发现都是把符号的地址减4填入offset？实际上相对rip寻址时<code>movl off(%rip),%edi</code>，由于rip指向的其实是该指令<code>8b 3d 00 00 00 00 00</code>末尾（也即下条指令的头部），所以off实际上是指令末尾到符号头部的偏移，所以将符号地址减4，符号地址就被填入正确位置（3d后面）。</p>
+<p><code>__attribute__((constructors))</code>, <code>__attribute__((destructors))</code></p>
+<p>就是解析ELF头，把Program Header <code>mmap()</code>到内存。静态链接的程序从ELF Entry执行。</p>
+<h3 id="Dynamic"><a href="#Dynamic" class="headerlink" title="Dynamic"></a>Dynamic</h3><p>每个程序都static link，浪费空间。最好整个OS只有一个libc副本(<code>libc.so</code>)。<br><code>(gdb)starti</code>，执行的指令并不是程序第一条指令，而是<code>ld-…….so</code></p>
+<p>实现动态加载：<br>    纯粹加载代码？编译成PIC（引用代码/跳转全部是PC相对寻址），直接把代码<code>mmap()</code>到进程地址空间就行了<br>    除了代码，还要有附带的数据？（还是PC相对寻址：数据相对于对应的代码offset确定）<br>    允许访问其他动态链接库导出的符号(code/data)？<del>重填？(还是相当于静态链接)。</del>为动态符号创建表，查表！编译成<code>call *table[foo]</code>。于是只有这张表要拷贝</p>
+<p>Ques: main要调用libc中的<code>printf</code>；<code>printf</code>要调用libfoo中的<code>foo</code><br>    1. libld加载libfoo<br>    2. libld加载libc：libc对<code>foo</code>的调用被编译成<code>call *libc.tab[FOO]</code>；libld调用<code>_dl_runtime_resolver</code>解析符号，装入<code>libc.tab[FOO]</code><br>    3.libld完成main的初始化：a.out对<code>printf</code>的调用被编译成<code>call *a.out.tab[PRINTF]</code>; libld解析<code>printf</code>地址，填入<code>a.out.tab[PRINTF]</code></p>
+<h4 id="ELF动态链接与加载"><a href="#ELF动态链接与加载" class="headerlink" title="ELF动态链接与加载"></a>ELF动态链接与加载</h4><p>GOT(global offset table)：库函数有，可执行文件也有。（GOT[0]：.dynamic节地址；GOT[1]：link map；GOT[2]：<code>_dl_runtime_resolver</code>地址；……）</p>
+<p>But 会有许多符号，实际只可能引用很少的。</p>
+<p>Lazy Symbol Resolution: <code>call printf@plt</code>, <code>jmp *a.out.GOT[PRINTF]</code>。第一次查表，会把表中<code>printf@plt</code>的地址替换成真实地址，以后就可以直接jmp到reslove成功的printf地址</p>
+<h2 id="虚拟化：处理器调度"><a href="#虚拟化：处理器调度" class="headerlink" title="虚拟化：处理器调度"></a>虚拟化：处理器调度</h2><p>下次中断后应该让哪个进程在处理器上运行？</p>
+<h3 id="处理器调度"><a href="#处理器调度" class="headerlink" title="处理器调度"></a>处理器调度</h3><p>n个任务，分别要t<sub>1</sub>,……,t<sub>n</sub>时间完成。任务一旦开始就要结束，按什么顺序执行最好？<br>Shortest Job First(SJF)，最小化平均完成时间（等待时间↓）。</p>
+<p>任务可在任何时间到达？cost = 完成时间-到达时间(上一情况下所有Jobs的到达时间相同)，need to minimize average cost.<br>Shortest Time-to-Completion First(STCF)：减少等待任务！让<strong>剩余执行时间</strong>最少的任务执行→新来的short job会<strong><em>抢占</em></strong>当前job！</p>
+<p><del>以上其实是历史遗留问题(批处理时代)</del></p>
+<h4 id="单处理器分时调度（1）"><a href="#单处理器分时调度（1）" class="headerlink" title="单处理器分时调度（1）"></a>单处理器分时调度（1）</h4><p><strong>中断(机制)：</strong>进程不在独占处理器直到完成，OS代码可定时强制执行<br><strong>处理器调度(策略)：</strong>系统中有很多进程等待执行，OS代码执行调度策略选择一个process；中断返回机制运行Context</p>
+<p>基本假设：进程是<code>while(1) do_sth</code>，执行时使用CPU，等待I/O返回时不使用CPU；处理器以固定频率被中断；随时可能有new process被创建或old process退出</p>
+<p><strong>Round-Robin:</strong><br>当前T<sub>i</sub>，中断后试图切换到下一个T<sub>(i+1)mod n</sub>；如果下一个正在等待I/O返回，继续再下一个。（所有thread都不要CPU，调用idle线程执行(like<code>os-&gt;run</code>)）。<br>中断之间的进程执行称为“时间片”</p>
+<p><strong>引入优先级 UNIX niceness</strong><br>-20(最坏)~19(最好)：越nice，越被不nice的人抢占；nice相差10(1)，CPU获得相差约10(1.25)倍<br><code>./a.out &amp;</code>后台运行a.out<br><code>ps</code>查看进程号<br><code>renice -n val pid</code>修改nice值<br><code>top</code>指令查看CPU使用情况<br><code>taskset -cp cpuid pid</code>：将进程绑定到某个CPU上</p>
+<p> <strong>多级反馈调度(MLFQ)</strong><br>假设有交互进程(vi, vscode……)&amp;计算进程(gcc, ld……)，后者在处理器空闲时才执行，通过观测进程行为(时间片全部用于计算?)确定是哪一种<br>设计多个Round-Robin队列(每个队列对应一个优先级)</p>
+<p><strong>Complete Fair Scheduling(CFS)：</strong><br>精确记录每个进程运行时间，补偿时间最短的进程<br>    <code>fork()</code>子进程会继承父进程的vruntime<br>    睡眠唤醒的进程获得系统最小的vruntime(防止唤醒后长时占用CPU)<br>    通过调整时钟实现优先级(nice的进程始终跑得快，所以相同的物理时间下其vruntime就较大)<br>    用红黑树(有序集合!)维护vruntime，每个进程指向一个node。</p>
+<p>整数溢出问题？用time_delta判断大小。</p>
+<h2 id="单处理器分时调度（2）"><a href="#单处理器分时调度（2）" class="headerlink" title="单处理器分时调度（2）"></a>单处理器分时调度（2）</h2><p>线程不是<code>while(1)</code>的循环；线程/进程不是纯粹的计算或（长时间）I/O：等待mutex_lock, 信号量，非常短暂的I/O。</p>
+<p>由于producer/consumer会主动让出CPU，如果有一个<code>while(1)</code>，Round-Robin会严重不公平！</p>
 
       
     </div>
@@ -398,7 +399,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="http://yoursite.com/2020/03/14/OS-%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0-1/" title="[OS]课堂笔记(1)">http://yoursite.com/2020/03/14/OS-%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0-1/</a>
+    <a href="http://yoursite.com/2020/04/19/OS%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0-%E8%99%9A%E6%8B%9F%E5%8C%96/" title="[OS课堂笔记]虚拟化">http://yoursite.com/2020/04/19/OS%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0-%E8%99%9A%E6%8B%9F%E5%8C%96/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -420,8 +421,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/03/03/OS-%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/" rel="next" title="[OS]课堂笔记">
-                <i class="fa fa-chevron-left"></i> [OS]课堂笔记
+              <a href="/2020/04/09/%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95%E5%AE%9E%E4%B9%A0%E9%A2%98%E4%B8%80-%E4%B8%89%E6%AC%A1%E6%A0%B7%E6%9D%A1%E6%8F%92%E5%80%BC/" rel="next" title="计算方法实习题一(三次样条插值)">
+                <i class="fa fa-chevron-left"></i> 计算方法实习题一(三次样条插值)
               </a>
             
           </div>
@@ -430,8 +431,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/03/17/%E4%B8%80%E4%BA%9B%E7%BA%BF%E4%BB%A3%E7%9F%A5%E8%AF%86/" rel="prev" title="一些线代知识">
-                一些线代知识 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/05/08/How-to-solve-merge-conflict-in-git/" rel="prev" title="How to solve merge conflict in git">
+                How to solve merge conflict in git <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -583,7 +584,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#互斥"><span class="nav-number">1.</span> <span class="nav-text">互斥</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#共享内存上的互斥"><span class="nav-number">1.1.</span> <span class="nav-text">共享内存上的互斥</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Peterson算法的问题"><span class="nav-number">1.1.1.</span> <span class="nav-text">Peterson算法的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#共享内存带来的更多问题"><span class="nav-number">1.1.2.</span> <span class="nav-text">共享内存带来的更多问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现互斥"><span class="nav-number">1.1.3.</span> <span class="nav-text">实现互斥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自旋锁"><span class="nav-number">1.1.4.</span> <span class="nav-text">自旋锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RISC-V：另一种原子操作设计"><span class="nav-number">1.1.5.</span> <span class="nav-text">RISC-V：另一种原子操作设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据竞争"><span class="nav-number">1.1.6.</span> <span class="nav-text">数据竞争</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程的地址空间"><span class="nav-number">1.</span> <span class="nav-text">进程的地址空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现虚拟存储：分页机制"><span class="nav-number">2.</span> <span class="nav-text">实现虚拟存储：分页机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链接与加载"><span class="nav-number">3.</span> <span class="nav-text">链接与加载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Static"><span class="nav-number">3.1.</span> <span class="nav-text">Static</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dynamic"><span class="nav-number">3.2.</span> <span class="nav-text">Dynamic</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ELF动态链接与加载"><span class="nav-number">3.2.1.</span> <span class="nav-text">ELF动态链接与加载</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟化：处理器调度"><span class="nav-number">4.</span> <span class="nav-text">虚拟化：处理器调度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#处理器调度"><span class="nav-number">4.1.</span> <span class="nav-text">处理器调度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单处理器分时调度（1）"><span class="nav-number">4.1.1.</span> <span class="nav-text">单处理器分时调度（1）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单处理器分时调度（2）"><span class="nav-number">5.</span> <span class="nav-text">单处理器分时调度（2）</span></a></li></ol></div>
             
 
           </div>
