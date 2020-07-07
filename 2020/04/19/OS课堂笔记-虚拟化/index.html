@@ -95,7 +95,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;pagetable64.png">
 <meta property="article:published_time" content="2020-04-19T10:30:15.000Z">
-<meta property="article:modified_time" content="2020-05-10T10:28:54.034Z">
+<meta property="article:modified_time" content="2020-05-10T15:38:51.092Z">
 <meta property="article:author" content="Mianzhi Pan">
 <meta property="article:tag" content="recording">
 <meta name="twitter:card" content="summary">
@@ -377,8 +377,11 @@
 <p> <strong>多级反馈调度(MLFQ)</strong><br>假设有交互进程(vi, vscode……)&amp;计算进程(gcc, ld……)，后者在处理器空闲时才执行，通过观测进程行为(时间片全部用于计算?)确定是哪一种<br>设计多个Round-Robin队列(每个队列对应一个优先级)</p>
 <p><strong>Complete Fair Scheduling(CFS)：</strong><br>精确记录每个进程运行时间，补偿时间最短的进程<br>    <code>fork()</code>子进程会继承父进程的vruntime<br>    睡眠唤醒的进程获得系统最小的vruntime(防止唤醒后长时占用CPU)<br>    通过调整时钟实现优先级(nice的进程始终跑得快，所以相同的物理时间下其vruntime就较大)<br>    用红黑树(有序集合!)维护vruntime，每个进程指向一个node。</p>
 <p>整数溢出问题？用time_delta判断大小。</p>
-<h2 id="单处理器分时调度（2）"><a href="#单处理器分时调度（2）" class="headerlink" title="单处理器分时调度（2）"></a>单处理器分时调度（2）</h2><p>线程不是<code>while(1)</code>的循环；线程/进程不是纯粹的计算或（长时间）I/O：等待mutex_lock, 信号量，非常短暂的I/O。</p>
-<p>由于producer/consumer会主动让出CPU，如果有一个<code>while(1)</code>，Round-Robin会严重不公平！</p>
+<h4 id="单处理器分时调度（2）"><a href="#单处理器分时调度（2）" class="headerlink" title="单处理器分时调度（2）"></a>单处理器分时调度（2）</h4><p>线程不是<code>while(1)</code>的循环；线程/进程不是纯粹的计算或（长时间）I/O：等待mutex_lock, 信号量，非常短暂的I/O。</p>
+<p>producer(‘(‘)→consumer(‘)’)→while(1)，Round-Robin会严重不公平(while(1)几乎占据了所有时间)！</p>
+<p><strong>优先级翻转：</strong>高优先级进程和低优先级进程持有同一把mutex_lock→低优先级进程进程执行完一个时间片后仍未unlock→高优先级进程等待互斥锁，无法执行→中等优先级进程进程几乎占据整个CPU(直到其vruntime达到低优先级进程vruntime才会停止)<br><code>ps ax| grep watchdog</code>：最高优先级进程，检查系统<br><strong>解决： 优先级继承/优先级提升；</strong>持有mutex的进程/线程会继承block在该mutex上的最高优先级（即上例中低优先级进程会继续执行直到unlock）；但对于条件变量不总是work┭┮﹏┭┮；对优先级翻转做预警！</p>
+<h4 id="多处理器调度"><a href="#多处理器调度" class="headerlink" title="多处理器调度"></a>多处理器调度</h4><p>每隔一段时间，负载低的CPU可以从负载高的CPU中偷一些线程。But 策略？？</p>
+<p><strong>实际情况1：多用户，多任务</strong>，用户的公平性很难保证→Linux Control Groups(<code>man 7 cgroups</code>)<br><strong>实际情况2：BIG.LITTLE/能耗</strong>，处理器的计算能力不同→均分workloads会让小核任务饥饿<br><strong>实际情况3：Non-Uniform Memory Access</strong>，“共享内存”假象！(CPU缓存互联(慢)，所以会有“分配1/2的处理器资源，反而加速”)</p>
 
       
     </div>
@@ -584,7 +587,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程的地址空间"><span class="nav-number">1.</span> <span class="nav-text">进程的地址空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现虚拟存储：分页机制"><span class="nav-number">2.</span> <span class="nav-text">实现虚拟存储：分页机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链接与加载"><span class="nav-number">3.</span> <span class="nav-text">链接与加载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Static"><span class="nav-number">3.1.</span> <span class="nav-text">Static</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dynamic"><span class="nav-number">3.2.</span> <span class="nav-text">Dynamic</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ELF动态链接与加载"><span class="nav-number">3.2.1.</span> <span class="nav-text">ELF动态链接与加载</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟化：处理器调度"><span class="nav-number">4.</span> <span class="nav-text">虚拟化：处理器调度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#处理器调度"><span class="nav-number">4.1.</span> <span class="nav-text">处理器调度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单处理器分时调度（1）"><span class="nav-number">4.1.1.</span> <span class="nav-text">单处理器分时调度（1）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单处理器分时调度（2）"><span class="nav-number">5.</span> <span class="nav-text">单处理器分时调度（2）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程的地址空间"><span class="nav-number">1.</span> <span class="nav-text">进程的地址空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现虚拟存储：分页机制"><span class="nav-number">2.</span> <span class="nav-text">实现虚拟存储：分页机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链接与加载"><span class="nav-number">3.</span> <span class="nav-text">链接与加载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Static"><span class="nav-number">3.1.</span> <span class="nav-text">Static</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dynamic"><span class="nav-number">3.2.</span> <span class="nav-text">Dynamic</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ELF动态链接与加载"><span class="nav-number">3.2.1.</span> <span class="nav-text">ELF动态链接与加载</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟化：处理器调度"><span class="nav-number">4.</span> <span class="nav-text">虚拟化：处理器调度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#处理器调度"><span class="nav-number">4.1.</span> <span class="nav-text">处理器调度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单处理器分时调度（1）"><span class="nav-number">4.1.1.</span> <span class="nav-text">单处理器分时调度（1）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单处理器分时调度（2）"><span class="nav-number">4.1.2.</span> <span class="nav-text">单处理器分时调度（2）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多处理器调度"><span class="nav-number">4.1.3.</span> <span class="nav-text">多处理器调度</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

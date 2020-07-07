@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="[持久化]I&#x2F;O设备; 总线, DMA, GPU沟通计算机&amp;物理世界。CPU视角：能与CPU交换数据的接口(Status(rw), Command(rw), Data(ro)寄存器)。I&#x2F;O设备以导线的方式（某种接口协议）连接到计算机上CPU：port I&#x2F;O(in&#x2F;out)；memory-mapped I&#x2F;O。CPU就是和设备控制器交互！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[OS]End">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;07&#x2F;07&#x2F;OS-End&#x2F;index.html">
+<meta property="og:site_name" content="Paul&#39;s Blog">
+<meta property="og:description" content="[持久化]I&#x2F;O设备; 总线, DMA, GPU沟通计算机&amp;物理世界。CPU视角：能与CPU交换数据的接口(Status(rw), Command(rw), Data(ro)寄存器)。I&#x2F;O设备以导线的方式（某种接口协议）连接到计算机上CPU：port I&#x2F;O(in&#x2F;out)；memory-mapped I&#x2F;O。CPU就是和设备控制器交互！">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-07-07T15:35:12.000Z">
+<meta property="article:modified_time" content="2020-07-07T15:38:27.768Z">
+<meta property="article:author" content="Mianzhi Pan">
+<meta property="article:tag" content="recording">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/07/07/OS-End/"/>
+
+
+
+
+
+  <title>[OS]End | Paul's Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Paul's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Strive for a postgraduate recommendation.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/07/OS-End/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mianzhi Pan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Paul's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[OS]End</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-07T23:35:12+08:00">
+                2020-07-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OS/" itemprop="url" rel="index">
+                    <span itemprop="name">OS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="持久化-I-O设备-总线-DMA-GPU"><a href="#持久化-I-O设备-总线-DMA-GPU" class="headerlink" title="[持久化]I/O设备; 总线, DMA, GPU"></a>[持久化]I/O设备; 总线, DMA, GPU</h2><p>沟通计算机&amp;物理世界。<br>CPU视角：能与CPU交换数据的接口(Status(rw), Command(rw), Data(ro)寄存器)。<br>I/O设备以导线的方式（某种接口协议）连接到计算机上<br>CPU：port I/O(in/out)；memory-mapped I/O。CPU就是和设备控制器交互！</p>
+<a id="more"></a>
+
+<p>操作系统抽象I/O，为应用提供接口？<code>cd /dev</code></p>
+<p><strong>键盘控制器</strong><br>IBM/PC，“硬编码”到两个I/O port: 0x60(data, ro)，0x64(status/command, rw)</p>
+<p><strong>磁盘控制器</strong><br>ATA controller，primary: 0x1f0(data) — 0x1f7(status); secondary: 0x170 — 0x177</p>
+<p><strong>中断控制器</strong><br>CPU有一个中断引脚，收到某个特定的电信号会触发中断<br>    保存到cs, rip, rflags, ss, rsp<br>    跳转到中断向量表对应项执行</p>
+<p>Intel 8259 PIC(programmabable interrupt controller)<br>    其他设备可以向中断控制器连线，中断控制器连接到CPU<br>    中断屏蔽……<br>    slave-&gt;master-&gt;cpu</p>
+<h3 id="总线：一个特殊的I-O设备"><a href="#总线：一个特殊的I-O设备" class="headerlink" title="总线：一个特殊的I/O设备"></a>总线：一个特殊的I/O设备</h3><p>“另一个地址空间”；把cpu的地址和数据转发到IO设备上<br>IO&lt;-&gt;总线&lt;-&gt;cpu，每次只要把端口对应的线路选通即可传输数据<br>IBM PC的CPU其实只看到这一个IO设备</p>
+<p>总线可以桥接其他总线(PCI-&gt;USB)</p>
+<p><code>lspci -tv</code> 查看I/O设备</p>
+<p><code>lsusb -tv</code></p>
+<p>PCI总线</p>
+<h3 id="Direct-Memory-Access-DMA"><a href="#Direct-Memory-Access-DMA" class="headerlink" title="Direct Memory Access(DMA)"></a>Direct Memory Access(DMA)</h3><p>CPU一个Byte一个Byte搬数据(e.g. 内存-&gt;网卡)浪费</p>
+<p>在系统里增加一个新CPU，专门执行”memcpy”程序（没必要使用复杂的通用寄存器实现它）</p>
+<p>数据一致性</p>
+<p>内存一致性：CPU直连DRAM, PCIe, DMI. CPU带PCIe lanes: 保证cache和DMA数据的一致性</p>
+<h3 id="GPU-既是I-O设备，也是处理器"><a href="#GPU-既是I-O设备，也是处理器" class="headerlink" title="GPU: 既是I/O设备，也是处理器"></a>GPU: 既是I/O设备，也是处理器</h3><p>超高性能并行处理器(OpenGL, CUDA)；CPU更偏向于优化顺序指令执行</p>
+<p>DRAM(CPU)→DRAM(GPU), instr(CPU)→GPU ==&gt; res(GPU)→DRAM(GPU)→DRAM(CPU)</p>
+<p><code>cudaMalloc(),cudaMemcpy(), cudaMemcpyHostToDevice(), cudaMemcpyDeviceToHost()……</code></p>
+<p>应用程序不可以直接访问I/O设备，操作系统需要对设备进行抽象（虚拟化）。<br>I/O设备的抽象：对设备(文件描述符)的I/O<br>I/O设备可以理解成字节的序列</p>
+<p>Rendering Pipeline</p>
+<p><strong>设备驱动程序：</strong>对设备进行一定管理，对上层提供统一的接口（“面向对象”访问I/O，设备=支持read,write,ioctl,……的对象）<br>设备驱动程序把HALAPI调用(read, write, ioctl)翻译成设备驱动程序，未必一定要有物理设备！<code>cat /dev/zero(urandom) | head -c 512 | xxd</code>（取前512字节并以16进制打印）</p>
+<p><code>fflush()</code>, <code>lseek()</code></p>
+<h2 id="持久化-持久数据的可靠性-RAID"><a href="#持久化-持久数据的可靠性-RAID" class="headerlink" title="[持久化]持久数据的可靠性; RAID"></a>[持久化]持久数据的可靠性; RAID</h2><p>内存：一断电数据结构就没了；磁盘：宝贵的持久数据（但是任何存储介质都有失效的可能）。</p>
+<p>磁盘：random data corruption(数据块坏了) &amp; faul-stop</p>
+<h3 id="随机损坏和FAT备份"><a href="#随机损坏和FAT备份" class="headerlink" title="随机损坏和FAT备份"></a>随机损坏和FAT备份</h3><p>任何一个数据块都可能损坏<br>e.g. FAT文件系统<br>    metadata: 开不了机了。但可以重新扫描、推断恢复<br>    FAT: 就是M5，所有<code>next</code>都丢了，碎片化程度不高还好，高了就gg……<br>    data: 丢失一个文件。<br>FAT损坏terriable！所以有<strong>备份</strong>。性能？memory里有FAT的writeback缓存，所以几乎不会影响性能。</p>
+<h3 id="RAID-备胎的虚拟化"><a href="#RAID-备胎的虚拟化" class="headerlink" title="RAID: 备胎的虚拟化"></a>RAID: 备胎的虚拟化</h3><p>Failt MOdel: Fail-Stop<br>磁盘可能在某个时刻突然彻底无法访问……</p>
+<p>Redundant Array od Inexpensive(Indenpendent) Disks(RAID)<br>    把多个（不可靠的）磁盘虚拟成一块非常可靠的磁盘</p>
+<p>进程：一个CPU分时虚拟成多个虚拟CPU<br>虚存：一份内存通过MMU虚拟成多个地址空间<br>文件：把一个存储设备虚拟成多个虚拟磁盘</p>
+<p><strong>RAID：多个→一个</strong></p>
+<p>最简单的想法：多个磁盘，备份（像FAT的备份）。<br>A: s1 s2 s3 s4    B: s1 s2 s3 s4    两块磁盘上的数据构成“镜像”<br>    read(V, blk) 可以从A或B中的任意一个读取（甚至 A s1 s2; B s3 s4 并行读！）<br>    write(V, blk) 将同样的数据写入A、B的同一位置</p>
+<p><strong>RAID-0:</strong> V0→A0, V1→B0, V<sub>2i</sub>→A<sub>i</sub>, V<sub>2i+1</sub>→B<sub>i</sub><br>高性能（容量、速度）；But零容错。</p>
+<p><strong>RAID-1:</strong> V0→(A0,B0)      就是上面的备份想法；容忍一块盘fail</p>
+<p><strong>RAID-10:</strong> (V0, V1)→(A0, B0, C0,D0)    e.g. A0=B0=V0, C0=D0=V1    AB(CD)各组成一个RAID-1，AB、CD之间是RAID-0<br>ABCD构成一个条带，<strong>四个磁盘</strong>中各取一个数据块表示<strong>两个</strong>虚拟的数据块。</p>
+<h4 id="Raid-4-Parity-Disk-Error-Correction-Code-ECC"><a href="#Raid-4-Parity-Disk-Error-Correction-Code-ECC" class="headerlink" title="Raid-4:Parity Disk; Error Correction Code(ECC)!"></a>Raid-4:Parity Disk; Error Correction Code(ECC)!</h4><p>关于奇偶校验码，这里有个简单的def</p>
+<blockquote>
+<p>The simple parity-check code is the most familiar error-detecting code. In this code, a k-bit data word is changed to an n-bit code word where n = k + 1. The extra bit, called the parity bit, is selected to make the total number of 1s in the code word even. Although some implementations specify an odd number of 1s.</p>
+</blockquote>
+<p>(V0, V1, V2, V3)→(A0, B0, C0, D0, E0)</p>
+<p>（<strong>考虑1bit的情况</strong>）V0→A0, V1→B0, V2→C0, V3→D0, E0(parity code)=A0 xor B0 xor C0 xor D0<br>于是，A0 xor B0 xor C0 xor D0 xor E0 == 0    任何一个盘出错，都可以用其他四个盘的数据将其恢复出来（e.g. C0 fail了，上试两边同时xor C0，得到C0 = A0 xor B0 xor D0 xor E0）</p>
+<p>由于每一bit都是独立的，所以其他大小的盘也是一样的。</p>
+<p><strong><font size=8>妙啊！</font></strong></p>
+<h4 id="RAID-5-Rotating-Parity"><a href="#RAID-5-Rotating-Parity" class="headerlink" title="RAID-5: Rotating Parity"></a>RAID-5: Rotating Parity</h4><p>分析RAID-4的性能，e.g.</p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+<th>E</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>V0</td>
+<td>V1</td>
+<td>V2</td>
+<td>V3</td>
+<td>P</td>
+</tr>
+<tr>
+<td>V4</td>
+<td>V5</td>
+<td>V6</td>
+<td>V7</td>
+<td>P</td>
+</tr>
+<tr>
+<td>V8</td>
+<td>V9</td>
+<td>V10</td>
+<td>V11</td>
+<td>P</td>
+</tr>
+</tbody></table>
+<p>顺序读V0<del>V11，并行，得到所有磁盘总带宽的80%<br>Random read: 80%<br>Sequential write V0</del>V11: 80%<br>Random write: only change V5. <br>    P = V4 xor V5 xor V6 xor V7<br>    P’ = V4 xor V’5 xor V6 xor V7<br>     P’ = P xor V5 xor V’5<br>    所以需要(read V5, read P)+(write V5, write P)<br>    <strong>一块盘的write只有之前的1/2，五块就只有10%(???)</strong></p>
+<p>所以</p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+<th>E</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>V0</td>
+<td>V1</td>
+<td>V2</td>
+<td>V3</td>
+<td>P</td>
+</tr>
+<tr>
+<td>V4</td>
+<td>V5</td>
+<td>V6</td>
+<td>Ｐ</td>
+<td>V7</td>
+</tr>
+<tr>
+<td>V8</td>
+<td>V9</td>
+<td>Ｐ</td>
+<td>V11</td>
+<td>V10</td>
+</tr>
+</tbody></table>
+<p>将Parity均匀分布到每个disk上。</p>
+<p>Seq read/write: 80%<br>random read 100%<br>random write 25%，但至少ｎ块盘可以获得n/4的随机写性能</p>
+<h2 id="持久化-崩溃一致性-FCSK-amp-Journaling"><a href="#持久化-崩溃一致性-FCSK-amp-Journaling" class="headerlink" title="[持久化]崩溃一致性; FCSK &amp; Journaling"></a>[持久化]崩溃一致性; FCSK &amp; Journaling</h2><p>mkdir a/b，所以a/b/.. == a</p>
+<p>如果系统不crash，磁盘eventually会帮我们顺序写入<br>    RAID: write(V0)→write(A0) write(B0)，磁盘速度不同，crash不一致<br>    ext2: 追加写入 write(inode) write(bitmap) write(data)    多次写入没有原子性保证<br>    {inode,bitmap,data}, {}: 对<br>    {inode}: inode指向了一个还没有分配的内存——corrupted filesystem<br>    {bitmap}: 好像分配了，但不可用，消失了一个block——dead block<br>    {data}: 往一个未分配的block里面写入——garbage<br>    {inode,bitmap}: 文件丢失——inorrect data<br>    {inode, data}: corrupt filesystem<br>    {bitmap,data}: dead block        </p>
+<h3 id="File-System-Checking-FSCK"><a href="#File-System-Checking-FSCK" class="headerlink" title="File System Checking(FSCK)"></a>File System Checking(FSCK)</h3><p>根据磁盘已有的信息，恢复出“最可能”的数据结构(e.g.检查inode标记的数据块是否bitmap标记为１；检查是否存在dandling link，没有链接的inode被移到lost+found文件夹中)……</p>
+<p>crash→next boot→fsck（扫描磁盘，把filesystem恢复到一致的状态上）那fsck崩溃怎么办（＊＾＿＿＾＊）</p>
+<p><strong><em>Three easy pieces</em></strong>上还提到了一些fsck的一些问题</p>
+<blockquote>
+<p>However, fsck (and similar approaches) have a bigger and perhaps more fundamental problem: they are too slow.……This situation is akin to dropping your keys on the floor in your bedroom, and then commencing a search-the-entire-house-for-keys recovery algorithm, starting in the basement and working your way through every room. It works but is wasteful.</p>
+</blockquote>
+<h3 id="Journaling-or-Write-Ahead-Logging"><a href="#Journaling-or-Write-Ahead-Logging" class="headerlink" title="Journaling(or Write-Ahead Logging)"></a>Journaling(or Write-Ahead Logging)</h3><blockquote>
+<p>The basic idea is as follows. When updating the disk, before over-writing the structures in place, first write down a little note (somewhere else on the disk, in a well-known location) describing what you are about to do. Writing this note is the “write ahead” part, and we write it to a structure that we organize as a “log”; hence, write-ahead logging.</p>
+</blockquote>
+<p><code>flush()</code>: 缓冲区内容（flush之前的请求）全部落盘才会返回（<code>sync</code>???）</p>
+<p>简化的问题:　<strong>append-only的block vector</strong></p>
+<p><strong>flush(sync)</strong> block1 block2 block3 block4 <strong>flush(sync)</strong> OK <strong>flush(sync)</strong>……</p>
+<p>写block1,2,3,4时如果crash，第二个flush是不会返回的。反之，如果看到”OK”，则表明第二个flush返回了(commit)，block1,2,3,4落盘了。”OK”就是Journal</p>
+<p>BTRFS: everything is a B-Tree</p>
+<p><strong>任何一个数据结构都有两种实现方法</strong></p>
+<p>FS(Tree…)+History(历史操作序列)，History其实就是append-only的!!!<br>所以磁盘分成两部分？History(Journal) + data structure，先写history(append-only)，在实际更新数据结构之前就写入journal<br></p>
+<table>
+<thead>
+<tr>
+<th>TxBegin, id=1</th>
+<th>I[v2]</th>
+<th>B[v2]</th>
+<th>Db</th>
+<th>TxEnd, id=1</th>
+<th>……</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td>inode</td>
+<td>bitmap</td>
+<td>data block</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Journaling优化</strong></p>
+<p>批处理(xv6; jbd)：多次系统调用的Tx合并成一个，减少log的大小; jbd：定期write back<br>Checksum(ext4)：不再标记TxBegin/TxEnd；直接标记Tx的长度和checksum<br>Metadata journaling：只对inode和bitmap做journaling可以提高性能</p>
+<p>xv6：<code>begin_op</code>, <code>end_op</code>之间对文件系统的操作是atomic的！</p>
+<h4 id="书上提到的几种Journaling"><a href="#书上提到的几种Journaling" class="headerlink" title="书上提到的几种Journaling"></a>书上提到的几种Journaling</h4><p>(Full) Data Journaling</p>
+<blockquote>
+<ol>
+<li>Journal write: Write the contents of the transaction (including TxB, metadata, and data) to the log; wait for these writes to complete.</li>
+<li>Journal commit: Write the transaction commit block (containing TxE) to the log; wait for write to complete; transaction is said to be committed.</li>
+<li>Checkpoint: Write the contents of the update (metadata and data) to their final on-disk locations.</li>
+</ol>
+</blockquote>
+<p>Making the Log Finite（释放Journal中已经写入磁盘的数据）</p>
+<blockquote>
+<ol>
+<li>Journal write: Write the contents of the transaction (containing TxB and the contents of the update) to the log; wait for these writes to complete.</li>
+<li>Journal commit: Write the transaction commit block (containing TxE) to the log; wait for the write to complete; the transaction is now committed.</li>
+<li>Checkpoint: Write the contents of the update to their final locations within the file system.</li>
+<li>Free: Some time later, mark the transaction free in the journal by updating the journal superblock.</li>
+</ol>
+</blockquote>
+<p>Metadata Journaling（避免data block写两次；避免了指针指向garbage）</p>
+<blockquote>
+<ol>
+<li>Data write: Write data to final location; wait for completion (the wait is optional; see below for details).</li>
+<li>Journal metadata write: Write the begin block and metadata to the log; wait for writes to complete.</li>
+<li>Journal commit: Write the transaction commit block (containing TxE) to the log; wait for the write to complete; the transaction (including data) is now committed.</li>
+<li>Checkpoint metadata: Write the contents of the metadata update to their final locations within the file system.</li>
+<li>Free: Later, mark the transaction free in journal superblock.</li>
+</ol>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Mianzhi Pan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://yoursite.com/2020/07/07/OS-End/" title="[OS]End">http://yoursite.com/2020/07/07/OS-End/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/08/How-to-solve-merge-conflict-in-git/" rel="next" title="How to solve merge conflict in git">
+                <i class="fa fa-chevron-left"></i> How to solve merge conflict in git
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpg"
+                alt="Mianzhi Pan" />
+            
+              <p class="site-author-name" itemprop="name">Mianzhi Pan</p>
+              <p class="site-description motion-element" itemprop="description">Mianzhi Pan's personal website(QQ 964298041)</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/panmianzhi" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/wan-wan-ya-44-93/activities" target="_blank" title="Zhihu">
+                      
+                        <i class="fa fa-fw fa-snapchat"></i>Zhihu</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:panmianzhi@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=28427771&auto=1&height=66"></iframe>
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化-I-O设备-总线-DMA-GPU"><span class="nav-number">1.</span> <span class="nav-text">[持久化]I&#x2F;O设备; 总线, DMA, GPU</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#总线：一个特殊的I-O设备"><span class="nav-number">1.1.</span> <span class="nav-text">总线：一个特殊的I&#x2F;O设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Direct-Memory-Access-DMA"><span class="nav-number">1.2.</span> <span class="nav-text">Direct Memory Access(DMA)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GPU-既是I-O设备，也是处理器"><span class="nav-number">1.3.</span> <span class="nav-text">GPU: 既是I&#x2F;O设备，也是处理器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化-持久数据的可靠性-RAID"><span class="nav-number">2.</span> <span class="nav-text">[持久化]持久数据的可靠性; RAID</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#随机损坏和FAT备份"><span class="nav-number">2.1.</span> <span class="nav-text">随机损坏和FAT备份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RAID-备胎的虚拟化"><span class="nav-number">2.2.</span> <span class="nav-text">RAID: 备胎的虚拟化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Raid-4-Parity-Disk-Error-Correction-Code-ECC"><span class="nav-number">2.2.1.</span> <span class="nav-text">Raid-4:Parity Disk; Error Correction Code(ECC)!</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RAID-5-Rotating-Parity"><span class="nav-number">2.2.2.</span> <span class="nav-text">RAID-5: Rotating Parity</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化-崩溃一致性-FCSK-amp-Journaling"><span class="nav-number">3.</span> <span class="nav-text">[持久化]崩溃一致性; FCSK &amp; Journaling</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#File-System-Checking-FSCK"><span class="nav-number">3.1.</span> <span class="nav-text">File System Checking(FSCK)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Journaling-or-Write-Ahead-Logging"><span class="nav-number">3.2.</span> <span class="nav-text">Journaling(or Write-Ahead Logging)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#书上提到的几种Journaling"><span class="nav-number">3.2.1.</span> <span class="nav-text">书上提到的几种Journaling</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mianzhi Pan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
