@@ -93,11 +93,13 @@
 <meta property="og:site_name" content="Paul&#39;s Blog">
 <meta property="og:description" content="[持久化]I&#x2F;O设备; 总线, DMA, GPU沟通计算机&amp;物理世界。CPU视角：能与CPU交换数据的接口(Status(rw), Command(rw), Data(ro)寄存器)。I&#x2F;O设备以导线的方式（某种接口协议）连接到计算机上CPU：port I&#x2F;O(in&#x2F;out)；memory-mapped I&#x2F;O。CPU就是和设备控制器交互！">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;loop.PNG">
 <meta property="article:published_time" content="2020-07-07T15:35:12.000Z">
-<meta property="article:modified_time" content="2020-07-07T15:38:27.768Z">
+<meta property="article:modified_time" content="2020-08-02T11:38:01.428Z">
 <meta property="article:author" content="Mianzhi Pan">
 <meta property="article:tag" content="recording">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;loop.PNG">
 
 
 
@@ -363,6 +365,60 @@
 <p>Rendering Pipeline</p>
 <p><strong>设备驱动程序：</strong>对设备进行一定管理，对上层提供统一的接口（“面向对象”访问I/O，设备=支持read,write,ioctl,……的对象）<br>设备驱动程序把HALAPI调用(read, write, ioctl)翻译成设备驱动程序，未必一定要有物理设备！<code>cat /dev/zero(urandom) | head -c 512 | xxd</code>（取前512字节并以16进制打印）</p>
 <p><code>fflush()</code>, <code>lseek()</code></p>
+<h2 id="持久化-设备驱动程序"><a href="#持久化-设备驱动程序" class="headerlink" title="[持久化]设备驱动程序"></a>[持久化]设备驱动程序</h2><h3 id="I-O设备的抽象"><a href="#I-O设备的抽象" class="headerlink" title="I/O设备的抽象"></a>I/O设备的抽象</h3><p>应用程序有访问I/O设备的要求(printf希望输出字符到屏幕……)</p>
+<p>应用程序直接访问I/O设备的后果(无法写出portable的代码，否则你要分别对不同的设备编程；应用之间需要互斥、同步、协商设备资源的使用)</p>
+<p><strong>所以OS要对设备抽象（虚拟化）</strong></p>
+<p>I/O设备虽然复杂，但几乎可以理解为字节的序列（流或数组）</p>
+<p><strong>在OS中设置一个抽象层，对上层提供统一的接口，以”面向对象“方式访问I/O设备</strong></p>
+<p>以同一个接口访问不同的I/O设备，实现接口的代码就是设备驱动程序。</p>
+<p>设备驱动程序把HAL API调用(read, write, ioctl)翻译成设备指令</p>
+<p><code>cat /dev/urandom | head -c 512 | xxd</code>，这个虚拟设备直接往缓冲区里写</p>
+<p><strong>Linux设备驱动：Everything is a file：</strong>设备提供文件操作就好了</p>
+<p><code>fflush()</code>：将缓冲区的数据真正写入os</p>
+<p><code>flush()</code>, <code>fsync()</code>将数据写入IO设备中，一般用<code>fsync()</code>，<code>flush()</code>是设备关闭前的flush</p>
+<p><code>tty</code>：哪个终端</p>
+<p><code>stty</code>：查看终端信息，使用了系统调用<code>ioctl()</code>读取信息<br>    <code>unlocked_ioctl()</code>: 高性能的驱动通过<code>unlocked_ioctl</code>避免锁BKL<br>    <code>compat_ioctl()</code>: 机器字长的兼容性</p>
+<h3 id="两类特殊设备：磁盘-amp-网卡"><a href="#两类特殊设备：磁盘-amp-网卡" class="headerlink" title="两类特殊设备：磁盘&amp;网卡"></a>两类特殊设备：磁盘&amp;网卡</h3><p><strong>磁盘</strong>：以数据块(block)为单位访问；大吞吐量；应用程序一般不直接访问(一般是文件系统；大量并发访问)</p>
+<p><strong>网络设备</strong>: 速度快；大小不确定；延迟敏感</p>
+<h3 id="应用程序眼中的IO设备"><a href="#应用程序眼中的IO设备" class="headerlink" title="应用程序眼中的IO设备"></a>应用程序眼中的IO设备</h3><p><strong>磁盘</strong>：<code>/dev/</code>中有许多设备文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'/dev/sda'</span>,<span class="string">'rb'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">	mm = mmap.mmap(fd.fileno(), prot=mmap.PROT_READ, length=<span class="number">128</span> &lt;&lt; <span class="number">30</span>)</span><br><span class="line">    hexdump.hexdump(mm[:<span class="number">512</span>])</span><br></pre></td></tr></table></figure>
+
+<p><code>strace</code>查看：<code>mmap()</code>, <code>write()</code>……访问设备确实使用了文件系统API</p>
+<p><strong>网络设备</strong>：另一组API(send, recv, socket……)</p>
+<h2 id="持久化-文件系统API：文件、目录和文件系统管理"><a href="#持久化-文件系统API：文件、目录和文件系统管理" class="headerlink" title="[持久化]文件系统API：文件、目录和文件系统管理"></a>[持久化]文件系统API：文件、目录和文件系统管理</h2><p>OS有将数据安全可靠地“持久化”到存储设备的需求；<del>应用程序直接通过驱动访问存储设备</del></p>
+<h3 id="文件系统：存储设备的虚拟化"><a href="#文件系统：存储设备的虚拟化" class="headerlink" title="文件系统：存储设备的虚拟化"></a>文件系统：存储设备的虚拟化</h3><p>磁盘（I/O设备）= 一个RW的字节序列<br>虚拟磁盘（文件）= 一个RW的动态字节序列<br>虚拟磁盘管理：虚拟磁盘的名称管理、查找……</p>
+<p>文件系统：保存在持久存储上的数据结构（规定了数据在磁盘上的存储方式‘允许对数据结构操作）；可以实现在kernel中，可以是应用程序(fuse)</p>
+<h3 id="目录和文件"><a href="#目录和文件" class="headerlink" title="目录和文件"></a>目录和文件</h3><p><del>key-value</del>; </p>
+<p>目录：文件/目录的集合（形成一棵树）；相关的数据存在相近的目录（局部性）</p>
+<h3 id="文件API"><a href="#文件API" class="headerlink" title="文件API"></a>文件API</h3><p><strong>文件描述符</strong>：open, dup/dup2, fork……；</p>
+<p><code>void *mmap(void *addr, size_t length, int prot, int flags, int fd, off_t offset)</code>: flags取MAP_SHARED将文件映射到地址空间中，MAP_PRIVATE创建一个copy-on-write的副本。进程地址空间与虚拟磁盘建立关系。<strong><em>SIGSEGV</em></strong>: 越权; <strong><em>SIGBUS</em></strong>: 访问非法offset……关于SIGSEGV和SIGBUS具体内容[这篇回答](Linux中的mmap映射 [二] - 兰新宇的文章 - 知乎 <a href="https://zhuanlan.zhihu.com/p/71517406)**（注意映射过程中按页对齐的问题！）" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/71517406)**（注意映射过程中按页对齐的问题！）</a>**</p>
+<p><code>ftruncate()</code>/<code>truncate()</code>: 改变文件大小</p>
+<p><strong>文件访问的游标</strong>：lseek()</p>
+<p>fork后，子进程“浅拷贝”一份offset（so父子进程共享一个offset）；dup同样也是“浅拷贝”offset</p>
+<p>O_APPEND方式打开的文件，offset永远在最后（无论是否fork）</p>
+<h3 id="目录-文件系统API"><a href="#目录-文件系统API" class="headerlink" title="目录/文件系统API"></a>目录/文件系统API</h3><p>mkdir(使用了<code>mkdir()</code>系统调用)：创建一个目录，可设置访问权限</p>
+<p>rmdir：删除一个空目录；并不是“递归删除”，rm -rf 会遍历目录，逐个删除</p>
+<p>FAT文件系统树结构的叶子节点是目录或者文件；</p>
+<p>UNIX采用<strong>硬链接</strong>（允许一个文件被多个目录引用，目录中仅存储指向文件数据的指针；<del>链接目录，跨文件系统</del>）：目录仍是树结构，文件是虚拟磁盘，不同的目录（叶子节点）可指向同一个文件（虚拟磁盘）。“删除”文件：<strong>unlink</strong>，将目录与文件之间的链接删掉，文件维护一个引用计数，当计数为0（所有链接都删掉后，文件真正删除）。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim <span class="selector-tag">a</span>.txt<span class="comment">//创建一个文件</span></span><br><span class="line">ln <span class="selector-tag">a</span><span class="selector-class">.txt</span> <span class="selector-tag">b</span>.txt<span class="comment">//链接</span></span><br><span class="line">vim <span class="selector-tag">b</span>.txt<span class="comment">//修改b.txt</span></span><br><span class="line">cat <span class="selector-tag">a</span>.txt<span class="comment">//也被修改了，两者其实是同一份</span></span><br><span class="line">ls -li<span class="comment">//完全相同，文件名只是指向虚拟磁盘的指针</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>软链接(symbolic link)</strong>: 在文件里存储一个“跳转提示”（类似于快捷方式）</p>
+<p>引用这个文件时，去找另一个文件；另一个文件的绝对路径/相对路径以文本形式存储在这个文件里；<strong><em>可跨文件系统，可链接目录</em></strong>；</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;vim <span class="keyword">a</span>.tx<span class="comment">t//创建一个文件</span></span><br><span class="line">&gt;&gt;&gt;<span class="built_in">ln</span> -s <span class="keyword">a</span>.txt <span class="comment">b//软链接</span></span><br><span class="line">&gt;&gt;&gt;<span class="built_in">ln</span> -s b c</span><br><span class="line">&gt;&gt;&gt;<span class="built_in">ln</span> -s c d</span><br><span class="line">&gt;&gt;&gt;ls -<span class="comment">l//查看, ls -li比它多了一个编号（相当于虚拟磁盘编号）</span></span><br><span class="line">&gt;&gt;&gt;cat <span class="comment">d//a.txt</span></span><br><span class="line">&gt;&gt;&gt;vim <span class="comment">d//修改d, a.txt同时修改。d相当于a.txt的快捷方式:d-&gt;c-&gt;b-&gt;a.txt</span></span><br></pre></td></tr></table></figure>
+
+<p>甚至可以<strong>创建软链接的硬链接</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;ln d e</span><br><span class="line">&gt;&gt;&gt;ls -li</span><br><span class="line">total <span class="number">0</span></span><br><span class="line"><span class="number">16044073672518346</span> -rw-rw-rw- <span class="number">1</span> panmianzhi panmianzhi <span class="number">6</span> Aug  <span class="number">2</span> <span class="number">19</span>:<span class="number">16</span> a.txt</span><br><span class="line"><span class="number">15762598695805327</span> lrwxrwxrwx <span class="number">1</span> panmianzhi panmianzhi <span class="number">5</span> Aug  <span class="number">2</span> <span class="number">19</span>:<span class="number">17</span> b -&gt; a.txt</span><br><span class="line"> <span class="number">2533274790445499</span> lrwxrwxrwx <span class="number">1</span> panmianzhi panmianzhi <span class="number">1</span> Aug  <span class="number">2</span> <span class="number">19</span>:<span class="number">17</span> c -&gt; b</span><br><span class="line"><span class="number">20266198323242346</span> lrwxrwxrwx <span class="number">2</span> panmianzhi panmianzhi <span class="number">1</span> Aug  <span class="number">2</span> <span class="number">19</span>:<span class="number">17</span> d -&gt; c</span><br><span class="line"><span class="number">20266198323242346</span> lrwxrwxrwx <span class="number">2</span> panmianzhi panmianzhi <span class="number">1</span> Aug  <span class="number">2</span> <span class="number">19</span>:<span class="number">17</span> e -&gt; c</span><br></pre></td></tr></table></figure>
+
+<p>套娃（<strong><em>符号链接成环</em></strong>）</p>
+<figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;<span class="built_in">ln</span> -s . <span class="symbol">x</span></span><br><span class="line">&gt;&gt;&gt;cd <span class="symbol">x</span></span><br><span class="line">&gt;&gt;&gt;cd <span class="symbol">x</span></span><br><span class="line">...</span><br><span class="line">&gt;&gt;&gt;pwd<span class="comment">//查看当前目录</span></span><br><span class="line">../<span class="symbol">x</span>/<span class="symbol">x</span>/<span class="symbol">x</span>/.../<span class="symbol">x</span>/</span><br></pre></td></tr></table></figure>
+
+<p>所有处理符号链接的程序(tree, find,…)都要考虑递归情况</p>
+<p><strong>文件系统的挂载</strong></p>
+<p><code>mount -l</code>查看挂载</p>
+<p><code>mount M5-frecov.img /mnt/</code>挂载文件系统：<code>mount(&quot;/dev/loop4&quot;,&quot;/mnt&quot;,&quot;vfat&quot;,M5_MGC_VAL,NULL)</code>，把文件封装成一个”loopback device”。</p>
+<p><img src="https://github.com/panmianzhi/IMG/raw/master/loop.PNG" alt=""></p>
+<p>该文件系统的根就变成了/mnt/。<code>tree /mnt/</code></p>
+<p><code>umount /mnt</code>卸载文件系统</p>
 <h2 id="持久化-持久数据的可靠性-RAID"><a href="#持久化-持久数据的可靠性-RAID" class="headerlink" title="[持久化]持久数据的可靠性; RAID"></a>[持久化]持久数据的可靠性; RAID</h2><p>内存：一断电数据结构就没了；磁盘：宝贵的持久数据（但是任何存储介质都有失效的可能）。</p>
 <p>磁盘：random data corruption(数据块坏了) &amp; faul-stop</p>
 <h3 id="随机损坏和FAT备份"><a href="#随机损坏和FAT备份" class="headerlink" title="随机损坏和FAT备份"></a>随机损坏和FAT备份</h3><p>任何一个数据块都可能损坏<br>e.g. FAT文件系统<br>    metadata: 开不了机了。但可以重新扫描、推断恢复<br>    FAT: 就是M5，所有<code>next</code>都丢了，碎片化程度不高还好，高了就gg……<br>    data: 丢失一个文件。<br>FAT损坏terriable！所以有<strong>备份</strong>。性能？memory里有FAT的writeback缓存，所以几乎不会影响性能。</p>
@@ -650,7 +706,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -720,7 +776,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化-I-O设备-总线-DMA-GPU"><span class="nav-number">1.</span> <span class="nav-text">[持久化]I&#x2F;O设备; 总线, DMA, GPU</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#总线：一个特殊的I-O设备"><span class="nav-number">1.1.</span> <span class="nav-text">总线：一个特殊的I&#x2F;O设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Direct-Memory-Access-DMA"><span class="nav-number">1.2.</span> <span class="nav-text">Direct Memory Access(DMA)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GPU-既是I-O设备，也是处理器"><span class="nav-number">1.3.</span> <span class="nav-text">GPU: 既是I&#x2F;O设备，也是处理器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化-持久数据的可靠性-RAID"><span class="nav-number">2.</span> <span class="nav-text">[持久化]持久数据的可靠性; RAID</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#随机损坏和FAT备份"><span class="nav-number">2.1.</span> <span class="nav-text">随机损坏和FAT备份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RAID-备胎的虚拟化"><span class="nav-number">2.2.</span> <span class="nav-text">RAID: 备胎的虚拟化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Raid-4-Parity-Disk-Error-Correction-Code-ECC"><span class="nav-number">2.2.1.</span> <span class="nav-text">Raid-4:Parity Disk; Error Correction Code(ECC)!</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RAID-5-Rotating-Parity"><span class="nav-number">2.2.2.</span> <span class="nav-text">RAID-5: Rotating Parity</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化-崩溃一致性-FCSK-amp-Journaling"><span class="nav-number">3.</span> <span class="nav-text">[持久化]崩溃一致性; FCSK &amp; Journaling</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#File-System-Checking-FSCK"><span class="nav-number">3.1.</span> <span class="nav-text">File System Checking(FSCK)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Journaling-or-Write-Ahead-Logging"><span class="nav-number">3.2.</span> <span class="nav-text">Journaling(or Write-Ahead Logging)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#书上提到的几种Journaling"><span class="nav-number">3.2.1.</span> <span class="nav-text">书上提到的几种Journaling</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化-I-O设备-总线-DMA-GPU"><span class="nav-number">1.</span> <span class="nav-text">[持久化]I&#x2F;O设备; 总线, DMA, GPU</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#总线：一个特殊的I-O设备"><span class="nav-number">1.1.</span> <span class="nav-text">总线：一个特殊的I&#x2F;O设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Direct-Memory-Access-DMA"><span class="nav-number">1.2.</span> <span class="nav-text">Direct Memory Access(DMA)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GPU-既是I-O设备，也是处理器"><span class="nav-number">1.3.</span> <span class="nav-text">GPU: 既是I&#x2F;O设备，也是处理器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化-设备驱动程序"><span class="nav-number">2.</span> <span class="nav-text">[持久化]设备驱动程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O设备的抽象"><span class="nav-number">2.1.</span> <span class="nav-text">I&#x2F;O设备的抽象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两类特殊设备：磁盘-amp-网卡"><span class="nav-number">2.2.</span> <span class="nav-text">两类特殊设备：磁盘&amp;网卡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用程序眼中的IO设备"><span class="nav-number">2.3.</span> <span class="nav-text">应用程序眼中的IO设备</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化-文件系统API：文件、目录和文件系统管理"><span class="nav-number">3.</span> <span class="nav-text">[持久化]文件系统API：文件、目录和文件系统管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件系统：存储设备的虚拟化"><span class="nav-number">3.1.</span> <span class="nav-text">文件系统：存储设备的虚拟化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目录和文件"><span class="nav-number">3.2.</span> <span class="nav-text">目录和文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件API"><span class="nav-number">3.3.</span> <span class="nav-text">文件API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目录-文件系统API"><span class="nav-number">3.4.</span> <span class="nav-text">目录&#x2F;文件系统API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化-持久数据的可靠性-RAID"><span class="nav-number">4.</span> <span class="nav-text">[持久化]持久数据的可靠性; RAID</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#随机损坏和FAT备份"><span class="nav-number">4.1.</span> <span class="nav-text">随机损坏和FAT备份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RAID-备胎的虚拟化"><span class="nav-number">4.2.</span> <span class="nav-text">RAID: 备胎的虚拟化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Raid-4-Parity-Disk-Error-Correction-Code-ECC"><span class="nav-number">4.2.1.</span> <span class="nav-text">Raid-4:Parity Disk; Error Correction Code(ECC)!</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RAID-5-Rotating-Parity"><span class="nav-number">4.2.2.</span> <span class="nav-text">RAID-5: Rotating Parity</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化-崩溃一致性-FCSK-amp-Journaling"><span class="nav-number">5.</span> <span class="nav-text">[持久化]崩溃一致性; FCSK &amp; Journaling</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#File-System-Checking-FSCK"><span class="nav-number">5.1.</span> <span class="nav-text">File System Checking(FSCK)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Journaling-or-Write-Ahead-Logging"><span class="nav-number">5.2.</span> <span class="nav-text">Journaling(or Write-Ahead Logging)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#书上提到的几种Journaling"><span class="nav-number">5.2.1.</span> <span class="nav-text">书上提到的几种Journaling</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
