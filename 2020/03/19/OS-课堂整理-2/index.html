@@ -99,7 +99,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;IMG_0469(20200320-122857).PNG">
 <meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;IMG_0483(20200325-191711).PNG">
 <meta property="article:published_time" content="2020-03-19T08:51:51.000Z">
-<meta property="article:modified_time" content="2020-04-07T15:57:54.020Z">
+<meta property="article:modified_time" content="2020-08-13T02:07:35.836Z">
 <meta property="article:author" content="Mianzhi Pan">
 <meta property="article:tag" content="recording">
 <meta name="twitter:card" content="summary">
@@ -373,7 +373,7 @@
 <p><strong>重入</strong>，连续对同一个对象lock两次，直接形成死锁。（第一次lock后locked == 1，第二次执行时就相当于另外一个线程得到了锁，所以会不停地自旋）。</p>
 <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p><strong>关中断+自旋</strong>用来保护一段较短的临界区：持有锁期间，线程（处理器）不能被中断；其他线程（处理器）在关中断的前提下自旋——“一核享用，九核围观”。</p>
 <h2 id="xv6自旋锁实现"><a href="#xv6自旋锁实现" class="headerlink" title="xv6自旋锁实现"></a>xv6自旋锁实现</h2><p><code>acquire()</code>,<code>psuhcli()</code>,<code>popcli()</code>…随处可见的调试功能（<code>getcallerpcs()</code>打印函数调用栈！！！！）</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pushcli</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> eflags;</span><br><span class="line">	</span><br><span class="line">	eflags = readeflags();</span><br><span class="line">	cli();</span><br><span class="line">	<span class="keyword">if</span>(mycpu()-&gt;ncli == <span class="number">0</span>)<span class="comment">//第一次push，则保存eflags</span></span><br><span class="line">		mycpu()-&gt;intena = eflags &amp; FL_IF;</span><br><span class="line">	my_cpu()-&gt;ncli += <span class="number">1</span>;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">popcli</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(readeflags()&amp;FL_IF)</span><br><span class="line">        panic(<span class="string">"popcli - interruptible"</span>);</span><br><span class="line">    <span class="keyword">if</span>(--mycpu()-&gt;ncli &lt; <span class="number">0</span>)<span class="comment">//unlock的数量与lock不匹配</span></span><br><span class="line">        panic(<span class="string">"popcli"</span>);</span><br><span class="line">    <span class="keyword">if</span>(mycpu()-&gt;ncli == <span class="number">0</span> &amp;&amp; mycpu()-&gt;intena)</span><br><span class="line">        sti();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pushcli</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> eflags;</span><br><span class="line">	</span><br><span class="line">	eflags = readeflags();</span><br><span class="line">	cli();</span><br><span class="line">	<span class="keyword">if</span>(mycpu()-&gt;ncli == <span class="number">0</span>)<span class="comment">//第一次push，则保存eflags</span></span><br><span class="line">		mycpu()-&gt;intena = eflags &amp; FL_IF;</span><br><span class="line">	my_cpu()-&gt;ncli += <span class="number">1</span>;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">popcli</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(readeflags()&amp;FL_IF)</span><br><span class="line">        panic(<span class="string">"popcli - interruptible"</span>);</span><br><span class="line">    <span class="keyword">if</span>(--mycpu()-&gt;ncli &lt; <span class="number">0</span>)<span class="comment">//unlock的数量与lock不匹配</span></span><br><span class="line">        panic(<span class="string">"popcli"</span>);</span><br><span class="line">    <span class="keyword">if</span>(mycpu()-&gt;ncli == <span class="number">0</span> &amp;&amp; mycpu()-&gt;intena)<span class="comment">//所有的锁都被unlock后才开中断(修复BUG2)</span></span><br><span class="line">        sti();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><p>对于长临界区，获得锁的处理器中断丢失、使其他处理器空转/中断丢失……<br>例如读取磁盘信息，临界区执行时间可能很长、中断根本无法到达处理器（磁盘由中断驱动）。</p>
 <p>希望<br>    持有锁的进程<br>        允许处理器响应中断<br>        允许切换到其他线程执行<br>    等待锁的线程<br>        不要占用处理器资源自旋</p>
@@ -593,7 +593,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -683,7 +683,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
