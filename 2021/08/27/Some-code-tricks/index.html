@@ -86,20 +86,18 @@
 
 
 
-<meta name="description" content="说在前面的话：由于hexo渲染引擎会把下划线渲染成斜体符号，编辑公式变得格外困难（尽管本地预览一点问题也没有），所以以后下标较多的公式全部用图片代替。参考资料：neural networks and deep learning">
+<meta name="description" content="记录一些新学的语法……">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Improving the way neural networks learn(cross-entropy function)">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;31&#x2F;Improving-the-way-neural-networks-learn-cross-entropy-function&#x2F;index.html">
+<meta property="og:title" content="Some code tricks">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2021&#x2F;08&#x2F;27&#x2F;Some-code-tricks&#x2F;index.html">
 <meta property="og:site_name" content="Mianzhi Pan&#39;s Blog">
-<meta property="og:description" content="说在前面的话：由于hexo渲染引擎会把下划线渲染成斜体符号，编辑公式变得格外困难（尽管本地预览一点问题也没有），所以以后下标较多的公式全部用图片代替。参考资料：neural networks and deep learning">
+<meta property="og:description" content="记录一些新学的语法……">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;1.PNG">
-<meta property="article:published_time" content="2020-01-31T03:59:49.000Z">
-<meta property="article:modified_time" content="2020-02-03T01:45:55.540Z">
+<meta property="article:published_time" content="2021-08-27T10:18:13.000Z">
+<meta property="article:modified_time" content="2021-08-27T10:43:21.736Z">
 <meta property="article:author" content="Mianzhi Pan">
 <meta property="article:tag" content="recording">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;panmianzhi&#x2F;IMG&#x2F;raw&#x2F;master&#x2F;1.PNG">
 
 
 
@@ -129,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/01/31/Improving-the-way-neural-networks-learn-cross-entropy-function/"/>
+  <link rel="canonical" href="http://yoursite.com/2021/08/27/Some-code-tricks/"/>
 
 
 
 
 
-  <title>Improving the way neural networks learn(cross-entropy function) | Mianzhi Pan's Blog</title>
+  <title>Some code tricks | Mianzhi Pan's Blog</title>
   
 
 
@@ -252,7 +250,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/31/Improving-the-way-neural-networks-learn-cross-entropy-function/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/08/27/Some-code-tricks/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mianzhi Pan">
@@ -269,7 +267,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Improving the way neural networks learn(cross-entropy function)</h1>
+          <h1 class="post-title" itemprop="name headline">Some code tricks</h1>
         
 
         <div class="post-meta">
@@ -281,8 +279,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-31T11:59:49+08:00">
-                2020-01-31
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-08-27T18:18:13+08:00">
+                2021-08-27
               </time>
             
 
@@ -291,28 +289,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AI/" itemprop="url" rel="index">
-                    <span itemprop="name">AI</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -341,31 +317,11 @@
       
 
       
-        <p><strong>说在前面的话：</strong>由于hexo渲染引擎会把下划线渲染成斜体符号，编辑公式变得格外困难（尽管本地预览一点问题也没有），所以以后下标较多的公式全部用图片代替。<br>参考资料：<a href="http://neuralnetworksanddeeplearning.com/chap3.html" target="_blank" rel="noopener">neural networks and deep learning</a></p>
+        <p>记录一些新学的语法……</p>
 <a id="more"></a>
 
-<hr>
-<p>最初我们的网络采用quadratic function作为我们最后的损失函数，但这却带来了一些问题，在<strong><em>neural networks and deep learning</em></strong>的<a href="http://neuralnetworksanddeeplearning.com/chap3.html" target="_blank" rel="noopener">Chapter3</a>中，作者以单个神经元（激励函数为sigmoid、cost function为quadratic function）为例，input为1，desired output为0，观察训练过程发现，当weight和bias初始值比较大时，会出现前150个训练周期cost都维持在较高水平不变化的情况，观察之前的神经网络也会出现类似的问题。<br>这显然是与我们的期望不符合的，从人类的认知角度来看，我们当然希望cost越大network学习得越快——即cost下降得越快，就好比显微镜观察事物的粗调节，反之即为细调节；从实际训练来看，出现上面的情况意味着我们需要更多的training epoch，只有当epoch数超过某个“阈值”，神经网络才会开始学到东西，这无疑给训练带来了麻烦。<br></p>
-<h2 id="cost下降缓慢的原因"><a href="#cost下降缓慢的原因" class="headerlink" title="cost下降缓慢的原因"></a>cost下降缓慢的原因</h2><p>先以单个神经元为例，quadratic cost function分别对weight和bias求导：<br>$$<br>\frac{\partial C}{\partial w}=(a-y)\sigma’(z)x=a\sigma’(z)……(1)<br>$$</p>
-<p>$$<br>\frac{\partial C}{\partial b}=(a-y)\sigma’(z)=a\sigma’(z)……(2)<br>$$</p>
-<p>式中y和x分别为0和1。观察发现两者导函数中都含有σ’(z)项，这里激励函数为sigmoid function，结合该函数的图像可以发现，当z的绝对值很大时，sigmoid function的导函数σ’(z)趋于0，此时梯度下降法近乎失效，weight和bias几乎不变。<br>之前搭建的神经网络也有这样的问题，结合BP算法的四个公式<br>$$<br>\delta^L=\nabla_aC\bigodot\sigma’(z^L)<br>$$</p>
-<p>$$<br>\delta^l=((w^{l+1})^T\delta^{l+1})\bigodot\sigma’(z^l)<br>$$</p>
-<p>$$<br>\frac{\partial{C}}{\partial{w^l_{jk}}}=a^{l-1}_k\delta^l_j<br>$$</p>
-<p>$$<br>\frac{\partial{C}}{\partial{b^l_j}}=\delta^l_j<br>$$</p>
-<p>发现quadratic function对weight和bias的导函数同样涉及到了σ’(z)项，原因此时就很清晰了。<br></p>
-<h2 id="cross-entropy-function的来源"><a href="#cross-entropy-function的来源" class="headerlink" title="cross-entropy function的来源"></a>cross-entropy function的来源</h2><p>面对上面的问题，显然有两个解决的大方向，一是更改activation function，使得导数不会出现上面的情况，比如ReLU、Leaky ReLU等，对于这样的线性变换，quadratic cost function就不会有这样的问题；二是更改cost function，cross-entropy function就是这样的方法。<br>既然问题出在σ’(z)这一项上面，就想办法使得cost function求导之后不含这项，仍然先以单个neuron为例，结合（2）式，我们期望<br>$$<br>\frac{\partial C}{\partial b}=(a-y)……(3)<br>$$<br>新的cost function对b求导后有<br>$$<br>\frac{\partial C}{\partial b}=\frac{\partial C}{\partial a}\sigma’(z)<br>$$<br>这里激励函数仍为sigmoid函数，所以有<br>$$<br>\sigma’(z)=\sigma(z)(1-\sigma(z))=a(1-a)<br>$$<br>因此<br>$$<br>\frac{\partial C}{\partial b}=\frac{\partial C}{\partial a}a(1-a)<br>$$<br>结合（3）式，得到<br>$$<br>\frac{\partial C}{\partial a}=\frac{a-y}{a(1-a)}<br>$$<br>两边对a积分，得到<br>$$<br>C=-[y\ln a+(1-y)\ln(1-a)]+const<br>$$<br>对于整个training set的多个input则写作<br>$$<br>C=-\frac{1}{n}\sum_x[y\ln a+(1-y)\ln(1-a)]+const<br>$$<br>以上是单个neuron的情况，扩展到多层多神经元的网络，有</p>
-<p><img src="https://github.com/panmianzhi/IMG/raw/master/1.PNG" alt="1"></p>
-<p>这样的损失函数即为cross-entropy function，代码实现如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CrossEntropyCost</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fn</span><span class="params">(a, y)</span>:</span></span><br><span class="line">        <span class="string">"""Return the cost associated with an output ``a`` and desired output</span></span><br><span class="line"><span class="string">        ``y``.  Note that np.nan_to_num is used to ensure numerical</span></span><br><span class="line"><span class="string">        stability.  In particular, if both ``a`` and ``y`` have a 1.0</span></span><br><span class="line"><span class="string">        in the same slot, then the expression (1-y)*np.log(1-a)</span></span><br><span class="line"><span class="string">        returns nan.  The np.nan_to_num ensures that that is converted</span></span><br><span class="line"><span class="string">        to the correct value (0.0).</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">return</span> np.sum(np.nan_to_num(-y*np.log(a)-(<span class="number">1</span>-y)*np.log(<span class="number">1</span>-a)))</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delta</span><span class="params">(z, a, y)</span>:</span></span><br><span class="line">        <span class="string">"""Return the error delta from the output layer.  Note that the</span></span><br><span class="line"><span class="string">        parameter ``z`` is not used by the method.  It is included in</span></span><br><span class="line"><span class="string">        the method's parameters in order to make the interface</span></span><br><span class="line"><span class="string">        consistent with the delta method for other cost classes.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">return</span> (a-y)</span><br></pre></td></tr></table></figure>
-
-<p>BP算法反向传播时修改如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># backward pass</span></span><br><span class="line">delta = (self.cost).delta(zs[<span class="number">-1</span>], activations[<span class="number">-1</span>], y)</span><br><span class="line">nabla_b[<span class="number">-1</span>] = delta</span><br><span class="line">nabla_w[<span class="number">-1</span>] = np.dot(delta, activations[<span class="number">-2</span>].transpose())</span><br></pre></td></tr></table></figure>
-
-<h2 id="cross-entropy-function的合理性"><a href="#cross-entropy-function的合理性" class="headerlink" title="cross-entropy function的合理性"></a>cross-entropy function的合理性</h2><p>首先，理想输出y为0或1（对于每个神经元都如是），0≤a≤1，显然C恒为正数。另外，无论y是0还是1，当a→y时，C总是趋向于0。因此C满足作为cost function的基本要求。<br>再看看我们之前的期望是否达到，C对weight求导<br>$$<br>\frac{\partial C}{\partial w_j}=-\frac{1}{n}\sum_x(\frac{y}{\sigma(z)}-\frac{(1-y)}{1-\sigma(z)})\frac{\partial \sigma}{\partial w_j}<br>$$</p>
-<p>$$<br>=-\frac{1}{n}\sum_x(\frac{y}{\sigma(z)}-\frac{(1-y)}{1-\sigma(z)})\sigma’(z)x_j<br>$$</p>
-<p>$$<br>=\frac{1}{n}\sum_xx_j(\sigma(z)-y)<br>$$</p>
-<p>当输出结果接近desired output时，导数值趋于0，学习较慢，反之学习较快，对于bias也有同样的结果，我们的预期基本达到。<br></p>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>在我们识别手写数字的网络中，y值为0或1，但在其他任务中y可以是0到1之间的值，此时当a=y时，交叉熵函数仍取最小值，此时函数值-[ylna+(1-y)ln(1-a)]称为binary entropy。<br>cross-entropy function对最后accuracy的提高并没有多大帮助，它主要是使得网络学习过程更加合理且有效率，并且与神经元的饱和有关——而这恰恰是神经网络学习过程中的一个重要问题。</p>
+<h1 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h1><p><a href="https://link.zhihu.com/?target=https%3A//docs.python.org/3/library/logging.html">logging</a><br><a href="https://link.zhihu.com/?target=https%3A//pypi.org/project/easydict/%23%3A%7E%3Atext%3DEasyDict%2520allows%2520to%2520access%2520dict%2520values%2520as%2520attributes%2CA%2520Javascript-like%2520properties%2520dot%2520notation%2520for%2520python%2520dicts">easydict</a><br><a href="https://link.zhihu.com/?target=https%3A//geekflare.com/python-yaml-intro/%23%3A%7E%3Atext%3D%2520Introduction%2520to%2520YAML%2520in%2520Python%2520for%2520Beginners%2Ccan%2520write%2520comments%2520in%2520YAML%2520starting...%2520More%2520">yaml</a><br><a href="https://link.zhihu.com/?target=https%3A//docs.python.org/3/library/timeit.html%3Fhighlight%3Dtimeit%23module-timeit">timeit</a><br><a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/evan123mg/article/details/49232089">::</a><br><a href="https://zhidao.baidu.com/question/1930988314448559867.html" target="_blank" rel="noopener">var: type = value</a><br>[类型注解](如何看待类型注解在 Python 中的前途？ - 张同学的回答 - 知乎 <a href="https://www.zhihu.com/question/56167969/answer/417804812" target="_blank" rel="noopener">https://www.zhihu.com/question/56167969/answer/417804812</a>)<br><a href="https://docs.python.org/3/library/typing.html?highlight=typing#module-typing" target="_blank" rel="noopener">typing</a></p>
+<h1 id="C-amp-C"><a href="#C-amp-C" class="headerlink" title="C &amp; C++"></a>C &amp; C++</h1><p><a href="https://link.zhihu.com/?target=https%3A//www.geeksforgeeks.org/boostalgorithmany_of-in-c-library/%23%3A%7E%3Atext%3DThe%2520any_of%2520%2528%2529%2520function%2520in%2520C%252B%252B%2520boost%2520library%2Ctrue%2520for%2520any%2520given%2520element%2520in%2520the%2520sequence">any_of()</a><br><a href="https://link.zhihu.com/?target=https%3A//www.educba.com/3d-arrays-in-c-plus-plus/">3-D array</a><br><a href="https://link.zhihu.com/?target=https%3A//www.geeksforgeeks.org/this-pointer-in-c/">‘this’ point</a><br><a href="https://link.zhihu.com/?target=http%3A//www.cplusplus.com/reference/queue/priority_queue/"> priority_queue</a><br><a href="https://link.zhihu.com/?target=https%3A//www.cnblogs.com/ECJTUACM-873284962/p/7352303.html">builtin popcount</a><br></p>
 
       
     </div>
@@ -386,7 +342,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="http://yoursite.com/2020/01/31/Improving-the-way-neural-networks-learn-cross-entropy-function/" title="Improving the way neural networks learn(cross-entropy function)">http://yoursite.com/2020/01/31/Improving-the-way-neural-networks-learn-cross-entropy-function/</a>
+    <a href="http://yoursite.com/2021/08/27/Some-code-tricks/" title="Some code tricks">http://yoursite.com/2021/08/27/Some-code-tricks/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -408,8 +364,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/01/29/A-simple-full-connected-neural-network/" rel="next" title="A simple full connected neural network">
-                <i class="fa fa-chevron-left"></i> A simple full connected neural network
+              <a href="/2021/08/08/Attention-mechanism-from-%E9%82%B1%E9%94%A1%E9%B9%8F-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="next" title="Attention mechanism(from 邱锡鹏 神经网络与深度学习)">
+                <i class="fa fa-chevron-left"></i> Attention mechanism(from 邱锡鹏 神经网络与深度学习)
               </a>
             
           </div>
@@ -417,10 +373,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/02/03/Improving-the-way-neural-networks-learn-Softmax/" rel="prev" title="Improving the way neural networks learn--Softmax">
-                Improving the way neural networks learn--Softmax <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -586,7 +538,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#cost下降缓慢的原因"><span class="nav-number">1.</span> <span class="nav-text">cost下降缓慢的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cross-entropy-function的来源"><span class="nav-number">2.</span> <span class="nav-text">cross-entropy function的来源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cross-entropy-function的合理性"><span class="nav-number">3.</span> <span class="nav-text">cross-entropy function的合理性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python"><span class="nav-number">1.</span> <span class="nav-text">Python</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-amp-C"><span class="nav-number">2.</span> <span class="nav-text">C &amp; C++</span></a></li></ol></div>
             
 
           </div>
