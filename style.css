@@ -156,6 +156,43 @@ ul {
   padding-left: 20px;
 }
 
+/* Experience */
+.exp-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px; /* 更紧凑 */
+}
+.exp-item {
+  display: grid;
+  grid-template-columns: 140px 1fr; /* 收窄时间列 */
+  gap: 12px;
+  padding: 8px 0; /* 减少上下留白 */
+  border-bottom: 1px solid #eee;
+}
+.exp-item:last-child {
+  border-bottom: none;
+}
+.exp-time {
+  color: #666;
+  font-size: 0.9em; /* 略小字号 */
+}
+.exp-title {
+  font-weight: 600;
+  margin: 0; /* 去掉额外间距 */
+}
+.exp-org a {
+  color: #111;
+  text-decoration: none;
+  border-bottom: 1px solid #ddd;
+}
+.exp-org a:hover {
+  border-bottom-color: #bbb;
+}
+.exp-brief {
+  color: #333;
+  margin: 6px 0 0;
+}
+
 footer {
   text-align: center;
   padding: 24px;
@@ -191,5 +228,8 @@ footer a:hover {
   }
   .pub-thumb {
     height: 100px;
+  }
+  .exp-item {
+    grid-template-columns: 110px 1fr;
   }
 }
