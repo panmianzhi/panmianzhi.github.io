@@ -31,12 +31,12 @@ body {
 .header-content {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 40px;
+  gap: 10px;
   align-items: start;
 }
 
 .header-text {
-  max-width: 650px;
+  max-width: 680px;
 }
 
 .header-text h1 {
@@ -86,13 +86,13 @@ body {
 
 .header-photo {
   flex-shrink: 0;
+  margin-top: 80px;
 }
 
 .header-photo img {
-  width: 200px;
-  height: 200px;
+  width: 220px;
+  height: auto;
   border-radius: 8px;
-  object-fit: cover;
   border: 3px solid #e1e4e8;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
