@@ -318,3 +318,15 @@ footer a:hover {
     display: none;
   }
 }
+
+#visitors .visitor-map {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+#visitors .visitor-map iframe,
+#visitors .visitor-map img {
+  max-width: 100%;
+  border: 0;
+}
