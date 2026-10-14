@@ -4,45 +4,47 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mianzhi Pan | Personal Homepage</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=20261014-academic" />
 </head>
 
 <body>
+  <a class="skip-link" href="#about">Skip to content</a>
+  <div class="masthead">
+    <nav class="masthead-inner" aria-label="Main navigation">
+      <a class="site-title" href="./">Mianzhi Pan</a>
+      <div class="nav-links">
+        <a href="#about">About Me</a>
+        <a href="#publications">Publications</a>
+        <a href="#experience">Experience</a>
+        <a href="rsi/">RSI Radar</a>
+      </div>
+    </nav>
+  </div>
   <div class="container">
-    <!-- Header Section with Photo on Right -->
-    <header class="header">
-      <div class="header-content">
-        <div class="header-text">
+    <aside class="profile" aria-label="Author profile">
+          <img class="profile-photo" src="images/pmz.jpg" alt="Mianzhi Pan" />
           <h1>Mianzhi Pan</h1>
-          <p class="affiliation">Ph.D., School of Artificial Intelligence, Nanjing University</p>
+          <p class="affiliation">Ph.D. Student<br>School of Artificial Intelligence<br>Nanjing University</p>
+          <p class="research-label">AI for Science<br>Large Language Models<br>Vision–Language Learning</p>
+          <div class="contact-links">
+            <a href="mailto:panmz@smail.nju.edu.cn">Email</a>
+            <a href="https://github.com/panmianzhi" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://scholar.google.com/citations?user=fcB2s-oAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a>
+            <a href="cv.pdf" target="_blank">CV</a>
+            <a href="rsi/">RSI Radar</a>
+          </div>
+    </aside>
+
+    <main class="main-content">
+      <section id="about">
+          <h2>About Me</h2>
           <p class="bio">
             I am a Ph.D. student at the <a href="http://nlp.nju.edu.cn/homepage/" target="_blank" rel="noopener">NLP Lab</a>, Nanjing University, advised by Professor <a href="https://cs.nju.edu.cn/zhangjb/index.htm" target="_blank" rel="noopener">Jianbing Zhang</a>. I received my M.S. from the same group and B.S. from the Kuang Yaming Honors School, Nanjing University. I also worked as a research intern at <a href="https://www.gensi-thuair.com/#/portal/about" target="_blank" rel="noopener">GenSI Lab</a> in Institute for AI Industry Research (AIR), Tsinghua University, under the supervision of Professor <a href="https://zhouh.github.io/" target="_blank" rel="noopener">Hao Zhou</a>.
           </p>
           <p class="bio">
             My research interests lie in <strong>AI for Science</strong>, particularly LLM for science, material representation learning and generative models. Previously, I worked on <strong>Vision–Language Models</strong>, emphasizing fine-grained cross-modal understanding and evaluation. I like various sports, such as basketball, table tennis, swimming.
           </p>
-          <div class="contact-links">
-            <a href="mailto:panmz@smail.nju.edu.cn">Email</a>
-            <span class="separator">/</span>
-            <a href="https://github.com/panmianzhi">Github</a>
-            <span class="separator">/</span>
-            <a href="https://scholar.google.com/citations?user=fcB2s-oAAAAJ&hl=en">Google Scholar</a>
-            <span class="separator">/</span>
-            <a href="cv.pdf" target="_blank">CV</a>
-            <span class="separator">/</span>
-            <a href="rsi/">RSI Radar</a>
-          </div>
-        </div>
-        <div class="header-photo">
-          <img src="images/pmz.jpg" alt="Mianzhi Pan" />
-        </div>
-      </div>
-    </header>
-
-    <main class="main-content">
+      </section>
 
       <section id="experience">
         <h2>Experience</h2>
@@ -135,17 +137,16 @@
           </div>
         </div>
       </section>
-    </main>
-
     <section id="visitors">
       <div class="visitor-map">
         <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=GlKJzD20S9mm3JJU1Gj_RMQaswnojgPJNOuZ87emg64&cl=ffffff&w=a"></script>
       </div>
     </section>
-
-    <footer>
-      <p>© 2025 Mianzhi Pan | Hosted on <a href="https://pages.github.com/">GitHub Pages</a></p>
-    </footer>
+    </main>
   </div>
+    <footer>
+      <div class="footer-inner"><p>© 2026 Mianzhi Pan · Hosted on <a href="https://pages.github.com/">GitHub Pages</a></p>
+      <p>Style inspired by <a href="https://github.com/RayeRen/acad-homepage.github.io">AcadHomepage</a></p></div>
+    </footer>
 </body>
 </html>
