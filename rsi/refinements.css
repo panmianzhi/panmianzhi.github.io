@@ -187,6 +187,8 @@ select {
 }
 .star-button[aria-pressed="true"] { color: #ae7620; }
 .star-button:hover { color: #ae7620; }
+.daily-paper { position: relative; padding-right: 48px; }
+.daily-paper .star-button { top: 19px; right: 7px; }
 .paper-detail {
   margin: 0 52px 22px 39px;
   padding: 1px 0 0 18px;

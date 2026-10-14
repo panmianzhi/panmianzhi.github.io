@@ -30,7 +30,7 @@ nav{align-items:center;flex-wrap:wrap}
 .signed-in-email{overflow-wrap:anywhere}
 @media(max-width:600px){nav{gap:8px 18px}.account-button{margin-left:0}.star-button{top:10px}.library-entry .paper-row>summary{padding-right:36px}}
 </style>
-<link rel="stylesheet" href="refinements.css?v=3">
+<link rel="stylesheet" href="refinements.css?v=4">
 </head>
 <body>
 <header><div class="wrap"><div class="identity"><img src="../images/pmz.jpg" alt="Mianzhi Pan"><a href="../">Mianzhi Pan</a><span>/</span><a href="../blogs/">Blogs</a></div><div class="heading"><h1>Recursive Self-Improving</h1><div class="meta">论文与研究进展</div><div class="summary" id="summary"></div></div><nav aria-label="主要视图"><a href="#daily" data-view="daily">每日锐评</a><a href="#papers" data-view="papers">论文库</a><a href="#starred" data-view="starred" class="nav-starred" hidden>已收藏</a><a href="#progress" data-view="progress">研究进展</a><button type="button" id="star-account" class="account-button" hidden>登录收藏</button></nav><div class="star-status" id="star-status" role="status"></div></div></header>
@@ -55,7 +55,7 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const link=(url,label)=>/^https?:\/\//.test(url)?'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+esc(label)+'</a>':esc(label);
 const byId=new Map((data?.papers||[]).map(p=>[p.paper_id,p]));
 function prose(s){return String(s||'').replace(/\s*(背景与问题|方法|结果与结论|Insights)：/g,'\n\n$1：').trim().split(/\n\s*\n/).filter(Boolean).map(p=>{const m=p.match(/^(背景与问题|方法|结果与结论|Insights)：([\s\S]*)/);return '<p>'+(m?'<strong>'+esc(m[1])+'：</strong>'+esc(m[2]):esc(p))+'</p>'}).join('')}
-function article(p,tldr){return '<article class="paper" id="paper-'+encodeURIComponent(p.paper_id)+'"><h3>'+link(p.url,p.title)+'</h3><div class="meta">'+esc(p.authors||'作者信息待补充')+'</div>'+(p.affiliations?'<div class="meta">'+esc(p.affiliations)+'</div>':'')+'<div class="meta">发表 '+esc(p.published_at||'日期未提供')+' · 收录 '+esc(p.added_on)+'</div><div class="tags">'+esc(p.topics)+'</div><div class="tldr">'+prose(tldr||p.tldr||'TL;DR 待补充。')+'</div>'+(p.abstract?'<details><summary>Abstract</summary><p class="abstract">'+esc(p.abstract)+'</p></details>':'')+(p.novelty_summary?'<details><summary>创新性分析</summary><p class="abstract">'+esc(p.novelty_summary)+'</p></details>':'')+'</article>'}
+function article(p,tldr){return '<article class="paper daily-paper" id="paper-'+encodeURIComponent(p.paper_id)+'"><h3>'+link(p.url,p.title)+'</h3>'+starButton(p)+'<div class="meta">'+esc(p.authors||'作者信息待补充')+'</div>'+(p.affiliations?'<div class="meta">'+esc(p.affiliations)+'</div>':'')+'<div class="meta">发表 '+esc(p.published_at||'日期未提供')+' · 收录 '+esc(p.added_on)+'</div><div class="tags">'+esc(p.topics)+'</div><div class="tldr">'+prose(tldr||p.tldr||'TL;DR 待补充。')+'</div>'+(p.abstract?'<details><summary>Abstract</summary><p class="abstract">'+esc(p.abstract)+'</p></details>':'')+(p.novelty_summary?'<details><summary>创新性分析</summary><p class="abstract">'+esc(p.novelty_summary)+'</p></details>':'')+'</article>'}
 function paperIndex(p){return p.paper_id.startsWith('arxiv:')?'arXiv:'+p.paper_id.slice(6):'OpenReview'}
 const starConfig=window.RSI_STAR_CONFIG;
 const starEnabled=Boolean(starConfig?.owner&&starConfig?.repository&&starConfig?.path);
