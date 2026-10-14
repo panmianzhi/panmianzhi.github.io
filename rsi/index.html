@@ -6,13 +6,48 @@
 <meta name="description" content="Recursive self-improvement 论文库与每日研究进展点评。">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#fff;color:#24292e;font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0}a{color:#0366d6;text-decoration:none}a:hover{text-decoration:underline}button,select{font:inherit}button,a,select{touch-action:manipulation}button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid #0366d6;outline-offset:4px}.wrap{max-width:1050px;margin:auto;padding:0 24px}header{border-bottom:1px solid #e5e7eb}.identity{display:flex;align-items:center;gap:10px;padding:20px 0;color:#586069}.identity img{width:32px;height:32px;object-fit:cover;border-radius:4px}.identity a{color:inherit}h1{font-size:30px;line-height:1.3;margin:14px 0 6px}h2{font-size:21px;line-height:1.4;margin:0 0 12px}h3{font-size:17px;line-height:1.5;margin:0 0 8px}.meta{font-size:13px;color:#6b7280}.heading{padding:8px 0 22px}.summary{display:flex;gap:20px;flex-wrap:wrap;margin-top:14px;font-size:13px;color:#586069}nav{display:flex;gap:24px}nav a{padding:12px 0;color:#586069;border-bottom:2px solid transparent}nav a.active{color:#0366d6;border-color:#0366d6}main{padding-top:24px;padding-bottom:48px}.toolbar{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:22px}select{max-width:100%;padding:6px 10px;border:1px solid #d1d5da;border-radius:4px;background:#fff;color:#24292e}.critique{border-left:3px solid #2c8a70;padding:0 0 0 18px;margin:0 0 28px;font-size:16px;line-height:1.9}.paper{border-top:1px solid #e5e7eb;padding:22px 0}.paper h3 a{overflow-wrap:anywhere}.paper .meta{overflow-wrap:anywhere}.tags{margin:6px 0 10px;font-size:12px;color:#2c8a70}.tldr p{margin:12px 0;white-space:pre-wrap;overflow-wrap:anywhere}.tldr strong{color:#24292e}.badge{font-size:12px;color:#6b7280;margin-left:8px;white-space:nowrap}details{margin-top:12px}summary{cursor:pointer;color:#0366d6;font-size:13px}.abstract{color:#586069;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}footer{border-top:1px solid #e5e7eb;padding:20px 0 28px;font-size:12px;color:#6b7280}.empty{padding:40px 0;color:#6b7280}.references{display:flex;gap:8px 16px;flex-wrap:wrap;margin:16px 0;font-size:13px}.progress{border-top:1px solid #e5e7eb;padding:22px 0}.progress p{margin:8px 0}.limit{color:#6b7280;font-size:13px}.citation{font-size:12px}.notice{font-size:12px;color:#6b7280;margin:16px 0 26px}.paper-row{margin:0;padding:0}.paper-row>summary{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:14px 0;color:#24292e;font-size:15px;list-style:none}.paper-row>summary::-webkit-details-marker{display:none}.paper-row>summary:before{content:"+";font-weight:600;color:#6b7280;margin-right:8px}.paper-row>summary{grid-template-columns:16px minmax(0,1fr) auto;gap:8px}.paper-row[open]>summary:before{content:"−"}.paper-row>summary:hover .paper-title{color:#0366d6}.paper-title{font-weight:600;overflow-wrap:anywhere}.paper-index{color:#6b7280;font-size:12px;white-space:nowrap}.paper-detail{padding:0 0 18px 24px}.paper-detail .meta{margin:3px 0}.paper-detail .tldr{margin-top:12px}.paper-detail>details{margin-top:8px}@media(max-width:600px){.wrap{padding:0 18px}h1{font-size:26px}nav{gap:22px}.critique{font-size:15px}.summary{gap:8px 18px}.toolbar{align-items:flex-start}.badge{display:inline-block;margin-left:0;margin-right:8px}.paper{padding:18px 0}.paper-row{padding:0}.paper-row>summary{grid-template-columns:16px minmax(0,1fr);gap:6px 8px}.paper-index{grid-column:2}.paper-detail{padding-left:24px}}
+.nav-starred[hidden],.account-button[hidden],.star-button[hidden]{display:none}
+nav{align-items:center;flex-wrap:wrap}
+.account-button{margin-left:auto;border:0;background:none;color:#0366d6;cursor:pointer;padding:8px 0;font-size:13px}
+.library-entry{position:relative;border-top:1px solid #e5e7eb}
+.library-entry .paper-row{border:0}
+.library-entry .paper-row>summary{padding-right:42px}
+.star-button{position:absolute;right:0;top:10px;width:32px;height:32px;padding:0;border:0;background:none;color:#777;cursor:pointer;font-size:23px;line-height:1}
+.star-button[aria-pressed="true"]{color:#b87617}
+.star-button:hover{color:#9c681c}
+.star-button:disabled{opacity:.5;cursor:wait}
+.star-status{min-height:0;color:#a33b2b;font-size:13px}
+.star-status:empty{display:none}
+.sign-in-dialog{width:min(400px,calc(100vw - 32px));border:1px solid #d1d5da;border-radius:6px;padding:24px;color:#24292e;box-shadow:0 18px 60px #0002}
+.sign-in-dialog::backdrop{background:#0007}
+.sign-in-dialog h2{font-size:21px;margin:0 0 18px}
+.sign-in-dialog label{display:block;font-size:13px;margin:14px 0 5px}
+.sign-in-dialog input{width:100%;padding:9px 10px;border:1px solid #c9cdd2;border-radius:4px;font:inherit}
+.dialog-actions{display:flex;gap:12px;align-items:center;justify-content:flex-end;margin-top:22px}
+.dialog-actions button{border:1px solid #c9cdd2;border-radius:4px;background:white;padding:7px 12px;cursor:pointer}
+.dialog-actions .primary{background:#0366d6;color:white;border-color:#0366d6}
+.dialog-error{color:#a33b2b;font-size:13px;margin:10px 0 0}
+.signed-in-email{overflow-wrap:anywhere}
+@media(max-width:600px){nav{gap:8px 18px}.account-button{margin-left:0}.star-button{top:10px}.library-entry .paper-row>summary{padding-right:36px}}
 </style>
 </head>
 <body>
-<header><div class="wrap"><div class="identity"><img src="../images/pmz.jpg" alt="Mianzhi Pan"><a href="../">Mianzhi Pan</a><span>/</span><a href="../blogs/">Blogs</a></div><div class="heading"><h1>Recursive Self-Improving</h1><div class="meta">论文与研究进展</div><div class="summary" id="summary"></div></div><nav aria-label="主要视图"><a href="#daily" data-view="daily">每日锐评</a><a href="#papers" data-view="papers">论文库</a><a href="#progress" data-view="progress">研究进展</a></nav></div></header>
+<header><div class="wrap"><div class="identity"><img src="../images/pmz.jpg" alt="Mianzhi Pan"><a href="../">Mianzhi Pan</a><span>/</span><a href="../blogs/">Blogs</a></div><div class="heading"><h1>Recursive Self-Improving</h1><div class="meta">论文与研究进展</div><div class="summary" id="summary"></div></div><nav aria-label="主要视图"><a href="#daily" data-view="daily">每日锐评</a><a href="#papers" data-view="papers">论文库</a><a href="#starred" data-view="starred" class="nav-starred" hidden>已收藏</a><a href="#progress" data-view="progress">研究进展</a><button type="button" id="star-account" class="account-button" hidden>登录收藏</button></nav><div class="star-status" id="star-status" role="status"></div></div></header>
 <main class="wrap" id="content" aria-live="polite"><p class="empty">正在读取论文库…</p></main>
+<dialog id="sign-in-dialog" class="sign-in-dialog" aria-labelledby="sign-in-title">
+  <h2 id="sign-in-title">连接 GitHub 收藏</h2>
+  <p class="meta">星标保存在你的私有 <strong>panmianzhi/rsi-stars</strong> 仓库。首次使用需为这个仓库创建仅有 Contents 读写权限的 fine-grained token。Token 仅在当前标签页有效；重新连接后会从 GitHub 恢复收藏。</p>
+  <p class="meta"><a href="https://github.com/new" target="_blank" rel="noopener noreferrer">创建私有仓库</a> · <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">创建访问令牌</a></p>
+  <form id="sign-in-form">
+    <label for="github-token">GitHub fine-grained token</label><input id="github-token" name="token" type="password" autocomplete="off" required>
+    <p class="dialog-error" id="sign-in-error" role="alert"></p>
+    <div class="dialog-actions"><button type="button" class="dialog-close">取消</button><button class="primary" type="submit">连接</button></div>
+  </form>
+  <div id="signed-in-panel" hidden><p class="signed-in-email" id="signed-in-email"></p><div class="dialog-actions"><button type="button" class="dialog-close">关闭</button><button type="button" id="sign-out">断开连接</button></div></div>
+</dialog>
 <footer><div class="wrap">作者实验不等于独立复现；创新性判断受来源覆盖和历史基线限制。<br><a href="../blogs/">Blogs</a> · <a href="../">个人主页</a> · <a href="https://github.com/panmianzhi/panmianzhi.github.io">GitHub</a></div></footer>
 <script src="data.js"></script>
+<script src="star-config.js"></script>
 <script>
 const data=window.RSI_DATA,content=document.getElementById('content');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -21,12 +56,129 @@ const byId=new Map((data?.papers||[]).map(p=>[p.paper_id,p]));
 function prose(s){return String(s||'').replace(/\s*(背景与问题|方法|结果与结论|Insights)：/g,'\n\n$1：').trim().split(/\n\s*\n/).filter(Boolean).map(p=>{const m=p.match(/^(背景与问题|方法|结果与结论|Insights)：([\s\S]*)/);return '<p>'+(m?'<strong>'+esc(m[1])+'：</strong>'+esc(m[2]):esc(p))+'</p>'}).join('')}
 function article(p,tldr){return '<article class="paper" id="paper-'+encodeURIComponent(p.paper_id)+'"><h3>'+link(p.url,p.title)+'</h3><div class="meta">'+esc(p.authors||'作者信息待补充')+'</div>'+(p.affiliations?'<div class="meta">'+esc(p.affiliations)+'</div>':'')+'<div class="meta">发表 '+esc(p.published_at||'日期未提供')+' · 收录 '+esc(p.added_on)+'</div><div class="tags">'+esc(p.topics)+'</div><div class="tldr">'+prose(tldr||p.tldr||'TL;DR 待补充。')+'</div>'+(p.abstract?'<details><summary>Abstract</summary><p class="abstract">'+esc(p.abstract)+'</p></details>':'')+(p.novelty_summary?'<details><summary>创新性分析</summary><p class="abstract">'+esc(p.novelty_summary)+'</p></details>':'')+'</article>'}
 function paperIndex(p){return p.paper_id.startsWith('arxiv:')?'arXiv:'+p.paper_id.slice(6):'OpenReview'}
-function libraryPaper(p){return '<details class="paper paper-row" id="paper-'+encodeURIComponent(p.paper_id)+'"><summary><span class="paper-title">'+esc(p.title)+'</span><span class="paper-index">'+esc(paperIndex(p))+'</span></summary><div class="paper-detail"><div>'+link(p.url,'查看论文')+'</div><div class="meta">'+esc(p.authors||'作者信息待补充')+'</div>'+(p.affiliations?'<div class="meta">'+esc(p.affiliations)+'</div>':'')+'<div class="meta">发表 '+esc(p.published_at||'日期未提供')+' · 收录 '+esc(p.added_on)+'</div>'+(p.topics?'<div class="tags">'+esc(p.topics)+'</div>':'')+'<div class="tldr">'+prose(p.tldr||'TL;DR 待补充。')+'</div>'+(p.abstract?'<details><summary>Abstract</summary><p class="abstract">'+esc(p.abstract)+'</p></details>':'')+(p.novelty_summary?'<details><summary>创新性分析</summary><p class="abstract">'+esc(p.novelty_summary)+'</p></details>':'')+'</div></details>'}
-function route(){if(!data){content.innerHTML='<p class="empty">论文库暂不可用。</p>';return}const params=new URLSearchParams(location.hash.slice(1).replace(/^([^?]+)\??/,'view=$1&'));const view=['daily','papers','progress'].includes(params.get('view'))?params.get('view'):'daily';document.querySelectorAll('nav a').forEach(a=>{a.classList.toggle('active',a.dataset.view===view);if(a.dataset.view===view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});document.getElementById('summary').textContent=data.papers.length+' 篇论文 · '+data.reports.length+' 期日报 · 更新于 '+data.updated_at;
+const starConfig=window.RSI_STAR_CONFIG;
+const starEnabled=Boolean(starConfig?.owner&&starConfig?.repository&&starConfig?.path);
+const starRepository=starEnabled?starConfig.owner+'/'+starConfig.repository:'';
+const starApiPath='repos/'+starRepository+'/contents/'+(starConfig?.path||'');
+let starToken=starEnabled?sessionStorage.getItem('rsi-github-token'):null;
+let starredIds=new Set(),starSaving=false,starReady=!starToken;
+const accountButton=document.getElementById('star-account');
+const signInDialog=document.getElementById('sign-in-dialog');
+function starButton(p){if(!starEnabled)return '';const active=starredIds.has(p.paper_id);return '<button type="button" class="star-button" data-star-paper="'+esc(p.paper_id)+'" aria-pressed="'+active+'" aria-label="'+(active?'取消收藏：':'收藏：')+esc(p.title)+'" title="'+(active?'取消收藏':'收藏论文')+'"'+(starReady?'':' disabled')+'>'+(active?'★':'☆')+'</button>'}
+function libraryPaper(p){return '<article class="library-entry" id="paper-'+encodeURIComponent(p.paper_id)+'"><details class="paper paper-row"><summary><span class="paper-title">'+esc(p.title)+'</span><span class="paper-index">'+esc(paperIndex(p))+'</span></summary><div class="paper-detail"><div>'+link(p.url,'查看论文')+'</div><div class="meta">'+esc(p.authors||'作者信息待补充')+'</div>'+(p.affiliations?'<div class="meta">'+esc(p.affiliations)+'</div>':'')+'<div class="meta">发表 '+esc(p.published_at||'日期未提供')+' · 收录 '+esc(p.added_on)+'</div>'+(p.topics?'<div class="tags">'+esc(p.topics)+'</div>':'')+'<div class="tldr">'+prose(p.tldr||'TL;DR 待补充。')+'</div>'+(p.abstract?'<details><summary>Abstract</summary><p class="abstract">'+esc(p.abstract)+'</p></details>':'')+(p.novelty_summary?'<details><summary>创新性分析</summary><p class="abstract">'+esc(p.novelty_summary)+'</p></details>':'')+'</div></details>'+starButton(p)+'</article>'}
+function updateAccount(){accountButton.textContent=starToken?'GitHub 已连接':'连接 GitHub';document.getElementById('sign-in-form').hidden=Boolean(starToken);document.getElementById('signed-in-panel').hidden=!starToken;document.getElementById('signed-in-email').textContent=starRepository}
+function openAccount(){document.getElementById('sign-in-error').textContent='';updateAccount();signInDialog.showModal()}
+function setStarStatus(message){document.getElementById('star-status').textContent=message||''}
+async function githubRequest(path,token,options={}){
+  return fetch('https://api.github.com/'+path,{
+    ...options,
+    cache:'no-store',
+    headers:{'Accept':'application/vnd.github+json','Authorization':'Bearer '+token,'X-GitHub-Api-Version':'2022-11-28',...options.headers}
+  });
+}
+function githubError(response){
+  if(response.status===401)return new Error('访问令牌无效或已过期。');
+  if(response.status===403)return new Error('令牌缺少该仓库的 Contents 读写权限。');
+  if(response.status===404)return new Error('找不到私有仓库 '+starRepository+'，或令牌未被授权访问。');
+  return new Error('GitHub 返回 '+response.status+'，请稍后重试。');
+}
+async function verifyRepository(token){
+  const response=await githubRequest('repos/'+starRepository,token);
+  if(!response.ok)throw githubError(response);
+  const repo=await response.json();
+  if(!repo.private)throw new Error('收藏仓库需要设为私有，避免公开你的星标。');
+}
+async function readStars(token){
+  const response=await githubRequest(starApiPath,token);
+  if(response.status===404)return {ids:new Set(),sha:null};
+  if(!response.ok)throw githubError(response);
+  const file=await response.json();
+  if(typeof file.content!=='string')throw new Error('无法读取 stars.json。');
+  try{
+    const bytes=Uint8Array.from(atob(file.content.replace(/\s/g,'')),char=>char.charCodeAt(0));
+    const saved=JSON.parse(new TextDecoder().decode(bytes));
+    if(saved.version!==1||!Array.isArray(saved.paper_ids))throw new Error('invalid format');
+    return {ids:new Set(saved.paper_ids.filter(id=>typeof id==='string')),sha:file.sha};
+  }catch(error){throw new Error('stars.json 格式无法识别，请先检查仓库中的文件。')}
+}
+function encodeStars(ids){
+  const bytes=new TextEncoder().encode(JSON.stringify({version:1,paper_ids:[...ids].sort()},null,2)+'\n');
+  let binary='';for(const byte of bytes)binary+=String.fromCharCode(byte);
+  return btoa(binary);
+}
+async function refreshStars(){
+  if(!starToken||starSaving)return;
+  await verifyRepository(starToken);
+  const latest=await readStars(starToken);
+  const changed=latest.ids.size!==starredIds.size||[...latest.ids].some(id=>!starredIds.has(id));
+  starredIds=latest.ids;
+  const wasLoading=!starReady;starReady=true;
+  updateAccount();if(changed||wasLoading)syncStarButtons();setStarStatus('');
+}
+function syncStarButtons(){
+  if(location.hash.startsWith('#starred')){route();return}
+  content.querySelectorAll('[data-star-paper]').forEach(button=>{
+    const active=starredIds.has(button.dataset.starPaper);
+    button.setAttribute('aria-pressed',String(active));
+    button.setAttribute('aria-label',(active?'取消收藏：':'收藏：')+byId.get(button.dataset.starPaper).title);
+    button.title=active?'取消收藏':'收藏论文';
+    button.textContent=active?'★':'☆';
+    button.disabled=false;
+  });
+}
+async function toggleStar(button){
+  if(!starToken){openAccount();return}
+  if(starSaving||!starReady)return;
+  const id=button.dataset.starPaper,shouldStar=!starredIds.has(id);
+  button.disabled=true;starSaving=true;setStarStatus('');
+  try{
+    for(let attempt=0;attempt<3;attempt++){
+      const latest=await readStars(starToken);
+      if(shouldStar)latest.ids.add(id);else latest.ids.delete(id);
+      const body={message:'Update RSI paper stars',content:encodeStars(latest.ids)};
+      if(latest.sha)body.sha=latest.sha;
+      const response=await githubRequest(starApiPath,starToken,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      if(response.ok){starredIds=latest.ids;syncStarButtons();return}
+      if(response.status!==409&&response.status!==422)throw githubError(response);
+    }
+    throw new Error('其他设备刚更新了收藏，请重试。');
+  }catch(error){setStarStatus('收藏未保存：'+error.message);button.disabled=false}
+  finally{starSaving=false}
+}
+function route(){if(!data){content.innerHTML='<p class="empty">论文库暂不可用。</p>';return}const params=new URLSearchParams(location.hash.slice(1).replace(/^([^?]+)\??/,'view=$1&'));const requested=params.get('view');const view=['daily','papers','progress','starred'].includes(requested)&&(requested!=='starred'||starEnabled)?requested:'daily';document.querySelectorAll('nav a').forEach(a=>{a.classList.toggle('active',a.dataset.view===view);if(a.dataset.view===view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});document.getElementById('summary').textContent=data.papers.length+' 篇论文 · '+data.reports.length+' 期日报 · 更新于 '+data.updated_at;
 if(view==='daily'){const report=data.reports.find(r=>r.date===params.get('date'))||data.reports[0];if(!report){content.innerHTML='<p class="empty">暂无日报。</p>';return}content.innerHTML='<div class="toolbar"><h2>'+esc(report.date)+' · RSI 进展锐评</h2><select id="date" aria-label="日报日期">'+data.reports.map(r=>'<option '+(r.date===report.date?'selected ':'')+'value="'+esc(r.date)+'">'+esc(r.date)+'</option>').join('')+'</select></div><div class="critique">'+esc(report.critique).replace(/\[(\d+)\]/g,'<a class="citation" href="#ref-$1">[$1]</a>')+'</div><div class="references">'+report.source_ids.map((id,i)=>{const p=byId.get(id);return p?'<span id="ref-'+(i+1)+'">['+(i+1)+'] '+link(p.url,p.title)+'</span>':''}).join('')+'</div><p class="notice">本期分析 '+report.papers.length+' 篇'+(report.backlog?' · 尚有 '+report.backlog+' 篇待分析':'')+'。日报日期是巡检日期，论文实际发表日期见各条目。</p><h2>本期论文 · TL;DR</h2>'+report.papers.map(a=>{const p=byId.get(a.paper_id);return p?article(p,a.tldr):''}).join('');document.getElementById('date').onchange=e=>{location.hash='daily?date='+e.target.value}}
 else if(view==='papers'){const days=[...new Set(data.papers.map(p=>p.added_on))].sort().reverse(),day=params.get('date')||'';const papers=data.papers.filter(p=>!day||p.added_on===day);content.innerHTML='<div class="toolbar"><h2>论文库 <span class="badge">'+papers.length+' 篇</span></h2><select id="added" aria-label="收录日期"><option value="">全部收录日期</option>'+days.map(d=>'<option '+(d===day?'selected ':'')+'value="'+esc(d)+'">'+esc(d)+' 收录</option>').join('')+'</select></div>'+papers.map(libraryPaper).join('');document.getElementById('added').onchange=e=>{location.hash='papers'+(e.target.value?'?date='+e.target.value:'')}}
+else if(view==='starred'){const papers=data.papers.filter(p=>starredIds.has(p.paper_id));content.innerHTML='<h2>已收藏 <span class="badge">'+papers.length+' 篇</span></h2>'+(starToken?(papers.length?papers.map(libraryPaper).join(''):'<p class="empty">还没有收藏论文。</p>'):'<p class="empty">连接 GitHub 后可查看跨设备同步的收藏。 <button type="button" id="start-sign-in">连接 GitHub</button></p>')}
 else{content.innerHTML='<h2>研究进展</h2>'+data.progress.map(p=>'<article class="progress"><div class="tags">'+esc(p.topic)+' · '+esc(({new_direction:'新方向',advance:'重要推进',incremental:'增量工作',watch:'待观察'})[p.kind]||p.kind)+'</div><h3>'+esc(p.title)+'</h3><p>'+esc(p.description)+'</p><p class="limit">'+esc(p.limitations)+'</p><div class="references">'+p.paper_ids.map(id=>{const paper=byId.get(id);return paper?link(paper.url,paper.title):''}).join('')+'</div></article>').join('')}}
-content.addEventListener('click',e=>{const a=e.target.closest('a.citation');if(a){e.preventDefault();document.getElementById(a.getAttribute('href').slice(1))?.scrollIntoView({block:'center',behavior:'smooth'})}});
+content.addEventListener('click',e=>{const button=e.target.closest('[data-star-paper]');if(button){toggleStar(button);return}if(e.target.closest('#start-sign-in')){openAccount();return}const a=e.target.closest('a.citation');if(a){e.preventDefault();document.getElementById(a.getAttribute('href').slice(1))?.scrollIntoView({block:'center',behavior:'smooth'})}});
+if(starEnabled){
+  document.querySelector('.nav-starred').hidden=false;
+  accountButton.hidden=false;
+  accountButton.addEventListener('click',openAccount);
+  document.querySelectorAll('.dialog-close').forEach(button=>button.addEventListener('click',()=>signInDialog.close()));
+  document.getElementById('sign-in-form').addEventListener('submit',async event=>{
+    event.preventDefault();
+    const form=event.currentTarget,submit=form.querySelector('[type="submit"]');
+    const token=form.elements.namedItem('token').value.trim();
+    submit.disabled=true;
+    document.getElementById('sign-in-error').textContent='';
+    try{
+      await verifyRepository(token);
+      const latest=await readStars(token);
+      starToken=token;starredIds=latest.ids;starReady=true;
+      sessionStorage.setItem('rsi-github-token',token);
+      form.elements.namedItem('token').value='';signInDialog.close();updateAccount();syncStarButtons();setStarStatus('');
+    }catch(error){document.getElementById('sign-in-error').textContent=error.message}
+    finally{submit.disabled=false}
+  });
+  document.getElementById('sign-out').addEventListener('click',()=>{
+    sessionStorage.removeItem('rsi-github-token');starToken=null;starredIds=new Set();starReady=true;
+    signInDialog.close();updateAccount();route();setStarStatus('');
+  });
+  updateAccount();
+  if(starToken)refreshStars().catch(error=>setStarStatus('收藏暂时无法读取：'+error.message));
+  window.addEventListener('focus',()=>refreshStars().catch(error=>setStarStatus('收藏暂时无法读取：'+error.message)));
+}
 window.addEventListener('hashchange',route);route();
 </script>
 </body></html>
