@@ -19,6 +19,9 @@ a{color:#224b8d}
 .main-content h2{font-size:25px;font-weight:700;color:#494e52;margin-bottom:18px;padding-bottom:8px}
 .main-content h3{font-size:19px;font-weight:700;margin:22px 0 9px}
 .bio{line-height:1.7}
+.experience-list>li{margin-bottom:12px}
+.experience-detail{margin:3px 0 0!important;padding-left:22px!important;color:#697078;font-size:14px}
+.experience-detail li{margin:0!important}
 .pub-title{font-size:16px;font-weight:700;line-height:1.5;margin-bottom:5px}
 .pub-authors{color:#494e52;font-size:15px;line-height:1.6}
 .pub-venue{display:inline-block;color:#555;font-size:13px;font-style:normal;font-family:Monaco,Consolas,monospace;background:#f2f3f3;padding:1px 5px;margin-top:6px;border-radius:2px}
