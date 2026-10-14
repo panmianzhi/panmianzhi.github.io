@@ -1,5 +1,5 @@
 window.RSI_STAR_CONFIG = {
   owner: 'panmianzhi',
-  repository: 'rsi-stars',
-  path: 'stars.json'
+  repository: 'panmianzhi.github.io',
+  path: 'rsi/stars.json'
 };
