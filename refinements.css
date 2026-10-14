@@ -1,0 +1,35 @@
+body{font-family:"Trebuchet MS",Helvetica,Arial,sans-serif;color:#494e52;font-size:16px;line-height:1.65}
+strong{font-weight:700}
+a{color:#224b8d}
+.site-title{font-size:18px}
+.nav-links a{font-size:16px;color:#494e52}
+.profile h1{font-size:20px;font-weight:700}
+.profile-photo{width:175px;height:175px;padding:0;border:0}
+.profile,.contact-links a{font-size:14px;color:#494e52}
+.research-label{color:#666;font-size:13px}
+.contact-links{gap:6px}
+.contact-links a{display:inline-flex;align-items:center;gap:8px;line-height:1.6}
+.icon{display:inline-block;width:17px;text-align:center;font-family:"Font Awesome 5 Free";font-weight:900;font-style:normal;font-size:14px;line-height:1}
+.icon-mail:before{content:"\f0e0"}
+.icon-github{font-family:"Font Awesome 5 Brands";font-weight:400}
+.icon-github:before{content:"\f09b"}
+.icon-scholar:before{content:"\f19d"}
+.icon-file:before{content:"\f15c"}
+.icon-book:before{content:"\f02d"}
+.main-content h2{font-size:25px;font-weight:700;color:#494e52;margin-bottom:18px;padding-bottom:8px}
+.main-content h3{font-size:19px;font-weight:700;margin:22px 0 9px}
+.bio{line-height:1.7}
+.pub-title{font-size:16px;font-weight:700;line-height:1.5;margin-bottom:5px}
+.pub-authors{color:#494e52;font-size:15px;line-height:1.6}
+.pub-venue{display:inline-block;color:#555;font-size:13px;font-style:normal;font-family:Monaco,Consolas,monospace;background:#f2f3f3;padding:1px 5px;margin-top:6px;border-radius:2px}
+.pub-brief{font-size:14px;line-height:1.6;color:#62676b}
+.pub-item{grid-template-columns:190px minmax(0,1fr);gap:24px;border:0;padding:18px 0}
+.pub-thumb{width:190px;height:130px;border:0;border-radius:0}
+.pub-compact{display:block;padding:10px 0 10px 18px;position:relative}
+.pub-compact:before{content:"";position:absolute;left:1px;top:20px;width:4px;height:4px;border-radius:50%;background:#494e52}
+.pub-compact .pub-title{font-weight:400;margin-bottom:3px}
+.pub-compact .pub-authors{font-size:14px}
+.pub-compact .pub-venue{margin-top:4px}
+@media(max-width:900px){.pub-item{grid-template-columns:140px minmax(0,1fr);gap:18px}.pub-thumb{width:140px;height:110px}.profile-photo{width:150px;height:150px}}
+@media(max-width:650px){.profile-photo{width:100px;height:100px}.nav-links a{font-size:13px}.profile h1{font-size:21px}.main-content h2{font-size:23px}.pub-item{grid-template-columns:115px minmax(0,1fr);gap:15px}.pub-thumb{width:115px;height:95px}.pub-title{font-size:15px}.pub-authors{font-size:13px}.pub-venue{font-size:11px}.pub-brief{font-size:13px}.pub-compact{display:block}.pub-compact .pub-authors{font-size:13px}}
+@media(max-width:390px){.pub-item{grid-template-columns:1fr}.pub-thumb{width:190px;height:120px}}
