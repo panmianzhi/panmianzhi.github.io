@@ -16,6 +16,9 @@ a{color:#224b8d}
 .icon-scholar:before{content:"\f19d"}
 .icon-file:before{content:"\f15c"}
 .icon-book:before{content:"\f02d"}
+.icon-zhihu,.icon-linkedin{font-family:"Font Awesome 5 Brands";font-weight:400}
+.icon-linkedin:before{content:"\f08c"}
+.brand-svg{display:block;width:15px;height:15px;margin:0 auto;fill:currentColor}
 .main-content h2{font-size:25px;font-weight:700;color:#494e52;margin-bottom:18px;padding-bottom:8px}
 .main-content h3{font-size:19px;font-weight:700;margin:22px 0 9px}
 .bio{line-height:1.7}
