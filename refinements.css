@@ -39,3 +39,5 @@ a{color:#224b8d}
 @media(max-width:900px){.pub-item{grid-template-columns:140px minmax(0,1fr);gap:18px}.pub-thumb{width:140px;height:110px}.profile-photo{width:150px;height:150px}}
 @media(max-width:650px){.profile-photo{width:100px;height:100px}.nav-links a{font-size:13px}.profile h1{font-size:21px}.main-content h2{font-size:23px}.pub-item{grid-template-columns:115px minmax(0,1fr);gap:15px}.pub-thumb{width:115px;height:95px}.pub-title{font-size:15px}.pub-authors{font-size:13px}.pub-venue{font-size:11px}.pub-brief{font-size:13px}.pub-compact{display:block}.pub-compact .pub-authors{font-size:13px}}
 @media(max-width:390px){.pub-item{grid-template-columns:1fr}.pub-thumb{width:190px;height:120px}}
+
+.cv-versions{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
